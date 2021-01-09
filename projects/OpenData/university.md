@@ -39,7 +39,7 @@
         /// <value></value>
         public string ChtName { get; private set; }
         /// <summary>
-        /// 學校英文名稱
+        /// 學er校英文名稱
         /// </summary>
         /// <value></value>
 
