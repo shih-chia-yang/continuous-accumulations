@@ -3,12 +3,12 @@ using Xunit;
 
 namespace testservice.unittests
 {
-    public class UnitTest1
+    public class TestServiceTests
     {
         [Fact]
         public void IsAdd_InputIs1_ShouldBeReturn2()
         {
-            var service = new testservice();
+            var service = new TestService();
             int result = service.Add(1);
             Assert.Equal(2, result);
         }

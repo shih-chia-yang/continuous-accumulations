@@ -2,9 +2,9 @@
 
 namespace testservice
 {
-    public class testservice
+    public class TestService
     {
-        public testservice()
+        public TestService()
         {
 
         }
