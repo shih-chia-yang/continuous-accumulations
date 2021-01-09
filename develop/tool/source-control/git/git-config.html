@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Git Config</title>
+        <style>
+</style>
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item { list-style-type: none; } .task-list-item-checkbox { margin-left: -20px; vertical-align: middle; }
+</style>
+        
+        
+        
+    </head>
+    <body class="vscode-body vscode-light">
+        <h1 id="git-config">Git Config</h1>
+<ul>
+<li>搭配gpg，設定全域環境設定個人簽章</li>
+</ul>
+<pre><code class="language-bash"><div>git config --global user.signingkey &lt;your secret short/long key-id&gt;
+</div></code></pre>
+<ul>
+<li>搭配gpg，設定全域環境設定，預設commit使用gpg</li>
+</ul>
+<pre><code class="language-bash"><div>git config --global commit.gpgsign <span class="hljs-literal">true</span>
+</div></code></pre>
+<ul>
+<li>設定ui status顏色，狀態改變:黃；未加入變更索引:紅；已加入變更索引:綠</li>
+</ul>
+<pre><code class="language-bash"><div>git config --global color.ui <span class="hljs-literal">true</span>
+git config --global color.status.changed yellow
+git config --global color.status.untracked red
+git config --global color.status.added green
+</div></code></pre>
+
+    </body>
+    </html>

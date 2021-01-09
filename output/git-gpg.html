@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Git Gpg</title>
+        <style>
+</style>
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item { list-style-type: none; } .task-list-item-checkbox { margin-left: -20px; vertical-align: middle; }
+</style>
+        
+        
+        
+    </head>
+    <body class="vscode-body vscode-light">
+        <h1 id="git-gpg">Git Gpg</h1>
+<h2 id="git-gpg-設定">git GPG 設定</h2>
+<p>GPG全名為<code>The GNU Privacy Guard</code>，又稱GunPG，是一套OpenPGP標準規格RFC4880的開源實作。
+你可以用GnuPG來對訊息或檔案進行加密(encrypt)或簽章(sign)。GPG是一組CLI命令列工具，可以與
+其他應用程式整合，例如Git或Outlook，也支援S/MIME與Secure Shell(ssh)等應用。</p>
+<h3 id="network-source">network source</h3>
+<ul>
+<li>
+<p>[保哥] - <a href="https://blog.miniasp.com/post/2020/05/04/How-to-use-GPG-sign-git-commit-and-tag-object">https://blog.miniasp.com/post/2020/05/04/How-to-use-GPG-sign-git-commit-and-tag-object</a></p>
+</li>
+<li>
+<p>[github] - <a href="https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-gpg-key">https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-gpg-key</a></p>
+</li>
+<li>
+<p>[Gpg4win] - <a href="https://www.gpg4win.org/index.html">https://www.gpg4win.org/index.html</a></p>
+</li>
+<li>
+<p>[how to enable auto-signing Git commits with GnuPG for programs that don't support it natively] - <a href="https://gist.github.com/BoGnY/f9b1be6393234537c3e247f33e74094a">https://gist.github.com/BoGnY/f9b1be6393234537c3e247f33e74094a</a></p>
+</li>
+</ul>
+<h3 id="個人實作">個人實作</h3>
+<ul>
+<li>不需下載gpg4win，git版，git version 2.30.0.windows.1本就有提供, 在<code>C:\Program Files\Git\usr\bin</code>中，若另外安裝Gpg4win需區分在powershell執行或是git bash執行，兩者有明顯不同，或是產生key時，先進行git config變更gpg預設執行路徑。</li>
+</ul>
+<ol>
+<li>
+<p>執行git bash</p>
+</li>
+<li>
+<p>輸入<code>gpg --full-generate-key</code></p>
+<ul>
+<li>依次出現加密方式</li>
+<li>加密長度</li>
+<li>有效期限</li>
+<li>使用者名稱與信箱
+<img src="file:////assets/images/git/gpg/gpgkey-1.png" alt="generate"></li>
+</ul>
+</li>
+<li>
+<p>輸入<code>gpg --list-secret-keys --keyid-format long</code>
+<img src="file:////assets/images/git/gpg/gpgkey-2.png" alt="secret-keys"></p>
+</li>
+<li>
+<p>設定git config 私密金鑰</p>
+<pre><code class="language-bash"><div>git config --global user.signingkey  516CDF6149829DA7
+</div></code></pre>
+</li>
+<li>
+<p>commit 預設加入簽章</p>
+</li>
+</ol>
+<pre><code class="language-bash"><div>git config --global commit.gpgsign <span class="hljs-literal">true</span>
+</div></code></pre>
+<ol start="6">
+<li>設定cache時間，不需每次都需輸入密碼</li>
+</ol>
+<pre><code class="language-bash"><div>gpgconf default-cache-ttl 34560000
+gpgconf max-cache-ttl 34560000
+</div></code></pre>
+<ol start="7">
+<li>重新啟動gpg.agent</li>
+</ol>
+<pre><code class="language-bash"><div>gpgconf <span class="hljs-built_in">kill</span> gpg.agent
+</div></code></pre>
+
+    </body>
+    </html>
