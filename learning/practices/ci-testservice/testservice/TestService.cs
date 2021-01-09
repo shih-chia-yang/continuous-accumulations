@@ -12,7 +12,7 @@ namespace testservice
         public int Add(int number)
         {
             if (number == 1)
-                return 2;
+                return 3;
             throw new NotImplementedException("number not equal 1");
         }
     }
