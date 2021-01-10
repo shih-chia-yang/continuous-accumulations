@@ -1,7 +1,11 @@
 using System;
 using Xunit;
-
-namespace testservice.unittests
+//-----------------------------------------------------------------------
+// <copyright file="TestService.cs" company="IP">
+//     Company copyright tag.
+// </copyright>
+//-----------------------------------------------------------------------
+namespace TestService.unittests
 {
     public class TestServiceTests
     {
