@@ -1,0 +1,12 @@
+# StyleCop.Analyzers
+
+- 安裝 StyleCop.Analyzers
+````cli
+dotnet add package StyleCop.Analyzers
+````
+
+## 相關資料
+- [使用規則集將程式碼分析規則分組](https://docs.microsoft.com/zh-tw/visualstudio/code-quality/using-rule-sets-to-group-code-analysis-rules?view=vs-2019)
+- [GitHub.StyleCopAnalyzers](https://github.com/DotNetAnalyzers/StyleCopAnalyzers)
+- [GitHub.StyleCopAnalyzers.documentation](https://github.com/DotNetAnalyzers/StyleCopAnalyzers/tree/master/documentation)
+- [StyleCop.Analyzers.Setting](https://raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json)
