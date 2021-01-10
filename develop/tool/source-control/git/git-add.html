@@ -2,7 +2,7 @@
     <html>
     <head>
         <meta charset="UTF-8">
-        <title>Set Location</title>
+        <title>Git Add</title>
         <style>
 </style>
         
@@ -23,15 +23,18 @@
         
     </head>
     <body class="vscode-body vscode-light">
-        <h1 id="set-location">Set Location</h1>
-<p><a href="/e:/Git/continuous-accumulations/develop/language/Powershell/powershell.html">[[powershell]]</a></p>
+        <h1 id="git-add">Git Add</h1>
+<p><a href="/e:/Git/continuous-accumulations/develop/tool/source-control/git/git.html">[[git]]</a></p>
 <ul>
-<li>設定執行工作目錄至指定目錄</li>
+<li>已加入變更索引後又變更內容，以修補檔形式確認變更內容，並註冊於變更索引上</li>
 </ul>
-<pre><code class="language-powershell"><div><span class="hljs-built_in">Set-Location</span> <span class="hljs-literal">-Path</span> <span class="hljs-string">&quot;Target path&quot;</span>
+<pre><code class="language-bash"><div>git add -p
 </div></code></pre>
-<h2 id="相關連結">相關連結</h2>
-<p><a href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/set-location?view=powershell-7.1">msdn</a></p>
+<ul>
+<li>將變更內容一個一個進行確認，再註冊至變更索引上</li>
+</ul>
+<pre><code class="language-bash"><div>git add -i
+</div></code></pre>
 
     </body>
     </html>
