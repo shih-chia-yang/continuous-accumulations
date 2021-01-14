@@ -2,7 +2,7 @@
     <html>
     <head>
         <meta charset="UTF-8">
-        <title>Git Commit</title>
+        <title>Git Add</title>
         <style>
 </style>
         
@@ -23,13 +23,17 @@
         
     </head>
     <body class="vscode-body vscode-light">
-        <h1 id="git-commit">Git Commit</h1>
-<p><a href="/e:/Git/continuous-accumulations/develop/tool/source-control/git/git.html">[[git]]</a>
-確認執行提交訊息結果，但不實際執行commit，狀態為綠色準備提交中，仍需進一步輸入<code>git commit</code></p>
-<pre><code class="language-bash"><div>git commit --dry-run
+        <h1 id="git-add">Git Add</h1>
+<p><a href="/e:/Git/continuous-accumulations/develop/tool/source-control/git/git.html">[[git]]</a></p>
+<ul>
+<li>已加入變更索引後又變更內容，以修補檔形式確認變更內容，並註冊於變更索引上</li>
+</ul>
+<pre><code class="language-bash"><div>git add -p
 </div></code></pre>
-<p>可修改前一次提交訊息內容</p>
-<pre><code class="language-bash"><div>git commit --amend
+<ul>
+<li>將變更內容一個一個進行確認，再註冊至變更索引上</li>
+</ul>
+<pre><code class="language-bash"><div>git add -i
 </div></code></pre>
 
     </body>

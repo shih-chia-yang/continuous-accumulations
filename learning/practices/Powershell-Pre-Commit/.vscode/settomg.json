@@ -1,0 +1,9 @@
+{
+  "files.trimTrailingWhitespace": true,
+  "code-runner.defaultLanguage": "powershell",
+  "powershell.scriptAnalysis.enable": true,
+  "powershell.developer.editorServicesLogLevel": "Normal",
+  "powershell.startAutomatically": true,
+  "powershell.enableProfileLoading": true,
+  "powershell.scriptAnalysis.settingsPath": "ScriptAnalyzerSettings.psd1"
+}

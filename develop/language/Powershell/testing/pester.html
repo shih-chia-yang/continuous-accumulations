@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Pester</title>
+        <style>
+</style>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item { list-style-type: none; } .task-list-item-checkbox { margin-left: -20px; vertical-align: middle; }
+</style>
+        
+        <script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
+        
+    </head>
+    <body class="vscode-body vscode-light">
+        <h1 id="pester">Pester</h1>
+<ul>
+<li><a href="/e:/Git/continuous-accumulations/develop/language/Powershell/testing/installation.html">[[Installation]]</a></li>
+<li><a href="/e:/Git/continuous-accumulations/develop/language/Powershell/testing/usage.html">[[Usage]]</a></li>
+</ul>
+<h2 id="quick-start">Quick Start</h2>
+<ul>
+<li>pester對測試文件使用文件命名約定*.Tests.ps1。文件名稱通常以測試功能命名，並與功能ps1 file同一位置，該文件透過.\ $PSScriptRoot 放置於BeforeAll block提供相對路徑。測試案例按Describe或Context分組，將測試內容寫在It block中，Should 為依據斷言測試條件是否成立判斷測試成功或失敗</li>
+</ul>
+<pre><code class="language-folder"><code><div>Directory
+    |--functionName.ps1
+    |--functionName.Tests.ps1
+</div></code></code></pre>
+<pre><code class="language-Powershell"><div>BeforeAll{
+    .\ <span class="hljs-variable">$PSScriptRoot</span> functionFile.ps1
+}
+Describe{
+    It <span class="hljs-string">&#x27;given what parameters,Should return what result&#x27;</span>{
+
+        <span class="hljs-variable">$Result</span>=functionFile
+        <span class="hljs-variable">$Result</span> | Should <span class="hljs-literal">-Be</span> <span class="hljs-string">&#x27;Expect Value&#x27;</span>
+    }
+}
+</div></code></pre>
+<ul>
+<li>使用Invoke-Pester 執行測試Tests.ps1文件 ，-OutputDetails 輸出每個測試結果。</li>
+</ul>
+<pre><code class="language-Powershell"><div><span class="hljs-built_in">Invoke-Pester</span> *.Tests.ps1 file path <span class="hljs-literal">-OutputDetails</span>
+</div></code></pre>
+<h2 id="how-tests-break">how tests break</h2>
+<ul>
+<li>受測方法沒有正確執行。測試的正確方式</li>
+<li>受測方法正確執行，但測試方法錯誤。錯誤的測試方式</li>
+</ul>
+<h2 id="keywords">keywords</h2>
+<ul>
+<li>Describe
+將測試方法框列為一個群組，可以在同一個檔案中擁有一個或以上的Describe，也可以巢狀結構。</li>
+<li>Context 與Describe另一個相似的關鍵字是Context，這兩者功能幾乎一樣，一般來說top-level block是describe，以受測功能命名，如果需要context block可以表示測試功能的測試情境，而被內嵌在describe之中，如例。</li>
+</ul>
+<pre><code class="language-Powershell"><div>Describe <span class="hljs-string">&#x27;Get-Planet&#x27;</span> {
+    Context <span class="hljs-string">&#x27;no parameters&#x27;</span> {
+        It <span class="hljs-string">&#x27;lists all 8 planets&#x27;</span> {
+            <span class="hljs-comment"># ..</span>
+        }
+
+        It <span class="hljs-string">&#x27;lists them in the correct order&#x27;</span> { 
+            <span class="hljs-comment"># ...</span>
+        }
+    }
+
+    Context <span class="hljs-string">&quot;with -Filter&quot;</span> { 
+        It <span class="hljs-string">&#x27;filters based on planet Name&#x27;</span> {
+            <span class="hljs-comment"># ...</span>
+        }
+    }
+}
+</div></code></pre>
+<ul>
+<li>BeforeAll:我們希望在各個測試之間共享參數與程式，BeforeAll block 可以在test之前執行，通常位於ps1 file的開頭或是Describe之前</li>
+<li>AfterAll:會在最後執行這個區隔</li>
+<li>BeforeEach:將會在每個test block之前執行</li>
+<li>AfterEach：將會在每個test block之後執行</li>
+</ul>
+
+    </body>
+    </html>
