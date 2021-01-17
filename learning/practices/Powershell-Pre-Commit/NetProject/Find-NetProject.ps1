@@ -1,4 +1,4 @@
-function Find-CsProject([string]$path,[string[]] $files)
+function Find-NetProject([string]$path,[string[]] $files)
 {
     Write-Information -MessageData "getting .net project from:$path" -InformationAction Continue
     $Projects = Get-ChildItem -Path $path -Filter *.csproj -Recurse
