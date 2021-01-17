@@ -3,7 +3,7 @@ BeforeAll{
     $fakeEmail="test@yuntech.edu.tw"
 }
 
-Describe "Pre-Commit" {
+Describe "Validate Email" {
 
     It 'given empty string , it return 1'{
         $exitCode = Check-GitEmail 
