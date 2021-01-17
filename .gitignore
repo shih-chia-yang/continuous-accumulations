@@ -260,3 +260,6 @@ paket-files/
 __pycache__/
 *.pyc
 /slnOpenInfo/Views/Historical/_PartialHistoricalDataDownloadList.cshtml
+
+# tset result log
+Logs/
