@@ -5,8 +5,7 @@
         <title>2021-01-07</title>
         <style>
 </style>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous">
-<link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
+        
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
 <style>
@@ -20,122 +19,18 @@
 .task-list-item { list-style-type: none; } .task-list-item-checkbox { margin-left: -20px; vertical-align: middle; }
 </style>
         
-        <script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
+        
         
     </head>
     <body class="vscode-body vscode-light">
         <h1 id="2021-01-07">2021-01-07</h1>
 <p><a href="/e:/Git/continuous-accumulations/develop/tool/source-control/git/git.html">[[git]]</a></p>
-<h2 id="git-config-setting">git config setting</h2>
-<ul>
-<li>設定使用者名稱與email，以下為範例，名稱與信箱請自行替換</li>
-</ul>
-<pre><code class="language-bash"><div>git config --global user.name <span class="hljs-string">&quot;jiayang&quot;</span>
-git config --global user.email <span class="hljs-string">&quot;jiayang@yuntech.edu.tw&quot;</span>
-</div></code></pre>
-<ul>
-<li>設定預設文字編輯器，範例為vs code</li>
-</ul>
-<pre><code class="language-bash"><div>git config --global core.editor <span class="hljs-string">&quot;code --wait&quot;</span>
-</div></code></pre>
-<ul>
-<li>設定檔案名稱中文</li>
-</ul>
-<pre><code class="language-bash"><div>git config --global core.quotepath <span class="hljs-literal">false</span>
-</div></code></pre>
-<h2 id="設定commit-message-format">設定commit message format</h2>
-<ul>
-<li>新增.gitmessage.txt，內容可參考網路資源，或小組討論格式</li>
-<li>以下範例~\在windows 環境中等價$home</li>
-<li>個人實驗路徑為 e:\devops\gitmessage.template.gitmessage.txt</li>
-</ul>
-<pre><code class="language-bash"><div>git config --global commit.template ~\.gitmessage.txt
-</div></code></pre>
-<h2 id="commit-message-line-break">commit message line break</h2>
-<ul>
-<li>於換行內容前輸入<code>-m</code>，即可換行</li>
-</ul>
-<h2 id="依照不同commit-type提供不同template">依照不同commit type提供不同template</h2>
-<ul>
-<li>透過commit 指令提供 -t --template=<code>&lt;file&gt;</code></li>
-<li>使用git config --global alias設定</li>
-<li>不同template參數並綁定alias，達成依提交類型使用不同message.template</li>
-</ul>
-<p>1.產生.template.txt,以下範例為powershell指令建立新檔案</p>
-<pre><code class="language-shell"><div>new-item -path &quot;e:\devops\gitmessage.template\&quot; -name feature.txt -itemtype &quot;file&quot; -value &quot;...&quot;
-</div></code></pre>
-<p>2.填寫內容, 以下內容僅供參考</p>
-<pre><code class="language-text"><div>#&lt;feature&gt;: (請簡述此次變更說明) &lt;/feature&gt;
-#詳細說明
-
-
-#變更原因
-
-
-#提供其他連結、文件或其他參考資源
-
-
-# --- end ---
-# commit log 請遵造以下格式，並注意冒號後面有一個空格
-# 
-# &lt;type&gt;: &lt;subject&gt; {必要}
-# 
-# &lt;body&gt; {非必要}
-# 
-# &lt;footer&gt; {非必要}
-# 
-# 範例
-# &lt;feature&gt;: implementation login api function
-#
-# finished login module and integration with server login api
-#
-# Closes OR-xxxx 
-# 
-# &lt;Subject&gt;
-# 用來簡要描述影響本次變動，概述即可
-# 
-# &lt;Body&gt;
-# 具體的修改訊息，越詳細越好
-# 
-# &lt;Footer&gt;
-# 如果是要關閉特定 Issue 或 Bug. 可以使用 Closes PROJECT-1 or Resolves PROJECT-1 or Fixes PROJECT-1 
-# 具體清參考 https://docs.gitlab.com/ee/user/project/integrations/jira.html
-</div></code></pre>
-<p>3.設定git config alias，以下範例為新增feature alias指令</p>
-<pre><code class="language-bash"><div>git config --global alias.addfeat <span class="hljs-string">&quot;commit -t e:\\devops\gitmessage.template\feature.txt&quot;</span>
-</div></code></pre>
-<p>4.當內容變更完成後，加入變更索引，輸入指令，預設編輯器則會出現template內容，提供填寫，圖中為vscode</p>
-<pre><code class="language-bash"><div>git addfeat
-</div></code></pre>
-<p><img src="file:////assets/images/git/gitmessage/gitmessagetemplate.png" alt="commitmessage"></p>
-<p>5.填寫完內容ctrl+f4關閉後，則完成commit動作，可使用git log瀏覽提交內容</p>
-<h2 id="git-bisect-查詢commit提交出現錯誤">git bisect 查詢commit提交出現錯誤</h2>
-<p>原理是將代碼的提交歷史，按照2分法不斷縮小定位。所以謂2分法就是將代碼歷史一分為二，確定問題出在前半部份，還是後半部份，不斷執行這個過程，直到範圍縮小到某一次代碼提交。</p>
-<ul>
-<li>clone 專案</li>
-<li>執行建置</li>
-<li>執行git log</li>
-</ul>
-<pre><code class="language-bash"><div>git <span class="hljs-built_in">log</span> --pretty=oneline
-</div></code></pre>
-<p><img src="file:////assets/images/git/gitbisect/gitlog.png" alt="log"></p>
-<ul>
-<li>總共有13個提交，最近一次是76d6750。</li>
-<li>使用git bisect start 指令執行查找，格式如下</li>
-</ul>
-<pre><code class="language-bash"><div>git bisect start [終點] [起點]
-</div></code></pre>
-<p>上面的指令，終點是最近的提交，起點是更久以前的提交。它們之間的這段歷史，就是可能出錯的範圍
-範例起點設為</p>
-<pre><code class="language-bash"><div>git bisect start HEAD 94354a3
-</div></code></pre>
-<ul>
-<li>
-<p>執行以上命令，repo就是切換至指定的commit，執行建置測試，若功能正常則使用<code>git bisect good</code>定義此commit，執行後，git會自動切換是後段的中間commit，再執行建置測試，若錯誤則執行<code>git bisect bad</code>，不斷重覆此過程，直到git定位至最初產生錯誤的commit。便可開始著手修復。</p>
-</li>
-<li>
-<p>輸入<code> git bisect reset</code>，退出偵錯。</p>
-</li>
+<ul class="contains-task-list">
+<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> #tags git 設定使用者名稱與email。<a href="/e:/Git/continuous-accumulations/develop/tool/source-control/git/git-config.html">[[git config]]</a></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> #tags git 設定預設文字編輯器。<a href="/e:/Git/continuous-accumulations/develop/tool/source-control/git/git-config.html">[[git config]]</a></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> #tags git 設定檔案名稱中文。<a href="/e:/Git/continuous-accumulations/develop/tool/source-control/git/git-config.html">[[git config]]</a></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> #tags git 設定commit message format。<a href="/e:/Git/continuous-accumulations/develop/tool/source-control/git/git-commit-message.html">[[git commit message]]</a></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> #tags git <code>git bisect</code> 查詢commit提交出現錯誤。<a href="/e:/Git/continuous-accumulations/workflow/daily/git-bisect.html">[[git bisect]]</a></li>
 </ul>
 <h2 id="undo-all-uncommitted-or-unsaved-changes">undo all uncommitted or unsaved changes</h2>
 <ul>
