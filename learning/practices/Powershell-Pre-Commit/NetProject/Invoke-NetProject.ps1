@@ -23,4 +23,5 @@ function Invoke-NetProject ([string]$Path,[string[]]$File) {
             Test-NetProject -Path $projectPath
         }
     }
+    return $LastExitCode
 }

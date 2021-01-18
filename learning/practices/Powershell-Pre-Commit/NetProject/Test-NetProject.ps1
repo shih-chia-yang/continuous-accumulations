@@ -8,7 +8,7 @@ function Test-NetProject {
     #check project xunit.xmllog have installed
     #coverlet have installed
     
-    $currentDateTime= Get-Date -Format "yyyy/MM/dd"
+    $currentDateTime= Get-Date -Format "yyyyMMdd"
     $result=& dotnet test $Path --logger:"xunit;logfilepath=.\Logs\$($currentDateTime)Test-Result.xml"
     #get xml result
     #save log to logs directory
