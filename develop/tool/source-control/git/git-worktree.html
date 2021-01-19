@@ -52,8 +52,52 @@
 <pre><code class="language-Git"><code><div>git worktree list
 </div></code></code></pre>
 <ul>
-<li></li>
+<li>刪除工作目錄的管理資料</li>
 </ul>
+<pre><code class="language-git"><code><div>git worktree prune [-n] [--verbose]
+</div></code></code></pre>
+<table>
+<thead>
+<tr>
+<th>參數</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-n(--dry-run)</td>
+<td>顯示要刪除的工作目錄一覽表，並非實際刪除資料</td>
+</tr>
+<tr>
+<td>--verbose</td>
+<td>顯示刪除結果</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p>建立工作目錄</p>
+<pre><code class="language-git"><code><div>git branch
+</div></code></code></pre>
+<pre><code class="language-git"><code><div>git worktree list
+</div></code></code></pre>
+<p>確認目前分支是否其他工作目錄</p>
+<p>移到要作業的工作目錄</p>
+<pre><code class="language-git"><code><div>git worktree add ../repositoryname.{feat/bug/refactor}/資料夾名稱 分支名稱 
+</div></code></code></pre>
+<p>將分支指向新的資料夾路徑，這樣就可以同時對2個分支作業</p>
+<ul>
+<li>刪除工作目錄</li>
+</ul>
+<p>確認工作目錄是否存在，在執行刪除工作目錄前，要先刪除資料夾</p>
+<pre><code class="language-git"><code><div>git worktree list
+</div></code></code></pre>
+<p>確認刪除的工作目錄是那一個，實際上並未執行</p>
+<pre><code class="language-git"><code><div>git worktree prune --dry-run
+</div></code></code></pre>
+<p>刪除工作目錄</p>
+<pre><code class="language-git"><code><div>git worktree prune --verbose
+git worktree list
+</div></code></code></pre>
 
     </body>
     </html>
