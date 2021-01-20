@@ -24,29 +24,51 @@
     </head>
     <body class="vscode-body vscode-light">
         <h1 id="git-config">Git Config</h1>
-<p><a href="./g.html">[[g]]</a></p>
+<p><a href="/e:/Git/continuous-accumulations.worktrees/feat/practice_pre-commit/develop/tool/source-control/git/git.html">[[git]]</a></p>
+<h2 id="git-config-setting">git config setting</h2>
 <ul>
-<li>搭配gpg，設定全域環境設定個人簽章</li>
+<li>設定使用者名稱與email，以下為範例，名稱與信箱請自行替換</li>
+</ul>
+<pre><code class="language-bash"><div>git config --global user.name <span class="hljs-string">&quot;jiayang&quot;</span>
+git config --global user.email <span class="hljs-string">&quot;jiayang@yuntech.edu.tw&quot;</span>
+</div></code></pre>
+<ul>
+<li>搭配 gpg，設定全域環境設定個人簽章</li>
 </ul>
 <pre><code class="language-bash"><div>git config --global user.signingkey &lt;your secret short/long key-id&gt;
 </div></code></pre>
 <ul>
-<li>搭配gpg，設定全域環境設定，預設commit使用gpg</li>
+<li>搭配 gpg，設定全域環境設定，預設 commit 使用 gpg</li>
 </ul>
 <pre><code class="language-bash"><div>git config --global commit.gpgsign <span class="hljs-literal">true</span>
 </div></code></pre>
 <ul>
-<li>搭配gpg，設定全域環境詘定，預設push使用gpg</li>
+<li>搭配 gpg，設定全域環境詘定，預設 push 使用 gpg</li>
 </ul>
 <pre><code class="language-bash"><div>git config --global push.gpgsign <span class="hljs-literal">true</span>
 </div></code></pre>
 <ul>
-<li>設定ui status顏色，狀態改變:黃；未加入變更索引:紅；已加入變更索引:綠</li>
+<li>設定 ui status 顏色，狀態改變:黃；未加入變更索引:紅；已加入變更索引:綠</li>
 </ul>
 <pre><code class="language-bash"><div>git config --global color.ui <span class="hljs-literal">true</span>
 git config --global color.status.changed yellow
 git config --global color.status.untracked red
 git config --global color.status.added green
+</div></code></pre>
+<ul>
+<li>設定不要建立 backup 檔案(*.orig)</li>
+</ul>
+<pre><code class="language-bash"><div>git config --global mergetool.keepbackup <span class="hljs-literal">false</span>
+</div></code></pre>
+<ul>
+<li>設定檔案名稱中文</li>
+</ul>
+<pre><code class="language-bash"><div>git config --global core.quotepath <span class="hljs-literal">false</span>
+</div></code></pre>
+<ul>
+<li>設定預設文字編輯器，範例為 vs code</li>
+</ul>
+<pre><code class="language-bash"><div>git config --global core.editor <span class="hljs-string">&quot;code --wait&quot;</span>
 </div></code></pre>
 
     </body>

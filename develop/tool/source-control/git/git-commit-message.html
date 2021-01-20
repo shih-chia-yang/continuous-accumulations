@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Git Commit Message</title>
+        <style>
+</style>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item { list-style-type: none; } .task-list-item-checkbox { margin-left: -20px; vertical-align: middle; }
+</style>
+        
+        <script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
+        
+    </head>
+    <body class="vscode-body vscode-light">
+        <h1 id="git-commit-message">Git Commit Message</h1>
+<h2 id="設定commit-message-format">設定commit message format</h2>
+<ul>
+<li>新增.gitmessage.txt，內容可參考網路資源，或小組討論格式</li>
+<li>以下範例~\在windows 環境中等價$home</li>
+<li>個人實驗路徑為 e:\devops\gitmessage.template.gitmessage.txt</li>
+</ul>
+<pre><code class="language-bash"><div>git config --global commit.template ~\.gitmessage.txt
+</div></code></pre>
+<h2 id="commit-message-line-break">commit message line break</h2>
+<ul>
+<li>於換行內容前輸入<code>-m</code>，即可換行</li>
+</ul>
+<h2 id="依照不同commit-type提供不同template">依照不同commit type提供不同template</h2>
+<ul>
+<li>透過commit 指令提供 -t --template=<code>&lt;file&gt;</code></li>
+<li>使用git config --global alias設定</li>
+<li>不同template參數並綁定alias，達成依提交類型使用不同message.template</li>
+</ul>
+<p>1.產生.template.txt,以下範例為powershell指令建立新檔案</p>
+<pre><code class="language-shell"><div>new-item -path &quot;e:\devops\gitmessage.template\&quot; -name feature.txt -itemtype &quot;file&quot; -value &quot;...&quot;
+</div></code></pre>
+<p>2.填寫內容, 以下內容僅供參考</p>
+<pre><code class="language-text"><div>#&lt;feature&gt;: (請簡述此次變更說明) &lt;/feature&gt;
+#詳細說明
+
+
+#變更原因
+
+
+#提供其他連結、文件或其他參考資源
+
+
+# --- end ---
+# commit log 請按照以下格式，並注意冒號後面有一個空格
+# 
+# &lt;type&gt;: &lt;subject&gt; {必要}
+# 
+# &lt;body&gt; {非必要}
+# 
+# &lt;footer&gt; {非必要}
+# 
+# 範例
+# &lt;feature&gt;: implementation login api function
+#
+# finished login module and integration with server login api
+#
+# Closes OR-xxxx 
+# 
+# &lt;Subject&gt;
+# 用來簡要描述影響本次變動，概述即可
+# 
+# &lt;Body&gt;
+# 具體的修改訊息，越詳細越好
+# 
+# &lt;Footer&gt;
+# 如果是要關閉特定 Issue 或 Bug. 可以使用 Closes PROJECT-1 or Resolves PROJECT-1 or Fixes PROJECT-1 
+# 具體清參考 https://docs.gitlab.com/ee/user/project/integrations/jira.html
+</div></code></pre>
+<p>3.設定git config alias，以下範例為新增feature alias指令</p>
+<pre><code class="language-bash"><div>git config --global alias.addfeat <span class="hljs-string">&quot;commit -t e:\\devops\gitmessage.template\feature.txt&quot;</span>
+</div></code></pre>
+<p>4.當內容變更完成後，加入變更索引，輸入指令，預設編輯器則會出現template內容，提供填寫，圖中為vscode</p>
+<pre><code class="language-bash"><div>git addfeat
+</div></code></pre>
+<p><img src="file:////assets/images/git/gitmessage/gitmessagetemplate.png" alt="commitmessage"></p>
+<p>5.填寫完內容ctrl+f4關閉後，則完成commit動作，可使用git log瀏覽提交內容</p>
+
+    </body>
+    </html>

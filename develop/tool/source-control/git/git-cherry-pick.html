@@ -2,7 +2,7 @@
     <html>
     <head>
         <meta charset="UTF-8">
-        <title>2021-01-10</title>
+        <title>Git Cherry Pick</title>
         <style>
 </style>
         
@@ -23,11 +23,26 @@
         
     </head>
     <body class="vscode-body vscode-light">
-        <h1 id="2021-01-10">2021-01-10</h1>
-<p><a href="/e:/Git/continuous-accumulations/develop/language/Powershell/powershell.html">[[powershell]]</a></p>
+        <h1 id="git-cherry-pick">Git Cherry Pick</h1>
+<h1 id="查詢指定提交訊息sha碼">查詢指定提交訊息sha碼</h1>
+<pre><code class="language-bash"><div>git <span class="hljs-built_in">log</span> --oneline
+</div></code></pre>
+<h1 id="使cherry-pick-指令指定一個commit">使cherry-pick 指令，指定一個commit</h1>
+<ol>
+<li>切換至要取得commit的branch</li>
+</ol>
+<pre><code class="language-bash"><div>git checkout &lt;branchname&gt;
+</div></code></pre>
+<ol start="2">
+<li>使用cherry-pick指定sha1碼
 <ul>
-<li>#tags Powershell Set-Location <a href="/e:/Git/continuous-accumulations/develop/language/Powershell/set-location.html">[[Set Location]]</a></li>
+<li>-e (--edit)編輯訊息</li>
+<li>-n (--no-commit)將cherry-pick執行結果加入工作目錄和索引，但不執行commit</li>
 </ul>
+</li>
+</ol>
+<pre><code class="language-bash"><div>git cherry-pick 6a4df91 -e -n
+</div></code></pre>
 
     </body>
     </html>

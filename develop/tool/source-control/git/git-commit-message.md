@@ -1,0 +1,74 @@
+# Git Commit Message
+
+## 設定commit message format
+
+- 新增.gitmessage.txt，內容可參考網路資源，或小組討論格式
+- 以下範例~\在windows 環境中等價$home
+- 個人實驗路徑為 e:\devops\gitmessage.template\.gitmessage.txt
+````bash
+git config --global commit.template ~\.gitmessage.txt
+````
+
+## commit message line break
+- 於換行內容前輸入`-m`，即可換行
+
+## 依照不同commit type提供不同template 
+- 透過commit 指令提供 -t --template=`<file>`
+- 使用git config --global alias設定
+- 不同template參數並綁定alias，達成依提交類型使用不同message.template
+
+1.產生.template.txt,以下範例為powershell指令建立新檔案
+````shell
+new-item -path "e:\devops\gitmessage.template\" -name feature.txt -itemtype "file" -value "..."
+````
+2.填寫內容, 以下內容僅供參考
+````text
+#<feature>: (請簡述此次變更說明) </feature>
+#詳細說明
+
+
+#變更原因
+
+
+#提供其他連結、文件或其他參考資源
+
+
+# --- end ---
+# commit log 請按照以下格式，並注意冒號後面有一個空格
+# 
+# <type>: <subject> {必要}
+# 
+# <body> {非必要}
+# 
+# <footer> {非必要}
+# 
+# 範例
+# <feature>: implementation login api function
+#
+# finished login module and integration with server login api
+#
+# Closes OR-xxxx 
+# 
+# <Subject>
+# 用來簡要描述影響本次變動，概述即可
+# 
+# <Body>
+# 具體的修改訊息，越詳細越好
+# 
+# <Footer>
+# 如果是要關閉特定 Issue 或 Bug. 可以使用 Closes PROJECT-1 or Resolves PROJECT-1 or Fixes PROJECT-1 
+# 具體清參考 https://docs.gitlab.com/ee/user/project/integrations/jira.html
+````
+
+3.設定git config alias，以下範例為新增feature alias指令
+````bash
+git config --global alias.addfeat "commit -t e:\\devops\gitmessage.template\feature.txt"
+````
+
+4.當內容變更完成後，加入變更索引，輸入指令，預設編輯器則會出現template內容，提供填寫，圖中為vscode
+````bash
+git addfeat
+````
+![commitmessage](/assets/images/git/gitmessage/gitmessagetemplate.png)
+
+5.填寫完內容ctrl+f4關閉後，則完成commit動作，可使用git log瀏覽提交內容
