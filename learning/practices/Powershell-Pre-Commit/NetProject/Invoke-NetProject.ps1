@@ -4,8 +4,10 @@ function Invoke-NetProject ([string]$Path,[string[]]$File) {
     . $PSScriptRoot/Reference/Confirm-ProjectReference.ps1
     . $PSScriptRoot/Test-NetProject.ps1
 
+    Write-Information -MessageData "getting all net project in $Path"
     $projectList=Find-NetProject -path $Path -files $File
-    write-host $projectList
+    write-Verbose $projectList
+    $executeResult=@()
     foreach($project in $projectList)
     {
         $projectName=$project.Name
