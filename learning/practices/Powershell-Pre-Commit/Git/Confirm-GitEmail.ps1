@@ -1,4 +1,4 @@
-function Check-GitEmail ( 
+function Confirm-GitEmail ( 
     [ValidateNotNullOrEmpty()]
     [string]$Email
     )
