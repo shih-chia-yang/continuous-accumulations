@@ -9,7 +9,7 @@ function Test-NetProject {
     #coverlet have installed
     
     $currentDateTime= Get-Date -Format "yyyyMMdd"
-    $result=& dotnet test $Path --logger:"xunit;logfilepath=.\Logs\$($currentDateTime)Test-Result.xml"
+    $result=& dotnet test $Path --no-restore --logger:"xunit;logfilepath=.\Logs\$($currentDateTime)Test-Result.xml"
     #get xml result
     #save log to logs directory
     Write-Verbose -Message "$result" -Verbose
