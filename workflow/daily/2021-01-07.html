@@ -5,12 +5,7 @@
         <title>2021-01-07</title>
         <style>
 </style>
-<<<<<<< HEAD
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous">
-<link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
-=======
         
->>>>>>> master
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
 <style>
@@ -24,39 +19,44 @@
 .task-list-item { list-style-type: none; } .task-list-item-checkbox { margin-left: -20px; vertical-align: middle; }
 </style>
         
-<<<<<<< HEAD
-        <script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
-=======
         
->>>>>>> master
         
     </head>
     <body class="vscode-body vscode-light">
         <h1 id="2021-01-07">2021-01-07</h1>
 <p><a href="/e:/Git/continuous-accumulations/develop/tool/source-control/git/git.html">[[git]]</a></p>
-<<<<<<< HEAD
-<h2 id="git-config-setting">git config setting</h2>
-<ul>
-<li>設定使用者名稱與email，以下為範例，名稱與信箱請自行替換</li>
+<ul class="contains-task-list">
+<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> #tags git 設定使用者名稱與email。<a href="/e:/Git/continuous-accumulations/develop/tool/source-control/git/git-config.html">[[git config]]</a></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> #tags git 設定預設文字編輯器。<a href="/e:/Git/continuous-accumulations/develop/tool/source-control/git/git-config.html">[[git config]]</a></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> #tags git 設定檔案名稱中文。<a href="/e:/Git/continuous-accumulations/develop/tool/source-control/git/git-config.html">[[git config]]</a></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> #tags git 設定commit message format。<a href="/e:/Git/continuous-accumulations/develop/tool/source-control/git/git-commit-message.html">[[git commit message]]</a></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> #tags git <code>git bisect</code> 查詢commit提交出現錯誤。<a href="/e:/Git/continuous-accumulations/workflow/daily/git-bisect.html">[[git bisect]]</a></li>
 </ul>
-<pre><code class="language-bash"><div>git config --global user.name <span class="hljs-string">&quot;jiayang&quot;</span>
-git config --global user.email <span class="hljs-string">&quot;jiayang@yuntech.edu.tw&quot;</span>
+<h2 id="undo-all-uncommitted-or-unsaved-changes">undo all uncommitted or unsaved changes</h2>
+<ul>
+<li>this will unstage all files you might have staged with <code>git add</code></li>
+</ul>
+<pre><code class="language-bash"><div>git reset
 </div></code></pre>
 <ul>
-<li>設定預設文字編輯器，範例為vs code</li>
+<li>this will revert all local uncommitted changes (should be executed in repo root)</li>
 </ul>
-<pre><code class="language-bash"><div>git config --global core.editor <span class="hljs-string">&quot;code --wait&quot;</span>
+<pre><code class="language-bash"><div>git checkout
+</div></code></pre>
+<p>you can also revert uncommitted changes only to particular file or directory</p>
+<pre><code class="language-bash"><div>git checkout [some_dir|file.txt]
+</div></code></pre>
+<p>another way to revert all uncommitted changes</p>
+<pre><code class="language-bash"><div>git reset --hard HEAD
 </div></code></pre>
 <ul>
-<li>設定檔案名稱中文</li>
+<li>this will remove all local untracked files, only git tracked file remain</li>
 </ul>
-<pre><code class="language-bash"><div>git config --global core.quotepath <span class="hljs-literal">false</span>
+<pre><code class="language-bash"><div>git clean -fdx
 </div></code></pre>
-<h2 id="設定commit-message-format">設定commit message format</h2>
-<ul>
-<li>新增.gitmessage.txt，內容可參考網路資源，或小組討論格式</li>
-<li>以下範例~\在windows 環境中等價$home</li>
-<li>個人實驗路徑為 e:\devops\gitmessage.template.gitmessage.txt</li>
+
+    </body>
+    </html>
 </ul>
 <pre><code class="language-bash"><div>git config --global commit.template ~\.gitmessage.txt
 </div></code></pre>
