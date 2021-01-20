@@ -6,7 +6,6 @@ function Invoke-NetProject ([string]$Path,[string[]]$File) {
 
     Write-Information -MessageData "getting all net project in $Path"
     $projectList=Find-NetProject -path $Path -files $File
-    write-Verbose $projectList
     $executeResult=@()
     foreach($project in $projectList)
     {
