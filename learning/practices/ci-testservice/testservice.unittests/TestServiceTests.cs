@@ -16,13 +16,5 @@ namespace TestService.unittests
             int result = service.Add(1);
             Assert.Equal(2, result);
         }
-
-        [Fact]
-        public void IsMinus_InputIs2_ShouldBeReturn1()
-        {
-             var service = new TestService();
-            int result = service.Minus(2);
-            Assert.Equal(1, result);
-        }
     }
 }

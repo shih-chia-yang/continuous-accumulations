@@ -80,3 +80,6 @@ Describe 'Find-CsProject'{
         $allCommittedCsProjects.Count | Should -Be 2 
     }
 }
+
+
+   

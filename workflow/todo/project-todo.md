@@ -11,7 +11,7 @@
 - [ ] #tags Todo 協助行政使用vscode docs，整合word文件至git，並共同使用markdown編輯
 - [ ] #tags Todo powershell自動化流程
 - [ ] #tags Todo serilog使用
-- [ ] sonarQube、codeQl、靜態檢查、格式檢查、安全檢查
-- [ ] docker image build作業
-- [ ] net core IOption專案練習，建置多環境appSetting並按照參數讀取
-- [ ] 書本學習順序與時間分配
+- [ ] #tags Todo sonarQube、codeQl、靜態檢查、格式檢查、安全檢查
+- [ ] #tags Todo docker image build作業
+- [ ] #tags Todo net core IOption專案練習，建置多環境appSetting並按照參數讀取
+- [ ] #tags Todo 書本學習順序與時間分配
