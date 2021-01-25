@@ -1,0 +1,88 @@
+<h1 id="section">2020-12-18</h1>
+<p>[<a href="../SqlServer/sql-server-2019.md" title="Sql Server 2019">SQL Server 2019</a>]</p>
+<h2 id="sql-弱點評定">Sql 弱點評定</h2>
+<ul>
+<li><a href="https://docs.microsoft.com/zh-tw/sql/relational-databases/security/sql-vulnerability-assessment?view=sql-server-ver15">SQL 弱點評量工具</a></li>
+</ul>
+<h2 id="always-encrypted">Always Encrypted</h2>
+<p>[<a href="#always-encrypted">Always Encrypted</a>] &gt; 必要條件 &gt; &gt;&gt; - <code>SQL Server Management Studio 13.0.700.242</code> 版或更新版本。 &gt;&gt; &gt;&gt; - .NET Framework 4.6 或更新版本 (於用戶端電腦上)。 &gt;&gt; &gt;&gt; - Visual Studio。 &gt;&gt; &gt;&gt; - Azure PowerShell 或 Azure CLI &gt;&gt; ### <strong>使用 [新增資料行主要金鑰] 對話方塊佈建資料行主要金鑰</strong></p>
+<ol type="1">
+<li><p>使用物件總管，巡覽至資料庫下的「安全性-&gt;永遠加密金鑰」資料夾。 <img src="/assets/images/AlwaysEncrypted/1.png" alt="AlwaysEncrypted" /></p></li>
+<li><p>以滑鼠右鍵按一下 [資料行主要金鑰] 資料夾，然後選取 [新增資料行主要金鑰]。 <img src="/assets/images/AlwaysEncrypted/2.png" alt="Columns Master Key" /></p></li>
+<li><p>在 [新增資料行主要金鑰] 對話方塊中，輸入資料行主要金鑰中繼資料物件的名稱。</p>
+<ol type="1">
+<li><p>挑選金鑰存放區中的現有金鑰，或按一下 [產生金鑰] 或 [產生憑證] 按鈕，以在金鑰存放區中建立金鑰。</p></li>
+<li><p>按一下 [確定] ，新的金鑰即會顯示在清單中。</p></li>
+<li><p>ps.金鑰存放區相關資訊請自行查閱 <img src="/assets/images/AlwaysEncrypted/3.png" alt="Columns Master Key" /> <img src="/assets/images/AlwaysEncrypted/4.png" alt="Columns Master Key" /></p></li>
+</ol></li>
+</ol>
+<h2 id="使用-新增資料行加密金鑰-對話方塊佈建資料行加密金鑰"><strong>使用 [新增資料行加密金鑰] 對話方塊佈建資料行加密金鑰</strong></h2>
+<ol type="1">
+<li><p>使用物件總管 ，巡覽至資料庫下的 [安全性]/[永遠加密金鑰] 資料夾。 <img src="/assets/images/AlwaysEncrypted/5.png" alt="Columns Master Key" /></p></li>
+<li><p>以滑鼠右鍵按一下 [資料行加密金鑰] 資料夾，然後選取 [新增資料行加密金鑰]。 <img src="/assets/images/AlwaysEncrypted/6.png" alt="Columns Master Key" /></p></li>
+<li><p>在 [新增資料行加密金鑰] 對話方塊中，輸入資料行加密金鑰中繼資料物件的名稱。 <img src="/assets/images/AlwaysEncrypted/7.png" alt="Columns Master Key" /></p></li>
+<li><p>選取代表資料庫中資料行主要金鑰的中繼資料物件。 <img src="/assets/images/AlwaysEncrypted/8.png" alt="Columns Master Key" /></p></li>
+<li><p>[確定]。 <img src="/assets/images/AlwaysEncrypted/9.png" alt="Columns Master Key" /> <img src="/assets/images/AlwaysEncrypted/10.png" alt="Columns Master Key" /></p></li>
+</ol>
+<h2 id="使用-always-encrypted-精靈-設定資料行加密"><strong>使用 [Always Encrypted 精靈] 設定資料行加密</strong></h2>
+<ol type="1">
+<li><p>選擇table,滑鼠點選右鍵選擇<code>Encrypted Columns</code> <img src="/assets/images/AlwaysEncrypted/11.png" alt="Columns Master Key" /></p></li>
+<li><p>資料行選取 <img src="/assets/images/AlwaysEncrypted/12.png" alt="Columns Master Key" /> <img src="/assets/images/AlwaysEncrypted/13.png" alt="Columns Master Key" /></p></li>
+<li><p>確認後，下一步，直至確認完成，等待加密作業完成 <img src="/assets/images/AlwaysEncrypted/14.png" alt="Columns Master Key" /> <img src="/assets/images/AlwaysEncrypted/15.png" alt="Columns Master Key" /></p></li>
+<li><p>查詢資料表，欄位已完成加密 <img src="/assets/images/AlwaysEncrypted/16.png" alt="Columns Master Key" /></p></li>
+</ol>
+<h2 id="匯出憑證"><strong>匯出憑證</strong></h2>
+<ol type="1">
+<li><p>於Control Panel輸入cmd <img src="/assets/images/AlwaysEncrypted/17.png" alt="Columns Master Key" /></p></li>
+<li><p>輸入MMC <img src="/assets/images/AlwaysEncrypted/18.png" alt="Columns Master Key" /></p></li>
+<li><p>點選檔案，選擇新增移除嵌入式管理單元 <img src="/assets/images/AlwaysEncrypted/19.png" alt="Columns Master Key" /></p></li>
+<li><p>選擇憑證，新增 <img src="/assets/images/AlwaysEncrypted/20.png" alt="Columns Master Key" /></p></li>
+<li><p>選擇電腦帳戶，下一步完成後，確認 <img src="/assets/images/AlwaysEncrypted/21.png" alt="Columns Master Key" /> <img src="/assets/images/AlwaysEncrypted/22.png" alt="Columns Master Key" /></p></li>
+<li><p>選擇憑證-&gt;個人-&gt;憑證，即可看到建立的<code>AlwaysEncrypted</code> <img src="/assets/images/AlwaysEncrypted/23.png" alt="Columns Master Key" /></p></li>
+<li><p>滑鼠點選右鍵，選擇所有工作-&gt;匯出 <img src="/assets/images/AlwaysEncrypted/24.png" alt="Columns Master Key" /></p></li>
+<li><p>選擇，匯出私密金鑰(<code>僅使用公鑰部份目前仍未成功</code>) <img src="/assets/images/AlwaysEncrypted/25.png" alt="Columns Master Key" /> <img src="/assets/images/AlwaysEncrypted/26.png" alt="Columns Master Key" /></p></li>
+<li><p>輸入密碼，選擇AES256-SHA256加密方式(<code>Triple DES-SHA1已被證實不安全</code>) <img src="/assets/images/AlwaysEncrypted/27.png" alt="Columns Master Key" /> <img src="/assets/images/AlwaysEncrypted/28.png" alt="Columns Master Key" /> <img src="/assets/images/AlwaysEncrypted/29.png" alt="Columns Master Key" /></p></li>
+<li><p>至目前使用者資料夾，如例C:\-&gt;使用者-&gt;Administrator，將檔案複製至Client端 <img src="/assets/images/AlwaysEncrypted/30.png" alt="Columns Master Key" /></p></li>
+<li><p>(<code>Client端電腦作業系統為原文版</code>)至Client端，點選2下檔案，安裝憑證，選擇Local Machine <img src="/assets/images/AlwaysEncrypted/31.png" alt="Columns Master Key" /> <img src="/assets/images/AlwaysEncrypted/32.png" alt="Columns Master Key" /> <img src="/assets/images/AlwaysEncrypted/33.png" alt="Columns Master Key" /></p></li>
+<li><p>輸入密碼，下一步，選擇自動安裝，確認完成 <img src="/assets/images/AlwaysEncrypted/34.png" alt="Columns Master Key" /> <img src="/assets/images/AlwaysEncrypted/35.png" alt="Columns Master Key" /></p></li>
+<li><p>執行<code>SSMS</code>，連線至資料庫，測試查詢資料表(未使用<code>Column Encryption Setting=enabled</code>) <img src="/assets/images/AlwaysEncrypted/36.png" alt="Columns Master Key" /></p></li>
+<li><p>重新連線，Always Encrypted選項打勾，重新查詢資料表。(若重新連線仍為加密，關閉SSMS, 打開再重新連線，未關閉似乎connection session仍為相同) <img src="/assets/images/AlwaysEncrypted/37.png" alt="Columns Master Key" /> <img src="/assets/images/AlwaysEncrypted/38.png" alt="Columns Master Key" /></p></li>
+</ol>
+<h2 id="msdn-查閱順序">msdn 查閱順序</h2>
+<ol type="1">
+<li><p><a href="https://docs.microsoft.com/zh-tw/sql/relational-databases/security/encryption/configure-always-encrypted-keys-using-ssms?view=sql-server-ver15">使用 SQL Server Management Studio 佈建 Always Encrypted 金鑰</a></p></li>
+<li><p><a href="https://docs.microsoft.com/zh-tw/sql/relational-databases/security/encryption/always-encrypted-wizard?view=sql-server-ver15">使用 [Always Encrypted 精靈] 設定資料行加密</a></p></li>
+<li><p><a href="https://docs.microsoft.com/zh-tw/sql/relational-databases/security/encryption/always-encrypted-query-columns-ssms?view=sql-server-ver15">使用 Always Encrypted 與 SQL Server Management Studio 查詢資料行</a></p></li>
+<li><p><a href="https://docs.microsoft.com/zh-tw/sql/relational-databases/security/encryption/always-encrypted-client-development?view=sql-server-ver15">使用 Always Encrypted 開發應用程式</a></p></li>
+<li><p>Always Encrypted KeyPath <img src="/assets/images/AlwaysEncrypted/39.png" alt="Columns Master Key" /></p></li>
+</ol>
+<h3 id="相關資源連結">相關資源連結</h3>
+<ul>
+<li><p><a href="https://docs.microsoft.com/zh-tw/sql/relational-databases/security/encryption/always-encrypted-database-engine?view=sql-server-ver15">Always Encrypted</a></p></li>
+<li><p><a href="https://docs.microsoft.com/zh-tw/sql/relational-databases/security/encryption/overview-of-key-management-for-always-encrypted?view=sql-server-ver15">Always Encrypted 的金鑰管理概觀</a></p></li>
+<li><p><a href="https://docs.microsoft.com/zh-tw/sql/relational-databases/security/encryption/always-encrypted-cryptography?view=sql-server-ver15">Always Encrypted 密碼編譯</a></p></li>
+</ul>
+<h2 id="佈建-always-encrypted-key">佈建 <code>Always Encrypted key</code></h2>
+<ul>
+<li><p><a href="https://docs.microsoft.com/zh-tw/sql/relational-databases/security/encryption/create-and-store-column-master-keys-always-encrypted?view=sql-server-ver15">建立及儲存 Always Encrypted 的資料行主要金鑰</a></p></li>
+<li><p><a href="https://www.red-gate.com/simple-talk/sql/database-administration/sql-server-encryption-always-encrypted/">SQL Server Encryption: Always Encrypted</a></p></li>
+</ul>
+<h2 id="使用-ssms-佈建alway-encrypted-key">使用 <code>SSMS</code> 佈建<code>Alway Encrypted Key</code></h2>
+<ul>
+<li><a href="https://docs.microsoft.com/zh-tw/sql/relational-databases/security/encryption/configure-always-encrypted-keys-using-ssms?view=sql-server-ver15">使用 SQL Server Management Studio 佈建 Always Encrypted 金鑰</a></li>
+</ul>
+<h2 id="使用-alway-encrypted-key-設定資料行">使用 <code>Alway Encrypted Key</code> 設定資料行</h2>
+<ul>
+<li><a href="https://docs.microsoft.com/zh-tw/sql/relational-databases/security/encryption/always-encrypted-wizard?view=sql-server-ver15">使用 [Always Encrypted 精靈] 設定資料行加密</a></li>
+</ul>
+<h2 id="使用-always-encrypted-與-ssms-查詢資料行">使用 Always Encrypted 與 SSMS 查詢資料行</h2>
+<ul>
+<li><a href="https://docs.microsoft.com/zh-tw/sql/relational-databases/security/encryption/always-encrypted-query-columns-ssms?view=sql-server-ver15">使用 Always Encrypted 與 SQL Server Management Studio 查詢資料行</a></li>
+</ul>
+<p>[<a href="../SqlServer/azure-sql.md" title="Azure Sql">Azure SQL</a>]</p>
+<h2 id="azure-sql">Azure SQL</h2>
+<ul>
+<li><p><a href="https://docs.microsoft.com/zh-tw/azure/azure-sql/database/always-encrypted-azure-key-vault-configure?tabs=azure-powershell">使用 Azure Key Vault 設定 Always Encrypted</a></p></li>
+<li><p><a href="https://docs.microsoft.com/zh-tw/azure/azure-sql/database/always-encrypted-certificate-store-configure">使用 Windows 憑證存放區設定 Always Encrypted</a></p></li>
+<li><p><a href="https://docs.microsoft.com/zh-tw/azure/azure-sql/identify-query-performance-issues">Azure SQL Database 中可偵測的查詢效能瓶頸類型</a></p></li>
+</ul>

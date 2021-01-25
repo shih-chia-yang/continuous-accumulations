@@ -42,7 +42,7 @@ dotnet test /p:CollectCoverage=true
 [詳細說明](https://github.com/coverlet-coverage/coverlet/blob/master/Documentation/MSBuildIntegration.md)
 
 > [!NOTE]
-> 個人初次實驗使用此方式，以下為命令範例
+> 初次實驗使用此方式，以下為命令範例
 - CoverageOutputFormat：輸出格式
     - json(default)
     - lcov
@@ -74,6 +74,7 @@ coverlet /path/to/test-assembly.add --target "dotnet" --targetargs "test /path/t
 ### Before Tests Run
 - Locates the unit test assembly and selects all the referenced assemblies that have PDBs.
 - Instruments the selected assemblies by inserting code to record sequence point hits to a temporary file.
+
 ### After Tests Run
 - Restore the original non-instrumented assembly files.
 - Read the recorded hits information from the temporary file.
