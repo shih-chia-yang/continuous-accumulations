@@ -11,4 +11,7 @@ docker container ls [options]
 |參數|說明|
 |--|--|
 | --all,-a|呈現所有container(預設僅呈現執行中的)|
+| --quiet,-q|只呈現container id|
+| --filter,-f|
+
 
