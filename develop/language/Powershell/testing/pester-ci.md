@@ -20,7 +20,7 @@ invoke-pester -Path .\Test-Port.Tests.ps1 -CodeCoverage .\Test-Port.ps1
 |FullNameFilter |Filter.FullName|
 |Output |Output.Verbosity|
 |CI |CodeCoverage.Enabled, TestResult.Enabled and Run.Exit (all set to $true)|
-PassThru |Run.PassThru|
+|PassThru |Run.PassThru|
 
 - 改使用以下指令，執行路徑下所有Tests.ps1檔案,產生coverage.xml與testResults.xml
 ```powershell
