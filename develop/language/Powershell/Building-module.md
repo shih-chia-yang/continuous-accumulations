@@ -1,11 +1,86 @@
 # Building Module
 [[powershell]]
 
+- 取得目前已安裝已匯入的ps module
 ```powershell
 Get-Module
 ```
 
-取得目前已安裝的ps module
+- get-module預設不會顯示所有module，僅呈現imported module，可使-ListAvailable呈現所有module
+```powershell
+get-module -ListAvailable
+```
+
+- 搜尋module，提供多種方式篩選
+```powershell
+find-module -name vmware.*
+```
+
+- 安裝module，提供MinimumVersion，MaximumVersion，RequireVersion參數，使用限制可設定AllUser，或CurrentUser，可使用Get-InstalledModule顯示已安裝清單。
+```powershell
+Install-Module
+```
+
+- 卸載module
+```powershell
+Uninstall-Module
+```
+
+- 更新module
+```powershell
+update-module
+```
+
+- 利用save-module，可以直接不執行安裝下載module，可以對module原始碼進行檢查是否含有惡意程式，或是從他人發佈的module 結構學習撰寫powershell module。
+```powershell
+Save-Module -name VMware.PowerCLI -path .\Scripts\VMware
+```
+- 顯示ps module path
+```powershell
+$env:PSModulePath -spilt ';'
+```
+
+- PSRepository ，呈現ps model repository清單，提供ps module給使用者存取使用，也是開發者發佈的web server repository，也可自行建置repository server，可使用PSRepository相關命令
+
+```powershell
+Get-PSRepository
+```
+- 匯入模組
+```powershell
+Import-Model
+```
+
+# 撰寫屬於自己的module
+
+1. Create Template Files
+    為module file建立資料夾，module file name必須確認與資料夾同名，否則當發佈module時powershell無法正確執行
+
+```powershell
+New-Item -Path .\Scripts -Name ATARegistry -ItemType Directory
+New-Item -path .\Scripts\ATARegistry -Name ATARegistry.psm1
+```
+
+2. 使用New-ModuleManifest建置module
+```powershell
+New-ModuleManifest -path .\Scripts\ATARegistry\ATARegistry.psd1 -Author '<Author Name>' -CompanyName '<Unit Name>' -RootModule ATARegistry.psm1 -Description 'describe your module use'
+```
+
+3. 註冊PSRepository，在 publish module前，必須新增PSRepository作為測試用，使用本機資料夾易於建置與卸除
+```powershell
+new-item -path c:\ -name '<Name>' -ItemType Directory
+Register-PSRepository -Name '<RepoName>' -SourceLocation 'c:\<name>' -PublishLocation 'c:\<name>' -InstallationPolicy Trusted
+```
+
+4. Exporting Module Function，在psm1檔案中編輯
+```powershell
+ModuleVersion = '1.1'
+FunctionsToExport = 'Get-RegistryKey'
+```
+
+4. 發佈模組
+```powershell
+Publish-Module -Name .\Scripts\ATARegistry -Repository '<RepoName>'
+```
 
 - 資料參考
 [Understanding and building Powershell modules](https://adamtheautomator.com/powershell-modules/)
