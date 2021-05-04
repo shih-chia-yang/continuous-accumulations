@@ -10,7 +10,7 @@
 ```bash
 sudo pacman -Q nfs-utils
 
-sudo pacman -S nfs0utils
+sudo pacman -S nfs-utils
 ```
 
 - mount
