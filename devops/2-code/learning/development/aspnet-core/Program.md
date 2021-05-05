@@ -1,0 +1,101 @@
+# program
+
+Main()主要任務是建立host主機
+```aspx-csharp
+public class Program
+    {
+        public static void Main(string[] args)
+        {
+            CreateHostBuilder(args).Build().Run();
+        }
+        ///建立host主機
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    ///使用startup類別檔
+                    webBuilder.UseStartup<Startup>();
+                });
+    }
+```
+
+1. CreateDefaultBuilder()，遵循Builder pattern建立Generic Host
+    1. GetCurrentDirectory()方法回傳路徑設定為Content Root
+    2. 從DOTNET_開頭的環境變境和command-line參數載入host組態
+    3. 從以下幾種來源載入App組態
+        1. appsettings.json
+        2. appsettings.{Environment}.json
+        3. 應用程式在開發環境執行時的Secret管理員
+        4. 環境變數
+        5. command line 參數
+    4. 載入以下Logging provider
+        1. Console
+        2. Debug
+        3. EventSource
+        4. EventLog(限windows)
+    5. 開發環境時，會啟用範圍驗證和相依性驗證
+2. Builder有Methods定義Web Server，例如UseKestrel()方法，及StartUp方法指定startup類別
+    1. ConfigureWebHostDefaults()
+    2. 初始WebHostBuilder類別，在該類別建構函式中載入ASPNETCORE_開頭的環境變數
+    3. 使用kestrel作為預設Web Server，並使用Host組態提供者設定。
+    4. 加必Host篩選middleware
+    5. 加入Routing
+    6. 啟用IIS整合
+3. 若有IIS，ASP.NET Core Web Host會企圖在IIS上執行
+4. 其他網頁伺服器例如HTTP.sys則可透過叫用適當的擴充方法來使用
+5. build()和run()會建立IWebHost物件，它會裝載應用程式並監聽HTTP Request請求。
+
+
+建立host過程中，也可載入設定Host或App組態
+```aspx-csharp
+        
+        public static void Main(string[] args)
+        {
+            var Configuration = GetConfiguration();
+            var host = CreateHostBuilder(args).Build();
+            host.Run();
+        }
+
+        private static IConfiguration GetConfiguration()
+        {
+            var builder = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json",optional:false,reloadOnChange:true)
+            .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")??"Production"}.json",optional:true)
+            .AddEnvironmentVariables()
+            .Build();
+            return builder;
+        }
+```
+
+```aspx-csharp
+public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                //設定host組態
+                .ConfigureHostConfiguration(configHost=>{
+                
+                //設定基底路徑
+                configHost.SetBasePath(Directory.GetCurrentDirectory())
+
+                //如想看見SetBasePath()設定後路徑
+                string contentRoot=((Microsoft.Extension.FileProviders.PhysicalFileProvider)configHost.Properties.Values.FirstOrDefault()).Root;
+                
+                configHost.AddJsonFile("hostsettings.json",optional:true);
+                configHost.AddEnvironmentVariables(prefix:"PREFIX_");
+                configHost.AddCommandLine(args);
+                })
+                .ConfigureAppConfiguration((hostingContent,configApp)=>{
+                    string path = Path.Combine(Directory.GetCurrentDirectory(),"ConfigFiles");
+                    ///載入自訂json
+                    configApp.AddJsonFile(Path.Combine(path,"FutureCorp.json"));
+                    ///載入自訂INI
+                    //configApp.AddIniFile
+                    //載入xml
+                    //configApp.AddXmlFile
+                    
+                })
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
+```

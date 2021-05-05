@@ -1,8 +1,47 @@
 # aspnet_core
 
-[[index]]
+[intro](#intro)
 
+[ShareFramework](#shareframework)
+
+[Web Root](#web-root)
+
+[Content Root](#content-root)
+
+[Make HTTP Requests](#make-http-requests)
+
+[Error Handling](#error-handling)
+
+[EndPoint Routing](#endpoint-routing)
+
+[Logging](#logging)
+
+[Host](#host)
+
+[Startup Class](#startup-class)
+
+[Configuration](#configuration)
+
+[Options](#options)
+
+[Dependency Injection](#dependency-injection)
+
+[Middleware](#middleware)
+
+[Server](#server)
+
+[Environment](#environment)
+
+[Controller](#controller)
 ## intro
+
+[[system]]
+
+[[mvc-pattern]]
+
+[[project-type]]
+
+[[dotnet]]
 
 the asp.net core mvc framework is a lightweight , open source, highly testable presentation framework optimized for use with ASP.NET Core.
 
@@ -19,35 +58,154 @@ the asp.net core mvc framework is a lightweight , open source, highly testable p
 - View Components
 - Tag Helpers
 
+## 選擇.net core 與 .net framework 的開發需求
 
-### Empty template:
+1. **使用.net core**
+    - 有跨平台需求
+    - 微服務架構
+    - 使用container技術
+    - 需要高效能與易於擴展的服務
+    - 需要不同.net 版本並行
 
-an empty project template for creating ASP.NET Core application. this template does not have any content in it.
+2. **使用.net framework**
+    - 目前系統是.net framework
+    - 第三方組件、nuget package無法相容.net core版本
+    - 系統使用了.net core無法支援的功能
+    - 目前使用的平台無法使用.net core
 
-### API:
 
-a project template for creating ASP.NET Core application with an example controller for a RESTful HTTP service. this template can also be used for ASP.NET Core MVC view and controllers.
+- 掌控ASP.NET Core App系統運作
+- 提供Hosting和Web Server組態設定
+- 提供各種環境變數與組態設定
+- 提供多重環境組態設定：Development、Staging、Production
+- 提供DI及Middle設定
+- 提供效能調校、logging
 
-### Web Application:
+3. **ASP.NET Core載入過程**
 
-a project template for creating ASP.NET Core application with an example ASP.NET Core Razor Pages content
+    1. dotnet run : dotnet command cli tool
+    2. launchSetting.json : 本機環境組態設定
+    3. Programs() : 建立Generic Host
+    4. appsettings.json : 載入logging設定、資料庫設定等其他
+    5. Startup.cs
+        1. ConfigrureServices() : DI Container/Option Pattern註冊的地方
+        2. Configure() : 載入設定的middleware
+    1. Host建立/執行 :建立host主機，kestrel開始監聽http request and send response
 
-### Web Application(Model-View-Controller):
+> launchSettings說明 : [[launchsettings]]
+> configure : [[appsettings]]
+> Program.cs [[Program]]
+> Startup.cs [[startup]]
+## ShareFramework
+共享的框架組件
+- Microsoft.AspNetCore.App
+- Microsoft.NETCore.App
+## Web Root
+web根目錄，專案對外公開靜態資產的目錄，路徑為`{ContentRoot}/wwwroot`
 
-a project template for creating ASP.NET Core application with example ASP.NET Core MVC views and controllers. this template can also be used for RESTful HTTP services.
+包含images、css、js、json和xml等靜態檔
 
-### Angular,React.js and React.js with Redux:
+`GetCurrentDirectory`加上/wwwroot就是web root根目錄路徑
+## Content Root
+內容根目錄，代表專案目前所在的基底路徑
 
-a project template for creating ASP.NET Core application with javascript-framework based ASP.NET Core web applications.
-
-### command line
-
-[[dotnet]]
-
-```dotnetcli
-dotnet new --list or dotnet new -l
+調用`IWebHostEnvironment`取得content root
+```aspx-csharp
+private readonly IWebHostEnvironment _env;
+public TestController(IWebHostEnvironment env)
+{
+    _env=env;
+    string contentRoot=env.ContentRootPath;
+}
 ```
-[相關連結](https://docs.microsoft.com/zh-tw/dotnet/core/tools/dotnet-new)
+- 調整路徑:[[modify_contentroot]]
+
+
+## Make HTTP Requests
+
+是IHttpClientFactory實作，用於建立HttpClient實例
+## Error Handling
+負責錯誤處理的機制
+
+## EndPoint Routing
+自ASP.NET 3.0開始採用Endpoint route，負責匹配與派送HTTP request到應用程式執行端點
+
+- Convention Routing 
+- Attribute  Routing
+
+[[routing]]
+## Logging
+資訊或事件的記錄機制
+
+- Console
+- Debug
+- Event Tracing Windows
+- Windows Event Log
+- TraceSource
+- Azure App Service (需參考Microsoft.Extensions.Logging.AzureAppServices的nuget套件)
+- Azure Application Insights
+## Host
+ 裝載與執行.NET Core 應用程式的主機環境，它封裝了所有App資源，如Server、Middleware、DI和Configuration，並實作IHostedService
+
+- Generic Host
+- Web Host
+
+## Startup Class
+
+- ConfigureServices()
+- Configure()
+
+## Configuration
+ASP.NET Core的組態框架，提供Host和App所需的組態存取系統
+
+- Host Configuration
+- App Configuration
+
+[[appsettings]]
+
+[[Program]]
+
+## Options
+指Option pattern，用類別來表示一組設定，.NET Core中大量使用Option pattern設定config
+
+[[options]]
+## Dependency Injection
+相依性注入，亦稱DI Container
+
+## Middleware
+在處理HTTP Request的pipeline, 包含一系Middleware中介軟體元件
+
+[[middleware]]
+## Server
+指HTTP Server 或 Web Server伺服器、用於監聽HTTP Request與Response的網頁伺服器
+
+- Kestrel
+- IIS Http Server
+    - In Process
+    - Out Process
+- HTTP.sys
+
+## Environment
+
+[[launchsettings]]
+
+環境變數與機制，內建Development、Staging、Production3種環境
+執行時會讀取ASPNETCORE_ENVIRONMENT環境變數
+
+- Development
+- Staging
+- Production
+
+> [!TIP]
+> `IsDevelopment()`、`IsStaging()`或`IsProduction()`提供判斷目前環境，若成立則回傳`true`
+
+可調用`IWebHostEnvironment`取得環境變數，可在`Configure`判斷環境
+
+1. 在Controller建構子宣告
+2. 在view使用`@inject` 與 Environment TagHelper <environment include="Development"></environment>
+## Controller
+
+[[controller]]
 
 ## selecting authentication type
 
@@ -59,57 +217,19 @@ dotnet new --list or dotnet new -l
 
 - windows authentication: windows authentication mostly be used applications within the internet environment
 
-## 選擇.net core 與 .net framework 開發
-1. 使用.net core
-    - 有跨平台需求
-    - 微服務架構
-    - 使用container技術
-    - 需要高效能與易於擴展的服務
-    - 需要不同.net 版本並行
 
-2. 使用.net framework
-    - 目前系統是.net framework
-    - 第三方組件、nuget package無法相容.net core版本
-    - 系統使用了.net core無法支援的功能
-    - 目前使用的平台無法使用.net core
-
-## mvc pattern
-- the model-view-controller architectural pattern separates an application into three main groups of components. these components are : models , views ,and controller
-- the model dose not depend on the view or the controller; both view and the controller depend on the model
-
-- model 
-1. these are the classes that represent the domain model.
-2. strongly-typed views typically use ViewModel types designed to contain the data to display on that view.
-3. the controller creates and populates these ViewModel instance from the model. 
-4. models run on the server site
-
-- controller
-1. controller is a class that manages the interactions and data moves between the views and models
-2. controller is the initial entry point in mvc pattern
-3. controller is responsible for selection which model to work and which view to render
-
-- view
-1. these are dynamically generated HTML pages from templates
-2. there should be minimal logic within views
-3. creating view template run on the server. any javascript code and HTML code will run on the browser
 
 ## crud todo project 
 
 [[crud_todo]]
 
-## middleware 
-
-[[middleware]]
-
 ## web api
 
 [[web_api]]
+
 [[web_api_version]]
+
 [[aspnet_mvc_versioning]]
-
-## routing
-
-[[routing]]
 
 ## swagger
 
@@ -118,8 +238,11 @@ dotnet new --list or dotnet new -l
 ## security
 
 [[security]]
+
 [[Authorization]]
+
 [[jwt]]
+
 [[require_https]]
 
 ## cors
@@ -127,17 +250,27 @@ dotnet new --list or dotnet new -l
 
 ## 綜合
 [[three_tier_project]]
+
 [[webApplication]]
 
 [//begin]: # "Autogenerated link references for markdown compatibility"
-[index]: index.md "index"
+[system]: system.md "system"
+[mvc-pattern]: mvc-pattern.md "mvc-pattern"
+[project-type]: project-type.md "project-type"
 [dotnet]: ../../Tool/dotnet/dotnet.md "dotnet"
-[crud_todo]: project/todo/crud_todo.md "todo"
+[launchsettings]: launchsettings.md "launchsettings"
+[appsettings]: appsettings.md "appsettings"
+[Program]: Program.md "program"
+[startup]: startup.md "startup"
+[modify_contentroot]: modify_contentroot.md "modify_contentroot"
+[routing]: project/routing/routing.md "routing"
+[options]: options.md "options"
 [middleware]: project/middleware/middleware.md "middleware"
+[controller]: controller.md "controller"
+[crud_todo]: project/todo/crud_todo.md "todo"
 [web_api]: project/webapi/web_api.md "web_api"
 [web_api_version]: project/webapi/web_api_version.md "web_api_version"
 [aspnet_mvc_versioning]: project/webapi/aspnet_mvc_versioning.md "aspnet_mvc_versioning"
-[routing]: project/routing/routing.md "routing"
 [swagger]: project/swagger/swagger.md "swagger"
 [security]: project/seciurty/security.md "security"
 [Authorization]: project/seciurty/Authorization.md "Authentication"

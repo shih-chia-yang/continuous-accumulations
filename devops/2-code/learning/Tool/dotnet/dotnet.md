@@ -73,6 +73,17 @@ dotnet add package Microsoft.EntityFrameworkCore.Design
 
 ```
 
+## 其他命令
+
+|command|說明|
+|--|--|
+|dev-certs| 建立及管理開發憑證|
+|ef | Entity Framework Core命令工具|
+|sql-cache|sql server快取命令工具|
+|user-secrets|管理開發使用者秘密|
+|watch|啟動會在檔案變更時執行命令的檔案監看員|
+|dotnet-install scripts | 執行script進行非管理.NET Core SDK和Shared runtime安裝|
+
 ## 專案常用命令
 [[dotnet-project]]
 

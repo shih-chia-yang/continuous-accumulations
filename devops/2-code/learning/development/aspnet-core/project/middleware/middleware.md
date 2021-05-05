@@ -1,5 +1,7 @@
 # middleware
 
+http pipeline是由一系列的middleware組成，每個元件皆有不同功用，並以非同步方法在HttpContext上作業，前一個元件會叫用下一個元件，或是終止請求的執行
+
 - chooses whether to pass the request to the next component in the pipeline.
 - can perform work before and after the next component in the pipeline is invoked.
 
@@ -47,7 +49,9 @@ Startup.Configure可定義在要求時叫用middleware的順便及回應的反�
 ## UseMiddleware()
 
 when setting up middleware as a class, UseMiddleware can be used to wire it up,providing custom middleware class as generic parameter.
+
 - it is constructor accepts `RequestDelegate`. this will be called to forward the request to next middleware.
+
 - it has a method `Invoke` accepting `HttpContext` and returning a `Task`. this is called by the framework when calling the middleware
 
 
@@ -55,15 +59,15 @@ when setting up middleware as a class, UseMiddleware can be used to wire it up,p
 
 |middleware|description|order|
 |--|--|--|
-|Authentication|providing authentication support|Before HttpContext.UYser is needed. Terminal for OAuth callbacks.|
+|Authentication |提供驗證支援|需要在HttpContext.User之前。 Terminal for OAuth callbacks.|
 |Authorization|provides authentication support|immediately after the authentication middleware|
-|Cookie Policy| Tracks consent from users for storing personal information and enforces minimum standards for cookie field,such as secure and SameSite| Before middleware that issues cookies .example:Authentication,session,Mvc(TempData)|
-|CORS|Configure Cross-Origen Resource Sharing|Before components that use CORS|
-|Diagnostics|configures Diagnostics|Before components that generate errors|
-|ForwardedHeaders|forwards proxied headers onto the current request|Before components that consume the updated fields(example: schema,Host,Client IP,method)|
-|Health Check|checks the health of an ASP.NET Core app and its dependencies, such as checking database availability|terminal if a request matches a health check endpoints|
+|Cookie Policy | 追踨使用使對用於儲存個人資訊的同意，並強制執行Cookie欄位的最低標準，例如secure和SameSite| 在發出Cookie的middleware之前。如驗證、session、Mvc(TempData)|
+|CORS|設定跨原始來源資源共享|在使用CORS元件之前|
+|Diagnostics|提供開發人員例外狀況頁面、例外處理、狀態字碼頁。以及新應用程式的預設網頁的middleware|在產生錯誤的元件之前。terminal的例外狀況，或為新的應用程式提供預設的網頁|
+|ForwardedHeaders|將設為Proxy的標頭轉送到目前請求|在使用更新欄位元件前。(example: schema,Host,Client IP,method)|
+|Health Check|檢查ASP.NET Core應用程式及其相依性的健康狀態，例如檢查資料庫可用性|在某項要求與健康狀態檢查端點相符則中止|
 |Header Propagation| Propagation HTTP headers from the incoming request to the outgoing HTTP client request|
-|HTTP method override|Allows an incoming POst request to override the method| Before component that consume the updated methods.|
+|HTTP method override|允許傳入的post request override| Before component that consume the updated methods.|
 |HTTPS redirection|Redirect all HTTP request to HTTPS| before components that consume URL|
 |HTTP Strict Transport Security(HSTS)| Security enhancement middleware that adds a special responses header| Before responses are sent and after components that modify requests. example: Forwarded Headers ,URL Rewrite|
 |MVC|Processes request with MVC/Razor Pages|terminal if a request matches a route|
