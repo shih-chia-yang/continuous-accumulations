@@ -1,5 +1,7 @@
 # startup
 
+[[middleware]]
+
 主要負責
 
 1. Service相依性註冊 =>ConfigurationServices()

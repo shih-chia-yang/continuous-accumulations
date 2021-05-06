@@ -32,7 +32,6 @@
 
 [Environment](#environment)
 
-[Controller](#controller)
 ## intro
 
 [[system]]
@@ -61,55 +60,66 @@ the asp.net core mvc framework is a lightweight , open source, highly testable p
 ## 選擇.net core 與 .net framework 的開發需求
 
 1. **使用.net core**
-    - 有跨平台需求
-    - 微服務架構
-    - 使用container技術
-    - 需要高效能與易於擴展的服務
-    - 需要不同.net 版本並行
+
+   - 有跨平台需求
+   - 微服務架構
+   - 使用 container 技術
+   - 需要高效能與易於擴展的服務
+   - 需要不同.net 版本並行
 
 2. **使用.net framework**
-    - 目前系統是.net framework
-    - 第三方組件、nuget package無法相容.net core版本
-    - 系統使用了.net core無法支援的功能
-    - 目前使用的平台無法使用.net core
+   - 目前系統是.net framework
+   - 第三方組件、nuget package 無法相容.net core 版本
+   - 系統使用了.net core 無法支援的功能
+   - 目前使用的平台無法使用.net core
 
-
-- 掌控ASP.NET Core App系統運作
-- 提供Hosting和Web Server組態設定
+- 掌控 ASP.NET Core App 系統運作
+- 提供 Hosting 和 Web Server 組態設定
 - 提供各種環境變數與組態設定
 - 提供多重環境組態設定：Development、Staging、Production
-- 提供DI及Middle設定
+- 提供 DI 及 Middle 設定
 - 提供效能調校、logging
 
-3. **ASP.NET Core載入過程**
+3. **ASP.NET Core 載入過程**
 
-    1. dotnet run : dotnet command cli tool
-    2. launchSetting.json : 本機環境組態設定
-    3. Programs() : 建立Generic Host
-    4. appsettings.json : 載入logging設定、資料庫設定等其他
-    5. Startup.cs
-        1. ConfigrureServices() : DI Container/Option Pattern註冊的地方
-        2. Configure() : 載入設定的middleware
-    1. Host建立/執行 :建立host主機，kestrel開始監聽http request and send response
+   1. dotnet run : dotnet command cli tool
+   2. launchSetting.json : 本機環境組態設定
+   3. Programs() : 建立 Generic Host
+   4. appsettings.json : 載入 logging 設定、資料庫設定等其他
+   5. Startup.cs
+      1. ConfigrureServices() : DI Container/Option Pattern 註冊的地方
+      2. Configure() : 載入設定的 middleware
+   6. Host 建立/執行 :建立 host 主機，kestrel 開始監聽 http request and send response
 
-> launchSettings說明 : [[launchsettings]]
+> launchSettings 說明 : [[launchsettings]]
+
 > configure : [[appsettings]]
+
 > Program.cs [[Program]]
+
 > Startup.cs [[startup]]
+
 ## ShareFramework
+
 共享的框架組件
+
 - Microsoft.AspNetCore.App
 - Microsoft.NETCore.App
+
 ## Web Root
-web根目錄，專案對外公開靜態資產的目錄，路徑為`{ContentRoot}/wwwroot`
 
-包含images、css、js、json和xml等靜態檔
+web 根目錄，專案對外公開靜態資產的目錄，路徑為`{ContentRoot}/wwwroot`
 
-`GetCurrentDirectory`加上/wwwroot就是web root根目錄路徑
+包含 images、css、js、json 和 xml 等靜態檔
+
+`GetCurrentDirectory`加上/wwwroot 就是 web root 根目錄路徑
+
 ## Content Root
+
 內容根目錄，代表專案目前所在的基底路徑
 
-調用`IWebHostEnvironment`取得content root
+調用`IWebHostEnvironment`取得 content root
+
 ```aspx-csharp
 private readonly IWebHostEnvironment _env;
 public TestController(IWebHostEnvironment env)
@@ -118,23 +128,32 @@ public TestController(IWebHostEnvironment env)
     string contentRoot=env.ContentRootPath;
 }
 ```
-- 調整路徑:[[modify_contentroot]]
 
+- 調整路徑:[[modify_contentroot]]
 
 ## Make HTTP Requests
 
-是IHttpClientFactory實作，用於建立HttpClient實例
+是 IHttpClientFactory 實作，用於建立 HttpClient 實例
+
 ## Error Handling
+
 負責錯誤處理的機制
 
 ## EndPoint Routing
-自ASP.NET 3.0開始採用Endpoint route，負責匹配與派送HTTP request到應用程式執行端點
 
-- Convention Routing 
-- Attribute  Routing
+自 ASP.NET 3.0 開始採用 Endpoint route，負責匹配與派送 HTTP request 到應用程式執行端點
+
+- Convention Routing
+- Attribute Routing
 
 [[routing]]
+
+[[controller]]
+
+[[view]]
+
 ## Logging
+
 資訊或事件的記錄機制
 
 - Console
@@ -142,10 +161,14 @@ public TestController(IWebHostEnvironment env)
 - Event Tracing Windows
 - Windows Event Log
 - TraceSource
-- Azure App Service (需參考Microsoft.Extensions.Logging.AzureAppServices的nuget套件)
-- Azure Application Insights
+- Azure App Service (需參考 Microsoft.Extensions.Logging.AzureAppServices 的 nuget 套件)
+- Azure Application Insights (需參考 Microsoft.Extensions.Logging.ApplicationInsights 的 nuget 套件)
+
+[[logging]]
+
 ## Host
- 裝載與執行.NET Core 應用程式的主機環境，它封裝了所有App資源，如Server、Middleware、DI和Configuration，並實作IHostedService
+
+裝載與執行.NET Core 應用程式的主機環境，它封裝了所有 App 資源，如 Server、Middleware、DI 和 Configuration，並實作 IHostedService
 
 - Generic Host
 - Web Host
@@ -156,7 +179,8 @@ public TestController(IWebHostEnvironment env)
 - Configure()
 
 ## Configuration
-ASP.NET Core的組態框架，提供Host和App所需的組態存取系統
+
+ASP.NET Core 的組態框架，提供 Host 和 App 所需的組態存取系統
 
 - Host Configuration
 - App Configuration
@@ -166,46 +190,48 @@ ASP.NET Core的組態框架，提供Host和App所需的組態存取系統
 [[Program]]
 
 ## Options
-指Option pattern，用類別來表示一組設定，.NET Core中大量使用Option pattern設定config
+
+指 Option pattern，用類別來表示一組設定，.NET Core 中大量使用 Option pattern 設定 config
 
 [[options]]
+
 ## Dependency Injection
-相依性注入，亦稱DI Container
+
+相依性注入，亦稱 DI Container
 
 ## Middleware
-在處理HTTP Request的pipeline, 包含一系Middleware中介軟體元件
+
+在處理 HTTP Request 的 pipeline, 包含一系 Middleware 中介軟體元件
 
 [[middleware]]
+
 ## Server
-指HTTP Server 或 Web Server伺服器、用於監聽HTTP Request與Response的網頁伺服器
+
+指 HTTP Server 或 Web Server 伺服器、用於監聽 HTTP Request 與 Response 的網頁伺服器
 
 - Kestrel
 - IIS Http Server
-    - In Process
-    - Out Process
+  - In Process
+  - Out Process
 - HTTP.sys
 
 ## Environment
 
 [[launchsettings]]
 
-環境變數與機制，內建Development、Staging、Production3種環境
-執行時會讀取ASPNETCORE_ENVIRONMENT環境變數
+環境變數與機制，內建 Development、Staging、Production3 種環境
+執行時會讀取 ASPNETCORE_ENVIRONMENT 環境變數
 
 - Development
 - Staging
 - Production
 
-> [!TIP]
-> `IsDevelopment()`、`IsStaging()`或`IsProduction()`提供判斷目前環境，若成立則回傳`true`
+> [!TIP] > `IsDevelopment()`、`IsStaging()`或`IsProduction()`提供判斷目前環境，若成立則回傳`true`
 
 可調用`IWebHostEnvironment`取得環境變數，可在`Configure`判斷環境
 
-1. 在Controller建構子宣告
-2. 在view使用`@inject` 與 Environment TagHelper <environment include="Development"></environment>
-## Controller
-
-[[controller]]
+1. 在 Controller 建構子宣告
+2. 在 view 使用`@inject` 與 Environment TagHelper <environment include="Development"></environment>
 
 ## selecting authentication type
 
@@ -217,9 +243,7 @@ ASP.NET Core的組態框架，提供Host和App所需的組態存取系統
 
 - windows authentication: windows authentication mostly be used applications within the internet environment
 
-
-
-## crud todo project 
+## crud todo project
 
 [[crud_todo]]
 
@@ -246,9 +270,11 @@ ASP.NET Core的組態框架，提供Host和App所需的組態存取系統
 [[require_https]]
 
 ## cors
+
 [[cors]]
 
 ## 綜合
+
 [[three_tier_project]]
 
 [[webApplication]]
@@ -264,9 +290,11 @@ ASP.NET Core的組態框架，提供Host和App所需的組態存取系統
 [startup]: startup.md "startup"
 [modify_contentroot]: modify_contentroot.md "modify_contentroot"
 [routing]: project/routing/routing.md "routing"
+[controller]: controller.md "controller"
+[view]: view.md "view"
+[logging]: logging.md "logging"
 [options]: options.md "options"
 [middleware]: project/middleware/middleware.md "middleware"
-[controller]: controller.md "controller"
 [crud_todo]: project/todo/crud_todo.md "todo"
 [web_api]: project/webapi/web_api.md "web_api"
 [web_api_version]: project/webapi/web_api_version.md "web_api_version"
