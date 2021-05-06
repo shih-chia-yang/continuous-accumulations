@@ -32,6 +32,8 @@
 
 [Environment](#environment)
 
+[web api](#web-api)
+
 ## intro
 
 [[system]]
@@ -198,6 +200,8 @@ ASP.NET Core 的組態框架，提供 Host 和 App 所需的組態存取系統
 ## Dependency Injection
 
 相依性注入，亦稱 DI Container
+
+[read more](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/denpendency-injection)
 
 ## Middleware
 
