@@ -106,7 +106,7 @@ public class Heros:ViewComponents
 
 在`_ViewImports.cshtml`中新增一行`@addTagHelper *, <專案組件名稱>`
 
-名稱必頁全部改為小寫，且中間須用dash隔開(kebab case命名原則)
+名稱必須全部改為小寫，且中間須用dash隔開(kebab case命名原則)
 ```razor
 <vc:isced-list ised-id="5"></vc:isced-list>
 ```

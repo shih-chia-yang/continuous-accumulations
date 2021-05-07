@@ -1,0 +1,29 @@
+# how-to-write-git-message
+
+團隊的git commit message應該要有統一的風格，使開發者容易閱讀辨別重要的訊息，成員需對以下3件事有共識並實作，可以減少提交訊息的混亂不一致，提升效率。
+
+1. **Style** : markup syntax , warp margins,grammar,capitalization , punctuation.spell these things out,remove the guesswork, and make it all as simple as possible. the end result will be a remarkably consistent log that's not only a pleasure to read but the actually does get read on a regular basis.
+
+2. **Content** : what kind of information should the body of the commit message (if any ) contain ? what should it not contain ?
+
+3. **Metadata** : how should issue tracking IDs , pull request numbers, etc. be referenced ? 
+
+## 7 rules of great git commit message
+
+- Separate subject from body with a blank line
+- limit the subject line to 50 characters
+- capitalize the subject line
+- do not end the subject line with a period
+- use the imperative mood in the subject line
+- wrap the body at 72 characters
+- use the body to explain what and why vs. how
+
+## 相關資源
+
+[how to make your code reviewer fall in love with you](https://mtlynch.io/code-review-love/)
+
+[how to write a git commit message](https://chris.beams.io/posts/git-commit/)
+
+[my favorite git commit](https://dhwthompson.com/2019/my-favourite-git-commit)
+
+[the seven habits of highly effective people by stephen R.Covey](https://mtlynch.io/book-reports/7-habits-of-highly-effective-people/)
