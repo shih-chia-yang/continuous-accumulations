@@ -61,3 +61,77 @@ payment order created => payment order signed => payment order approved =>  paym
     1. 面向使用者的的系統，crates and signs payment orders
     2. 完成這個交易的銀行後台系統
     3. 付款者帳戶配對帳單的系統
+
+
+## Visualization
+
+如上述我們可發現一個簡單的業務模型已經可以提供參與者很多有用的資訊。不只是識別出在付款過程中所發生的事件，也同樣的展現了一個由左至右的執行過程且可以將執行部份簡化為3個不同的系統。
+event storming在視覺化建模技術上也能達到。當人們得到一個big picture時，會開始按照職能、個人特質等，開始有不同的 what if，此時這個簡單的流程就會逐漸被補充完成，且可能沒有結束的那一天。
+藉由啟發性思考，(what you see is all there is?)，我們將事物的簡單理解為 everything works as it should.there are no exceptions and edge cases, 人們不會無意或故意犯錯，但在實際環境是複雜且多變的，大部份的時間都在處理例外情形與edge case,並且視為正常流程或事件。
+當例外情形與edge cases可以視覺化時，可以使人們更易觀察、去思考。
+
+- what if : 如果帳戶餘額不足時會怎麼樣?
+- what if : 如果帳號上的金額是錯誤的？
+- what if : 如果收款人的帳號是錯誤的？
+
+有限的空間會對於想要盡最大努力去建模的人們造成損害，想像大家圍著一張桌子溝通，如同我們說過的，這並不是event storming，我們期望人們在房間內四處移動針對有興趣的議題溝通，且這個情況可能同時發生在好幾處，所以我們需要空間，
+我們並不是一個happy path且沒有任何例外與edge case，我們身處在複雜多變的真實世界中，傳統的2-3公尺白板的空間有限無法盡可能的展現出所有的問題。
+
+如果白板的空間不足會發生什麼事，人們會開始將剩下的空間視為珍貴的，將會開始節省空間，有一些事件、想法開始變得不重要或是順位往後移動，這是很正常的,人們會根據當下的情況來做出去符合情況的決策，在有一個有限空間的限制下，我們將會得到一個有限的業務模型，請注意為你的議題提供與會者足夠的空間來進行 event storming
+there is one issue here , which can do a disservice to those who are trying their best to create a proper events model. you could imagine that such a workshop happens in a meeting room. 
+usually, people set around a table and talk.as we have already suggested, this is not how eventstorming works. we expect people to move around the room and be actively engaged in conversations,which might happen simultaneously at different sides of the room. so , we need some space. but this is not all the space we need. have a good look the happy path and no edge cases and exceptions are covered,the real-life process is way more complicated; this diagram already takes some horizontal space. now ,imagine real-world scenarios being modeled like this. indeed , a traditional two-three meter whiteboard would do a disservice for you
+
+## facilitating an eventstorming workshop
+- 不需要在event storming會前，在組織倡論有關DDD的概念。
+- 這個簡單有效的方法可以幫助你在進行ddd，或即使你並沒有打算為專案進行ddd，也將會幫助你可以在更了解domain(業務邏輯)的情況下建造系統。
+- 在雙方公開討論問題時將會共同尋找解決方法，能增加開發者與潛在使用者之間的聯繫。
+
+## who to invite
+
+people with questions and people with answer
+
+- people with questions
+    - developers
+    - architects
+    - business analysts
+    - requirements analysts
+
+this group needs to study the information about the domain that is already available(general understanding,perhaps requirements of specifications if they have already been made) and prepare questions.
+
+- people with answer
+    - domain experts
+
+他們不是清楚所有細節，也會有對業務知識有錯覺。
+需要來自各部門代表來參與會議
+domain experts的會議時間非常少，應找出know how things are done, not know how things should be done.
+
+會議中雙方都必須在會前準備好可以明確途述的問題
+那些issue需要被解決，或issue需要更具體的描述
+了解自己的需求並擁有足夠的訊息以將這些需求傳達給開發者，使他們能夠根據這些資訊撰寫程式碼
+
+## preparing the space
+
+- 前置準備
+    1. sticky note (大量不同顏色不同尺寸便利貼) : 可以貼在任意表面，且容易撕下，不會對後來者使用會議室時造成困擾
+    2. paper roll (繪圖用紙捲): 寬且長、高品質的記錄白紙
+    3. 固定架 : 可將白紙固定在牆壁上的工具，牆壁最好不要有任何東西，窗戶，門等他他障礙物
+    4. marker pen (馬克筆) : 粗細適中，且足夠多，每個人都能夠分到一枝筆，且仍有空餘
+    5. 會議室 : 不同於傳統會議室，有一張大桌子很多椅子，大家坐在一起討論，event storming需要足夠的空間提供張貼紙捲，人們自由走動討論，請把所有桌椅移置他處或是統一放置於角落，且在角落提供一張桌子擺放紙筆等必要物品
+    6. 足夠的點心、飲料 : 不同於其他會議方式，大家可能會激烈的討論或四處移動，很有趣但也很累，提供足夠的食物補充能量，且也能讓與會者的在這場特殊會議的體驗更好。
+
+## the workshop
+
+- 時間與議程
+    1. timing and scheduling : 約2小時的會議時間，中間提供10分鐘休息時間
+    2. 會前說明 : 解釋規則，並將紙筆分配給每個人，在白板寫下domain event  something happened
+    3. 提供1-2個範例，向參與者說明如何進行，甚至可以寫下錯誤的event，提供參與者去糾正，讓大家寫下自己的意見並貼在想貼的地方，第一張便利貼可以是流程中的某一步，而不是起點或終點，參與者會開始將剩餘的事件一邊討論一邊補完
+    4. 做為主持人的角色不是管理，而是觀察與引導，但有幾項事情需注意
+        1. 人們會傾向問主持人問題，他們會將會議主持者視為擁有更多資訊與權限的人，你的職責是將他們引導至也能回答此問題的受邀者面前
+        2. 參與者可能對於domain event不熟悉，會將需求(payment processing or shopping cart)、動作(process payment or register customer)寫在便利貼上並且貼上，主持人需避免這種情況並對他們解釋目標是描述一個流程中的domain event，它是必然發生且勢必完成，不可移除或改變的
+        3. 當人們進入狀況開始進行討論與張貼便利貼時，不要去移除重覆的便利貼或是去統整它，也不要說參與者張貼的部份是錯誤的，此時是大家溝通消除誤解的時機
+    5. 為複雜的討論做好準備
+    6. 試著聚焦在edge cases : 對於開發者而言，他們不清楚針對這些情境應該如何處置，但業務邏輯通常有固定的標準作業程序來應對這些情境，它們應該要被建置在系統中。 ex: what if payment has failed? what if the payment amount does not cover the full order total ...etc
+    7. 討論edge cases常會產生模糊地帶，不是所有的例外情況都能完全覆蓋業務流程，當人們對於某些domain event持有不同意見時，將該便利貼重新寫下並使用顯眼的顏色(原創者使用粉紅色)，提供人們可以注意到有模糊不清的議題需要定義清楚。
+## 相關連結
+[event-storming](EventStorming.com)
+[Introducing-EventStorming](https://leanpub.com/introducing_eventstorming)
