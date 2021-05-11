@@ -125,13 +125,34 @@ domain experts的會議時間非常少，應找出know how things are done, not 
     1. timing and scheduling : 約2小時的會議時間，中間提供10分鐘休息時間
     2. 會前說明 : 解釋規則，並將紙筆分配給每個人，在白板寫下domain event  something happened
     3. 提供1-2個範例，向參與者說明如何進行，甚至可以寫下錯誤的event，提供參與者去糾正，讓大家寫下自己的意見並貼在想貼的地方，第一張便利貼可以是流程中的某一步，而不是起點或終點，參與者會開始將剩餘的事件一邊討論一邊補完
-    4. 做為主持人的角色不是管理，而是觀察與引導，但有幾項事情需注意
+    4. 由於參與者可能未參與過event storming的體驗，主持人需要打破僵硬的氣氛，做為第一個寫下sticky note，並且貼上，引導人們開始討論
+    5. alberto brandolini : you can put anything you want anywhere you want,but not at the start. 
+        1. 我們總是花太多時間討論從那裡開始，這對event storming 毫無產出。 
+        2. 在沒有任何確定的起點之前，直接將第一個sticky note放在中間某地方，然後從這裡開始工作進行延伸思考。
+
+## during the workshop
+
+- 會議中注意事項
+    1. 做為主持人的角色不是管理，而是觀察與引導，但有幾項事情需注意
         1. 人們會傾向問主持人問題，他們會將會議主持者視為擁有更多資訊與權限的人，你的職責是將他們引導至也能回答此問題的受邀者面前
         2. 參與者可能對於domain event不熟悉，會將需求(payment processing or shopping cart)、動作(process payment or register customer)寫在便利貼上並且貼上，主持人需避免這種情況並對他們解釋目標是描述一個流程中的domain event，它是必然發生且勢必完成，不可移除或改變的
         3. 當人們進入狀況開始進行討論與張貼便利貼時，不要去移除重覆的便利貼或是去統整它，也不要說參與者張貼的部份是錯誤的，此時是大家溝通消除誤解的時機
-    5. 為複雜的討論做好準備
-    6. 試著聚焦在edge cases : 對於開發者而言，他們不清楚針對這些情境應該如何處置，但業務邏輯通常有固定的標準作業程序來應對這些情境，它們應該要被建置在系統中。 ex: what if payment has failed? what if the payment amount does not cover the full order total ...etc
-    7. 討論edge cases常會產生模糊地帶，不是所有的例外情況都能完全覆蓋業務流程，當人們對於某些domain event持有不同意見時，將該便利貼重新寫下並使用顯眼的顏色(原創者使用粉紅色)，提供人們可以注意到有模糊不清的議題需要定義清楚。
+    2. 為複雜的討論做好準備
+    3. 試著聚焦在edge cases : 對於開發者而言，他們不清楚針對這些情境應該如何處置，但業務邏輯通常有固定的標準作業程序來應對這些情境，它們應該要被建置在系統中。 ex: what if payment has failed? what if the payment amount does not cover the full order total ...etc
+    4. 識別與歸納 hotspots可以讓你推遲決策，中斷爭執，讓小組討論繼續前進，而不會卡住。hotspots需要被密切關注，但應在會議完成，打斷無用的爭論迴圈，貼上粉紅色便利貼，要求人們繼續。
+        1. 討論edge cases常會產生模糊地帶，不是所有的例外情況都能完全覆蓋業務流程，當人們對於某些domain event持有不同意見時，將該便利貼重新寫下並使用顯眼的顏色(原創者使用粉紅色)，提供人們可以注意到有模糊不清的議題需要定義清楚(hot spots)。
+    5. 會議中可能發現有幾乎不與其他群體產生聯繫的 event island or clouds of events =>context map ，順其自然請勿打斷他們。 特徵:在裡面的內部聯結中，通常會有部份事件屬於一個或以上的domain event。
+    6. external systems :可能會發現部份domain event與外來系統有關，(作者使用大張柔和的粉紅色歸類並視覺化)
+    7. 為了能獲取最大的modeling space，請人們盡量不要留白
+    8. 當參與者沒有想法，陷入安靜時，你可以站在不同的觀點引起他們的討論
+        1. 要求人們將時間線向後移動，可能有部份被遺漏，被人們認為不重要的東西不會被貼上去。
+        2. 識別創造價值的地方，(ex:關注金錢的流向)
+    9. 每小時提供休息時間，請勿超過計畫的會議時間。
+## after the workshop
+
+收集所有紙卷，使用全景攝影，將圖片寄給所有人。
+
+
 ## 相關連結
 [event-storming](EventStorming.com)
 [Introducing-EventStorming](https://leanpub.com/introducing_eventstorming)
