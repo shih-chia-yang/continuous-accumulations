@@ -18,7 +18,7 @@ sudo pacman -S nfs-utils
 - mount
 
 ```bash
-sudo mount -t nfs servername:/<mount_point> <client_mount_point>
+* [ ] sudo mount -t nfs servername:/<mount_point> <client_mount_point>
 ```
 
 ## 相關連結
