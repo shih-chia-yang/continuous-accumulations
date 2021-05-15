@@ -39,7 +39,7 @@ RemoteSigned
 ```
 
 2. Installing the Package Manager Chocolatey
-```powerappsfl
+```powershell
 $script = New-Object Net.WebClient
 $script | Get-Member
 $script.DownloadString("https://chocolatey.org/install.ps1")

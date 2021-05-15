@@ -4,8 +4,9 @@
 
 [[python]]
 
-## installation =>linux
+## installation 
 
+參照github
 # 相關連結
 
 [github](https://github.com/dbcli/mssql-cli)
