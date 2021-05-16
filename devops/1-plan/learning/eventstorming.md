@@ -156,3 +156,5 @@ domain experts的會議時間非常少，應找出know how things are done, not 
 ## 相關連結
 [event-storming](EventStorming.com)
 [Introducing-EventStorming](https://leanpub.com/introducing_eventstorming)
+
+[event-storming-session](https://selleo.com/blog/how-to-run-your-first-event-storming-session)
