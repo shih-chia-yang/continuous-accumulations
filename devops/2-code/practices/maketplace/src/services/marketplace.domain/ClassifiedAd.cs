@@ -5,11 +5,10 @@ namespace marketplace.domain
     public class ClassifiedAd
     {
         public Guid Id { get; private set; }
-        public Guid _ownerId;
-        public string _title;
-        public string _text;
-        public string _price;
-
+        private Guid _ownerId;
+        private string _title;
+        private string _text;
+        private decimal _price;
         public ClassifiedAd(Guid id)
         {
             if(id==default)
@@ -18,5 +17,11 @@ namespace marketplace.domain
             }
             Id = id;
         }
+
+        public void SetTitle(string title) => _title = title;
+
+        public void UpdateText(string text) => _text = text;
+
+        public void UpdatePrice(decimal price) => _price = price;
     }
 }
