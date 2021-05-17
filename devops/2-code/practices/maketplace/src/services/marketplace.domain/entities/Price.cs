@@ -1,5 +1,5 @@
 using System;
-namespace marketplace.domain
+namespace marketplace.domain.entities
 {
     public class Price : Money
     {

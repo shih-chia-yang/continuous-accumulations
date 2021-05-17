@@ -1,5 +1,5 @@
 using System;
-using marketplace.domain;
+using marketplace.domain.entities;
 using Xunit;
 
 namespace marketplace.unittests

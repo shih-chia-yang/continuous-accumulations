@@ -1,4 +1,5 @@
 ﻿using System;
+using marketplace.domain.entities;
 
 namespace marketplace.domain
 {
@@ -6,7 +7,7 @@ namespace marketplace.domain
     {
         public Guid Id { get; private set; }
         private UserId _ownerId;
-        private string _title;
+        private ClassifiedAdTitle _title;
         private string _text;
         private Price _price;
         public ClassifiedAd(Guid id,UserId ownerId)
@@ -19,7 +20,7 @@ namespace marketplace.domain
             _ownerId=ownerId;
         }
 
-        public void SetTitle(string title) => _title = title;
+        public void SetTitle(ClassifiedAdTitle title) => _title = title;
 
         public void UpdateText(string text) => _text = text;
 
