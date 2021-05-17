@@ -8,7 +8,7 @@ namespace marketplace.domain
         private UserId _ownerId;
         private string _title;
         private string _text;
-        private decimal _price;
+        private Price _price;
         public ClassifiedAd(Guid id,UserId ownerId)
         {
             if(id==default)
@@ -23,6 +23,6 @@ namespace marketplace.domain
 
         public void UpdateText(string text) => _text = text;
 
-        public void UpdatePrice(decimal price) => _price = price;
+        public void UpdatePrice(Price price) => _price = price;
     }
 }
