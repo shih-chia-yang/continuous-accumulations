@@ -1,4 +1,4 @@
-# data-primitive
+# domain-primitive
 
 ## introduce
 

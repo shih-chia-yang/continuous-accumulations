@@ -281,8 +281,21 @@ public void NotAllowNullName()
     var factory = new WorkerFactory(); 
     // Assert.Throws<ArgumentNullException>(() => factory.Create(null)); 
     Assert.Throws<ArgumentNullException>("name", () => factory.Create(null)); 
+}
+
+//檢查拋出例外訊息
+public void test_gives_invalid_string_should_be_throw_exception()
+{
+    //Given
+    Action createMoneyFromString = () =>Money.Create("adb");
+    //When
+    ArgumentException exception =Assert.Throws<ArgumentException>(createMoneyFromString);
+    //Then
+    Assert.Contains("invalid string cannot transfer to decimal", exception.Message);
 } 
 ```
+
+
 
 ## event
 
