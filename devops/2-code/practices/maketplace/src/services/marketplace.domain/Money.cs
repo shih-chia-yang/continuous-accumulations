@@ -13,5 +13,9 @@ namespace marketplace.domain
         {
             yield return Amount;
         }
+
+        public Money Add(Money sumand) => new Money(this.Amount + sumand.Amount);
+
+        public static Money operator +(Money sumand1, Money sumand2) => sumand1.Add(sumand2);
     }
 }
