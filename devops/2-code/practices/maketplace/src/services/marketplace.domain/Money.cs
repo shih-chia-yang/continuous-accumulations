@@ -16,6 +16,9 @@ namespace marketplace.domain
 
         public Money Add(Money sumand) => new Money(this.Amount + sumand.Amount);
 
-        public static Money operator +(Money sumand1, Money sumand2) => sumand1.Add(sumand2);
+        public Money Subtraction(Money subtrahend) => new Money(this.Amount - subtrahend.Amount);
+        public static Money operator + (Money sumand1, Money sumand2) => sumand1.Add(sumand2);
+
+        public static Money operator -(Money minuend, Money subtrahend) => minuend.Subtraction(subtrahend);
     }
 }

@@ -30,5 +30,18 @@ namespace marketplace.unittests
             //Then
             Assert.Equal(money1 + money2 + money3, banknote);
         }
+
+        [Fact]
+        [Trait("money","subtraction")]
+        public void test_subtraction_of_money_gives_correct_amount()
+        {
+            //Given
+            var profit = new Money(10);
+            var cost = new Money(3);
+            //When
+            var earn = new Money(7);
+            //Then
+            Assert.Equal(profit - cost, earn);
+        }
     }
 }
