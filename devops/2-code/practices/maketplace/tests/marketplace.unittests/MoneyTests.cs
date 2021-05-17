@@ -7,11 +7,35 @@ namespace marketplace.unittests
     public class MoneyTests
     {
         [Fact]
+        [Trait("money","transfer")]
+        public void test_gives_string_should_be_transfer_amount()
+        {
+            //Given
+            var decimalAmount = Money.Create(5);
+            //When
+            var stringAmount = Money.Create("5");
+            //Then
+            Assert.Equal(decimalAmount, stringAmount);
+        }
+
+        [Fact]
+        [Trait("money","transfer_fail")]
+        public void test_gives_invalid_string_should_be_throw_exception()
+        {
+            //Given
+            Action createMoneyFromString = () =>Money.Create("adb");
+            //When
+            ArgumentException exception =Assert.Throws<ArgumentException>(createMoneyFromString);
+            //Then
+            Assert.Contains("invalid string cannot transfer to decimal", exception.Message);
+        }
+        
+        [Fact]
         [Trait("money","equality")]
         public void test_money_with_same_amount_should_equality()
         {
-            var firstAmount = new Money(5);
-            var secondAmount = new Money(5);
+            var firstAmount = Money.Create(5);
+            var secondAmount = Money.Create(5);
 
 
             Assert.Equal(firstAmount, secondAmount);
@@ -22,11 +46,11 @@ namespace marketplace.unittests
         public void test_sum_of_money_gives_full_amount()
         {
             //Given
-            var money1 = new Money(1);
-            var money2 = new Money(2);
-            var money3 = new Money(3);
+            var money1 = Money.Create(1);
+            var money2 = Money.Create(2);
+            var money3 = Money.Create(3);
             //When
-            var banknote = new Money(6);
+            var banknote = Money.Create(6);
             //Then
             Assert.Equal(money1 + money2 + money3, banknote);
         }
@@ -36,10 +60,10 @@ namespace marketplace.unittests
         public void test_subtraction_of_money_gives_correct_amount()
         {
             //Given
-            var profit = new Money(10);
-            var cost = new Money(3);
+            var profit = Money.Create(10);
+            var cost = Money.Create(3);
             //When
-            var earn = new Money(7);
+            var earn = Money.Create(7);
             //Then
             Assert.Equal(profit - cost, earn);
         }
