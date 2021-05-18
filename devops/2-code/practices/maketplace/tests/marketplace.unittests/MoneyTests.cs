@@ -29,6 +29,19 @@ namespace marketplace.unittests
             //Then
             Assert.Contains("invalid string cannot transfer to decimal", exception.Message);
         }
+
+        [Fact]
+        [Trait("money","outofrange")]
+        public void test_gives_more_than_2_decimal_should_be_throw_exception()
+        {
+            //given
+            decimal fakeAmount = 100.012M;
+            Action outOfRange = () => Money.Create(fakeAmount);
+            //when
+            ArgumentOutOfRangeException exception = Assert.Throws<ArgumentOutOfRangeException>(outOfRange);
+
+            Assert.Contains("Amount cannot have more than two decimal", exception.Message);
+        }
         
         [Fact]
         [Trait("money","equality")]

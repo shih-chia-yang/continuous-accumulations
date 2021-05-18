@@ -20,7 +20,14 @@ namespace marketplace.domain.entities
 
         public decimal Amount { get;}
 
-        protected Money(decimal amount) => Amount = amount;
+        protected Money(decimal amount)
+        {
+            if (Decimal.Round(amount,2)!=amount)
+            {
+                throw new ArgumentOutOfRangeException("Amount cannot have more than two decimal", nameof(amount));
+            }
+            Amount = amount;
+        }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
