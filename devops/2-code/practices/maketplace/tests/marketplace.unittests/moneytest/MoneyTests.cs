@@ -1,6 +1,7 @@
 using System;
 using marketplace.domain.entities;
 using marketplace.domain.exceptions;
+using marketplace.unittests.builder;
 using Xunit;
 
 namespace marketplace.unittests
@@ -63,8 +64,8 @@ namespace marketplace.unittests
         [Trait("money","equality")]
         public void test_money_with_same_amount_should_equality()
         {
-            var firstAmount = Money.Create(5);
-            var secondAmount = Money.Create(5);
+            var firstAmount = FakeMoneyBuilder.CreateTWD(5);
+            var secondAmount = FakeMoneyBuilder.CreateTWD(5);
 
 
             Assert.Equal(firstAmount, secondAmount);
