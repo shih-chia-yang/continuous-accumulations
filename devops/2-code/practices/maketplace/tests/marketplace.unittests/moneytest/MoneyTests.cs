@@ -73,7 +73,6 @@ namespace marketplace.unittests
             Assert.NotEqual(fivebucks, fiveNT);
         }
 
-        
 
         [Fact]
         [Trait("money","subtraction")]
