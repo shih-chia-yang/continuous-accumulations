@@ -6,7 +6,7 @@ using marketplace.domain.exceptions;
 
 namespace marketplace.domain.entities
 {
-    public class Money:ValueObject
+    public class Money:ValueObject,ICurrencyExpression
     {
         public static Money Create(decimal amount,string currency=DefaultCurrency)=>new Money(amount,currency);
 
@@ -33,11 +33,6 @@ namespace marketplace.domain.entities
             Currency = currency;
         }
 
-        protected override IEnumerable<object> GetAtomicValues()
-        {
-            yield return Amount;
-        }
-
         public Money Add(Money sumand)
         {
             if(this.Currency!=sumand.Currency)
@@ -57,5 +52,11 @@ namespace marketplace.domain.entities
             
         public static Money operator + (Money sumand1, Money sumand2) => sumand1.Add(sumand2);
         public static Money operator -(Money minuend, Money subtrahend) => minuend.Subtraction(subtrahend);
+
+        protected override IEnumerable<object> GetAtomicValues()
+        {
+            yield return Amount;
+            yield return Currency;
+        }
     }
 }
