@@ -1,5 +1,6 @@
 using System;
 using marketplace.domain.entities;
+using marketplace.domain.exceptions;
 using Xunit;
 
 namespace marketplace.unittests
@@ -42,6 +43,21 @@ namespace marketplace.unittests
 
             Assert.Contains("Amount cannot have more than two decimal", exception.Message);
         }
+
+        [Theory]
+        [Trait("money","get_currency")]
+        [InlineData("TWD","TWD")]
+        [InlineData("USD","USD")]
+        [InlineData("","TWD")]
+        public void test_get_currency(string assignCurrency,string current)
+        {
+            //Given
+            var twd = assignCurrency==string.Empty?Money.Create(5):Money.Create(5,assignCurrency);
+            //When
+            var currency = twd.Currency;
+            //Then
+            Assert.Equal(current, currency);
+        }
         
         [Fact]
         [Trait("money","equality")]
@@ -66,6 +82,19 @@ namespace marketplace.unittests
             var banknote = Money.Create(6);
             //Then
             Assert.Equal(money1 + money2 + money3, banknote);
+        }
+
+        [Fact]
+        [Trait("money","sum_of_different")]
+        public void test_sum_of_different_currency_should_be_throw_exception()
+        {
+            //Given
+            var usd = Money.Create(5, "USD");
+            //When
+            Action sumDifferent =()=> Money.Create(5).Add(usd);
+            var mismatch = Assert.Throws<CurrencyMismatchException>(sumDifferent);
+            //Then
+            Assert.Contains("Cannot subtract amounts with different currencies", mismatch.Message);
         }
 
         [Fact]
