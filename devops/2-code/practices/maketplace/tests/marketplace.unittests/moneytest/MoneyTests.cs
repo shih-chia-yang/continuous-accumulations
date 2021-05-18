@@ -11,7 +11,7 @@ namespace marketplace.unittests
         [Fact]
         [Trait("money","transfer")]
         public void test_gives_string_should_be_transfer_amount()
-        {
+        {           
             //Given
             var decimalAmount = Money.Create(5);
             //When
@@ -64,39 +64,16 @@ namespace marketplace.unittests
         [Trait("money","equality")]
         public void test_money_with_same_amount_should_equality()
         {
-            var firstAmount = FakeMoneyBuilder.CreateTWD(5);
-            var secondAmount = FakeMoneyBuilder.CreateTWD(5);
+            var fiveNT = FakeMoneyBuilder.CreateTWD(5);
+            var fivebucks = FakeMoneyBuilder.CreateUSD(5);
 
 
-            Assert.Equal(firstAmount, secondAmount);
+            Assert.Equal(fiveNT,FakeMoneyBuilder.CreateTWD(5));
+            Assert.Equal(fivebucks, FakeMoneyBuilder.CreateUSD(5));
+            Assert.NotEqual(fivebucks, fiveNT);
         }
 
-        [Fact]
-        [Trait("money","sum")]
-        public void test_sum_of_money_gives_full_amount()
-        {
-            //Given
-            var money1 = Money.Create(1);
-            var money2 = Money.Create(2);
-            var money3 = Money.Create(3);
-            //When
-            var banknote = Money.Create(6);
-            //Then
-            Assert.Equal(money1 + money2 + money3, banknote);
-        }
-
-        [Fact]
-        [Trait("money","sum_of_different")]
-        public void test_sum_of_different_currency_should_be_throw_exception()
-        {
-            //Given
-            var usd = Money.Create(5, "USD");
-            //When
-            Action sumDifferent =()=> Money.Create(5).Add(usd);
-            var mismatch = Assert.Throws<CurrencyMismatchException>(sumDifferent);
-            //Then
-            Assert.Contains("Cannot subtract amounts with different currencies", mismatch.Message);
-        }
+        
 
         [Fact]
         [Trait("money","subtraction")]

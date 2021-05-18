@@ -4,5 +4,7 @@ namespace marketplace.domain.entities
     {
         decimal Amount{ get; }
         string Currency { get; }
+
+        ICurrencyExpression Create(decimal amount);
     }
 }

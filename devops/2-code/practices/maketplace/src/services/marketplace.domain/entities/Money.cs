@@ -33,14 +33,19 @@ namespace marketplace.domain.entities
             Currency = currency;
         }
 
-        public Money Add(Money sumand)
+        public ICurrencyExpression Create(decimal amount)
         {
-            if(this.Currency!=sumand.Currency)
-            {
-                throw new CurrencyMismatchException("Cannot subtract amounts with different currencies");
-            }
-            return new Money(this.Amount + sumand.Amount);
+            return Money.Create(amount);
         }
+
+        // public Money Add(Money sumand)
+        // {
+        //     if(this.Currency!=sumand.Currency)
+        //     {
+        //         throw new CurrencyMismatchException("Cannot subtract amounts with different currencies");
+        //     }
+        //     return new Money(this.Amount + sumand.Amount);
+        // }
         public Money Subtraction(Money subtrahend)
         {
             if(this.Currency!=subtrahend.Currency)
@@ -50,7 +55,7 @@ namespace marketplace.domain.entities
             return new Money(this.Amount - subtrahend.Amount);
         } 
             
-        public static Money operator + (Money sumand1, Money sumand2) => sumand1.Add(sumand2);
+        // public static Money operator + (Money sumand1, Money sumand2) => sumand1.Add(sumand2);
         public static Money operator -(Money minuend, Money subtrahend) => minuend.Subtraction(subtrahend);
 
         protected override IEnumerable<object> GetAtomicValues()
