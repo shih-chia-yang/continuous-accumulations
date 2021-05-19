@@ -15,14 +15,14 @@ namespace marketplace.unittests
             //Given
             var decimalAmount = Money.Create(5,Currency.Default);
             //When
-            var stringAmount = Money.Create("5",Currency.Default);
+            var stringAmount = Money.Create("5.00",Currency.Default);
             //Then
             Assert.Equal(decimalAmount, stringAmount);
         }
 
         [Fact]
         [Trait("money","transfer_fail")]
-        public void test_gives_invalid_string_should_be_throw_exception()
+        public void test_gives_invalid_currency_should_be_throw_exception()
         {
             //Given
             Action createMoneyFromString = () =>Money.Create("adb",Currency.Default);
@@ -33,16 +33,28 @@ namespace marketplace.unittests
         }
 
         [Fact]
+        [Trait("money","useless")]
+        public void test_useless_currency_should_not_be_allowed()
+        {
+            //Given
+            var useless= Currency.Create("DEM",2,false);
+            //When
+            Assert.Throws<ArgumentException>(() => Money.Create(2, useless));
+            //Then
+        }
+
+        [Fact]
         [Trait("money","outofrange")]
-        public void test_gives_more_than_2_decimal_should_be_throw_exception()
+        public void test_throw_when_too_many_decimal_places()
         {
             //given
             decimal fakeAmount = 100.012M;
             Action outOfRange = () => Money.Create(fakeAmount,Currency.Default);
             //when
             ArgumentOutOfRangeException exception = Assert.Throws<ArgumentOutOfRangeException>(outOfRange);
+            string errorMessage = $"Amount in {Currency.Default.CurrencyCode} cannot have more than {Currency.Default.DecimalPlace} decimals";
             //then
-            Assert.Contains($"Amount cannot have more than {Currency.Default.DecimalPlace} decimal", exception.Message);
+            Assert.Contains(errorMessage,exception.Message);
         }
 
         [Theory]

@@ -14,10 +14,11 @@ namespace marketplace.domain.entities
         protected Money(decimal amount,Currency currency=null)
         {
             Currency = currency??Currency.Default;
+            if(!currency.InUse)
+                throw new ArgumentException($"Currency {Currency.CurrencyCode} is not Valid");
             if (Decimal.Round(amount,Currency.DecimalPlace)!=amount)
             {
-                throw new ArgumentOutOfRangeException($@"Amount in {currency.CurrencyCode} cannot have 
-                more than {currency.DecimalPlace} decimals", nameof(amount));
+                throw new ArgumentOutOfRangeException($"Amount in {currency.CurrencyCode} cannot have more than {currency.DecimalPlace} decimals",nameof(amount));
             }
             Amount = amount;
         }
