@@ -9,11 +9,16 @@ namespace marketplace.unittests.ExchangeTest
     public class ExchangeServiceTest
     {
         private readonly IExchangeService exchange;
+
+        private readonly Currency test1 = Currency.Create("test1", 0);
+        private readonly Currency test2 = Currency.Create("test2", 0);
         public ExchangeServiceTest()
         {
             exchange = new ExchangeService();
-            Pair TWDtoUSD = new Pair("TWD", "USD");
-            Pair USDtoTWD = new Pair("USD","TWD");
+            var twd = Currency.Create("TWD", 2);
+            var usd = Currency.Create("USD", 2);
+            Pair TWDtoUSD = new Pair(twd, usd);
+            Pair USDtoTWD = new Pair(usd,twd);
             exchange.AddRate(TWDtoUSD,5);
             exchange.AddRate(USDtoTWD,0.2M);
         }
@@ -23,13 +28,13 @@ namespace marketplace.unittests.ExchangeTest
         public void test_currency_exchange_to_another_currency()
         {
             //Given
-            
+            var usd = Currency.Create("USD", 2);
             var fiveTWD = FakeMoneyBuilder.CreateTWD(5);
             //When
-            var usd=exchange.ExchangeTo(fiveTWD,"USD");
+            var bucks=exchange.ExchangeTo(fiveTWD,usd);
             //Then
-            Assert.True(usd.Currency.Equals("USD"));
-            Assert.Equal(1, usd.Amount);
+            Assert.True(bucks.Currency.Equals(usd));
+            Assert.Equal(1, bucks.Amount);
         }
 
         [Fact]
@@ -37,7 +42,7 @@ namespace marketplace.unittests.ExchangeTest
         public void test_add_rate_than_list_should_be_added()
         {
             //Given
-            var fakePair = new Pair("test1", "test2");
+            var fakePair = new Pair(test1, test2);
             var originCount = exchange.RateList.Count;
             //When
             exchange.AddRate(fakePair, 2);
@@ -50,7 +55,7 @@ namespace marketplace.unittests.ExchangeTest
         public void test_add_same_pair_and_value_should_be_throw_exception()
         {
             //Given
-            var fakePair = new Pair("test1", "test2");
+            var fakePair = new Pair(test1, test2);
             exchange.AddRate(fakePair,3);
             //When
             Action addtwice=()=>exchange.AddRate(fakePair,3);
@@ -64,7 +69,7 @@ namespace marketplace.unittests.ExchangeTest
         public void test_get_rate()
         {
             //Given
-            var fakePair = new Pair("test1", "test2");
+            var fakePair = new Pair(test1, test2);
             exchange.AddRate(fakePair, 2);
             //When
 
@@ -82,8 +87,8 @@ namespace marketplace.unittests.ExchangeTest
             var money2 = FakeMoneyBuilder.CreateUSD(10);
             var money3 = FakeMoneyBuilder.CreateTWD(3);
             //When
-            var sum = exchange.Sum("TWD",money1, money2, money3);
-            var banknote = Money.Create(58);
+            var sum = exchange.Sum(Currency.Default,money1, money2, money3);
+            var banknote = Money.Create(58,Currency.Default);
             //Then
             Assert.Equal(sum, banknote);
         }

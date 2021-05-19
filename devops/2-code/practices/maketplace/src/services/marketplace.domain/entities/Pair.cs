@@ -6,17 +6,17 @@ namespace marketplace.domain.entities
 {
     public class Pair:ValueObject
     {
-        public string Source { get;}
+        public Currency Source { get;}
 
-        public string  To { get;}
+        public Currency  To { get;}
 
-        public Pair(string source,string to)
+        public Pair(Currency source,Currency to)
         {
-            if(string.IsNullOrEmpty(source))
+            if(!source.InUse)
             {
                 throw new ArgumentNullException("source cannot be null or empty", nameof(source));
             }
-            if (string.IsNullOrEmpty(to))
+            if(!to.InUse)
             {
                 throw new ArgumentNullException("to cannot be null or empty", nameof(to));
             }

@@ -3,8 +3,8 @@ namespace marketplace.domain.entities
     public interface ICurrencyExpression
     {
         decimal Amount{ get; }
-        string Currency { get; }
+        Currency Currency { get; }
 
-        ICurrencyExpression Create(decimal amount);
+        // ICurrencyExpression Create(decimal amount);
     }
 }

@@ -13,9 +13,9 @@ namespace marketplace.unittests
         public void test_gives_string_should_be_transfer_amount()
         {           
             //Given
-            var decimalAmount = Money.Create(5);
+            var decimalAmount = Money.Create(5,Currency.Default);
             //When
-            var stringAmount = Money.Create("5");
+            var stringAmount = Money.Create("5",Currency.Default);
             //Then
             Assert.Equal(decimalAmount, stringAmount);
         }
@@ -25,7 +25,7 @@ namespace marketplace.unittests
         public void test_gives_invalid_string_should_be_throw_exception()
         {
             //Given
-            Action createMoneyFromString = () =>Money.Create("adb");
+            Action createMoneyFromString = () =>Money.Create("adb",Currency.Default);
             //When
             ArgumentException exception =Assert.Throws<ArgumentException>(createMoneyFromString);
             //Then
@@ -38,7 +38,7 @@ namespace marketplace.unittests
         {
             //given
             decimal fakeAmount = 100.012M;
-            Action outOfRange = () => Money.Create(fakeAmount);
+            Action outOfRange = () => Money.Create(fakeAmount,Currency.Default);
             //when
             ArgumentOutOfRangeException exception = Assert.Throws<ArgumentOutOfRangeException>(outOfRange);
 
@@ -47,17 +47,18 @@ namespace marketplace.unittests
 
         [Theory]
         [Trait("money","get_currency")]
-        [InlineData("TWD","TWD")]
-        [InlineData("USD","USD")]
-        [InlineData("","TWD")]
-        public void test_get_currency(string assignCurrency,string current)
+        [InlineData("TWD",2,"TWD")]
+        [InlineData("USD",2,"USD")]
+        [InlineData("",2,"TWD")]
+        public void test_get_currency(string assignCurrency,int decimalPlace,string current)
         {
             //Given
-            var twd = assignCurrency==string.Empty?Money.Create(5):Money.Create(5,assignCurrency);
+            var fakeCurrency = Currency.Create(assignCurrency, decimalPlace);
+            var money = assignCurrency==string.Empty?Money.Create(5):Money.Create(5,fakeCurrency);
             //When
-            var currency = twd.Currency;
+            var currency = money.Currency;
             //Then
-            Assert.Equal(current, currency);
+            Assert.Equal(fakeCurrency, currency);
         }
         
         [Fact]

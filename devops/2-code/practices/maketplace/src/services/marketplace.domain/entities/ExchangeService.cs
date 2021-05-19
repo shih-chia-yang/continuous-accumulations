@@ -23,7 +23,7 @@ namespace marketplace.domain.entities
         }
 
         
-        public ICurrencyExpression ExchangeTo(ICurrencyExpression currency, string to)
+        public ICurrencyExpression ExchangeTo(ICurrencyExpression currency, Currency to)
         {
             var exchangePair = new Pair(currency.Currency, to);
             return Money.Create(currency.Amount/GetRate(exchangePair),to);
@@ -39,7 +39,7 @@ namespace marketplace.domain.entities
             return Money.Create(result);
         }
 
-        public ICurrencyExpression Sum(string to,params ICurrencyExpression[] added)
+        public ICurrencyExpression Sum(Currency to,params ICurrencyExpression[] added)
         {
             decimal sum = added.Select(x =>ExchangeTo(x,to).Amount).Aggregate((cur, next) => cur + next);
             return Money.Create(sum,to);
