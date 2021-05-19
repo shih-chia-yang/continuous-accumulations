@@ -5,5 +5,7 @@ namespace marketplace.domain.entities
         ICurrencyExpression Sum(params ICurrencyExpression[] added);
 
         ICurrencyExpression Subtraction(params ICurrencyExpression[] minuend);
+
+        ICurrencyExpression ExchangeTo(ICurrencyExpression currency, string to);
     }
 }

@@ -15,6 +15,21 @@ namespace marketplace.unittests.ExchangeTest
         }
 
         [Fact]
+        [Trait("exchange","exchange_currency")]
+        public void test_currency_exchange_to_another_currency()
+        {
+            //Given
+            Pair TWDtoUSD = new Pair("TWD", "USD");
+            exchange.AddRate(TWDtoUSD,5);
+            var fiveTWD = FakeMoneyBuilder.CreateTWD(5);
+            //When
+            var usd=exchange.ExchangeTo(fiveTWD,"USD");
+            //Then
+            Assert.True(usd.Currency.Equals("USD"));
+            Assert.Equal(1, usd.Amount);
+        }
+
+        [Fact]
         [Trait("exchange","sum")]
         public void test_sum_of_money_gives_full_amount()
         {
