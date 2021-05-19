@@ -19,6 +19,8 @@ namespace marketplace.domain
         public Price Price { get; private set; }
 
         public ClassifiedState State { get; private set;}
+
+        public UserId ApprovedBy{ get; private set;}
         public ClassifiedAd(Guid id,UserId ownerId)
         {
             if(id==default)
