@@ -16,7 +16,8 @@ namespace marketplace.domain.entities
             Currency = currency??Currency.Default;
             if (Decimal.Round(amount,Currency.DecimalPlace)!=amount)
             {
-                throw new ArgumentOutOfRangeException($"Amount cannot have more than {currency.DecimalPlace} decimal", nameof(amount));
+                throw new ArgumentOutOfRangeException($@"Amount in {currency.CurrencyCode} cannot have 
+                more than {currency.DecimalPlace} decimals", nameof(amount));
             }
             Amount = amount;
         }
@@ -37,5 +38,7 @@ namespace marketplace.domain.entities
             yield return Amount;
             yield return Currency;
         }
+
+        public override string ToString() => $"{this.Currency.CurrencyCode} {this.Amount}";
     }
 }

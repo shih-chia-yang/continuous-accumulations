@@ -13,11 +13,11 @@ namespace marketplace.domain.entities
         {
             if(!source.InUse)
             {
-                throw new ArgumentNullException("source cannot be null or empty", nameof(source));
+                throw new ArgumentNullException($"source Currency {source} is not valid", nameof(source));
             }
             if(!to.InUse)
             {
-                throw new ArgumentNullException("to cannot be null or empty", nameof(to));
+                throw new ArgumentNullException($"to Currency {to} is not valid", nameof(to));
             }
             Source = source;
             To = to;

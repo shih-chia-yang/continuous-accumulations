@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using marketplace.domain.entities;
 
-namespace marketplace.domain.services
+namespace marketplace.domain.entities
 {
     public interface ICurrencyLookup
     {
