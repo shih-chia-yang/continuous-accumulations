@@ -65,12 +65,11 @@ namespace marketplace.unittests.ExchangeTest
         {
             //Given
             var fakePair = new Pair("test1", "test2");
-            var originCount = exchange.RateList.Count;
             exchange.AddRate(fakePair, 2);
             //When
 
             //Then
-            Assert.Equal(2, exchange.GetRate(fakePair.Source, fakePair.To));
+            Assert.Equal(2, exchange.GetRate(fakePair));
         }
 
         [Fact]

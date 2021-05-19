@@ -8,7 +8,7 @@ namespace marketplace.domain.entities
     public interface IExchangeService:IOperationExpression
     {
         Hashtable RateList{ get; }
-        decimal GetRate(string source,string to);
+        decimal GetRate(Pair targetPair);
         void AddRate(Pair pair, decimal rate);
     }
 
@@ -26,7 +26,7 @@ namespace marketplace.domain.entities
         public ICurrencyExpression ExchangeTo(ICurrencyExpression currency, string to)
         {
             var exchangePair = new Pair(currency.Currency, to);
-            return Money.Create(currency.Amount/GetRate(currency.Currency,to),to);
+            return Money.Create(currency.Amount/GetRate(exchangePair),to);
         }
 
         public ICurrencyExpression Subtraction(params ICurrencyExpression[] minuend)
@@ -54,10 +54,10 @@ namespace marketplace.domain.entities
             _rates.Add(pair, rate);
         }
 
-        public decimal GetRate(string source,string to)
+        public decimal GetRate(Pair targetPair)
         {
-            if(source.Equals(to))return 1;
-            var targetPair = new Pair(source, to);
+            if(targetPair.Source.Equals(targetPair.To))return 1;
+            // var targetPair = new Pair(source, to);
             var rate = (decimal)RateList[targetPair];
             return rate;
         }

@@ -12,7 +12,7 @@ namespace marketplace.domain.entities
 
         public static Money Create(string amount,string currency=DefaultCurrency)
         {
-            if(!Regex.IsMatch(amount,@"/^\d*\.?\d*$/"))
+            if(!Regex.IsMatch(amount,@"^\d*\.?\d*$"))
             {
                 throw new ArgumentException("invalid string cannot transfer to decimal", nameof(amount));
             }
