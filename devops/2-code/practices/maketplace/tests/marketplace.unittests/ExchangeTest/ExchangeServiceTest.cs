@@ -12,6 +12,10 @@ namespace marketplace.unittests.ExchangeTest
         public ExchangeServiceTest()
         {
             exchange = new ExchangeService();
+            Pair TWDtoUSD = new Pair("TWD", "USD");
+            Pair USDtoTWD = new Pair("USD","TWD");
+            exchange.AddRate(TWDtoUSD,5);
+            exchange.AddRate(USDtoTWD,0.2M);
         }
 
         [Fact]
@@ -19,8 +23,7 @@ namespace marketplace.unittests.ExchangeTest
         public void test_currency_exchange_to_another_currency()
         {
             //Given
-            Pair TWDtoUSD = new Pair("TWD", "USD");
-            exchange.AddRate(TWDtoUSD,5);
+            
             var fiveTWD = FakeMoneyBuilder.CreateTWD(5);
             //When
             var usd=exchange.ExchangeTo(fiveTWD,"USD");
@@ -30,31 +33,60 @@ namespace marketplace.unittests.ExchangeTest
         }
 
         [Fact]
+        [Trait("exchange","addrate")]
+        public void test_add_rate_than_list_should_be_added()
+        {
+            //Given
+            var fakePair = new Pair("test1", "test2");
+            var originCount = exchange.RateList.Count;
+            //When
+            exchange.AddRate(fakePair, 2);
+            //Then
+            Assert.Equal(originCount + 1, exchange.RateList.Count);
+        }
+
+        [Fact]
+        [Trait("exchange","add_twice_pair")]
+        public void test_add_same_pair_and_value_should_be_throw_exception()
+        {
+            //Given
+            var fakePair = new Pair("test1", "test2");
+            exchange.AddRate(fakePair,3);
+            //When
+            Action addtwice=()=>exchange.AddRate(fakePair,3);
+            ArgumentException exception = Assert.Throws<ArgumentException>(addtwice);
+            //Then
+            Assert.Contains("Pair and exchange rate already existed", exception.Message);
+        }
+
+        [Fact]
+        [Trait("exchange","getrate")]
+        public void test_get_rate()
+        {
+            //Given
+            var fakePair = new Pair("test1", "test2");
+            var originCount = exchange.RateList.Count;
+            exchange.AddRate(fakePair, 2);
+            //When
+
+            //Then
+            Assert.Equal(2, exchange.GetRate(fakePair.Source, fakePair.To));
+        }
+
+        [Fact]
         [Trait("exchange","sum")]
         public void test_sum_of_money_gives_full_amount()
         {
             //Given
-            var money1 = Money.Create(1);
-            var money2 = Money.Create(2);
-            var money3 = Money.Create(3);
+
+            var money1 = FakeMoneyBuilder.CreateTWD(5);
+            var money2 = FakeMoneyBuilder.CreateUSD(10);
+            var money3 = FakeMoneyBuilder.CreateTWD(3);
             //When
-            var sum = exchange.Sum(money1, money2, money3);
-            var banknote = Money.Create(6);
+            var sum = exchange.Sum("TWD",money1, money2, money3);
+            var banknote = Money.Create(58);
             //Then
             Assert.Equal(sum, banknote);
-        }
-
-        [Fact]
-        [Trait("exchange","sum_of_different")]
-        public void test_sum_of_different_currency_should_be_throw_exception()
-        {
-            //Given
-            var usd = FakeMoneyBuilder.CreateUSD(5);
-            //When
-            Action sumDifferent =()=> exchange.Sum(FakeMoneyBuilder.CreateTWD(5),usd);
-            var mismatch = Assert.Throws<CurrencyMismatchException>(sumDifferent);
-            //Then
-            Assert.Contains("Cannot subtract amounts with different currencies", mismatch.Message);
         }
 
         [Fact]
