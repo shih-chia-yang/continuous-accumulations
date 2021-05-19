@@ -10,6 +10,16 @@ namespace marketplace.domain.entities
 
     public class ExchangeService : IExchangeService
     {
+        public ICurrencyExpression Subtraction(params ICurrencyExpression[] minuend)
+        {
+            if(minuend.Select(x=>x.Currency).Distinct().Count()>1)
+            {
+                throw new CurrencyMismatchException("Cannot subtract amounts with different currencies");
+            }
+            decimal result = minuend.Select(x => x.Amount).Aggregate((cur, next) => cur - next);
+            return Money.Create(result);
+        }
+
         public ICurrencyExpression Sum(params ICurrencyExpression[] added)
         {
             if(added.Select(x=>x.Currency).Distinct().Count()>1)

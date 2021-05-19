@@ -72,19 +72,6 @@ namespace marketplace.unittests
             Assert.Equal(fivebucks, FakeMoneyBuilder.CreateUSD(5));
             Assert.NotEqual(fivebucks, fiveNT);
         }
-
-
-        [Fact]
-        [Trait("money","subtraction")]
-        public void test_subtraction_of_money_gives_correct_amount()
-        {
-            //Given
-            var profit = Money.Create(10);
-            var cost = Money.Create(3);
-            //When
-            var earn = Money.Create(7);
-            //Then
-            Assert.Equal(profit - cost, earn);
-        }
+        
     }
 }

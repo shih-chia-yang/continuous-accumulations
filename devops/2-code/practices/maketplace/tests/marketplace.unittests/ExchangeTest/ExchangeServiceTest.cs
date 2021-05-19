@@ -41,5 +41,19 @@ namespace marketplace.unittests.ExchangeTest
             //Then
             Assert.Contains("Cannot subtract amounts with different currencies", mismatch.Message);
         }
+
+        [Fact]
+        [Trait("money","subtraction")]
+        public void test_subtraction_of_money_gives_correct_amount()
+        {
+            //Given
+            var profit = FakeMoneyBuilder.CreateTWD(10);
+            var cost = FakeMoneyBuilder.CreateTWD(3);
+            var except_earn = FakeMoneyBuilder.CreateTWD(7);
+            //When
+            var actual_earn = exchange.Subtraction(profit, cost);
+            //Then
+            Assert.Equal(except_earn,actual_earn);
+        }
     }
 }
