@@ -1,5 +1,6 @@
 using System;
 using marketplace.domain.entities;
+using marketplace.domain.services;
 using Xunit;
 
 namespace marketplace.unittests.ExchangeTest

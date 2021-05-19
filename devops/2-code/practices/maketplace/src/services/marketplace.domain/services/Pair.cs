@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using marketplace.domain.entities;
 using marketplace.domain.kernal;
-namespace marketplace.domain.entities
+namespace marketplace.domain.services
 {
     public class Pair:ValueObject
     {
