@@ -6,6 +6,8 @@ namespace marketplace.domain.entities
 
         ICurrencyExpression Subtraction(params ICurrencyExpression[] minuend);
 
+        ICurrencyExpression Times(ICurrencyExpression currency, decimal multiplier);
+
         ICurrencyExpression ExchangeTo(ICurrencyExpression currency, string to);
     }
 }

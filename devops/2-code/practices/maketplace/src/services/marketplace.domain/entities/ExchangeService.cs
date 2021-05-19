@@ -61,5 +61,10 @@ namespace marketplace.domain.entities
             var rate = (decimal)RateList[targetPair];
             return rate;
         }
+
+        public ICurrencyExpression Times(ICurrencyExpression source, decimal multiplier)
+        {
+            return Money.Create(source.Amount * multiplier, source.Currency);
+        }
     }
 }

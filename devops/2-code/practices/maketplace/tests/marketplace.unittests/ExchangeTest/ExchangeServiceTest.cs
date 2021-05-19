@@ -101,5 +101,17 @@ namespace marketplace.unittests.ExchangeTest
             //Then
             Assert.Equal(except_earn,actual_earn);
         }
+
+        [Fact]
+        [Trait("exchange","multiplier")]
+        public void test_currency_times_n_then_return_amount_multiplied_by_n()
+        {
+            //Given
+            var fiveTWD = FakeMoneyBuilder.CreateTWD(5);
+            //When
+            var ans= exchange.Times(fiveTWD, 5);
+            //Then
+            Assert.Equal(FakeMoneyBuilder.CreateTWD(25), ans);
+        }
     }
 }
