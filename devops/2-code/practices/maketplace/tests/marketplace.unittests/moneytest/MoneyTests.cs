@@ -41,15 +41,15 @@ namespace marketplace.unittests
             Action outOfRange = () => Money.Create(fakeAmount,Currency.Default);
             //when
             ArgumentOutOfRangeException exception = Assert.Throws<ArgumentOutOfRangeException>(outOfRange);
-
-            Assert.Contains("Amount cannot have more than two decimal", exception.Message);
+            //then
+            Assert.Contains($"Amount cannot have more than {Currency.Default.DecimalPlace} decimal", exception.Message);
         }
 
         [Theory]
         [Trait("money","get_currency")]
-        [InlineData("TWD",2,"TWD")]
-        [InlineData("USD",2,"USD")]
-        [InlineData("",2,"TWD")]
+        [InlineData("TWD",2)]
+        [InlineData("USD",2)]
+        [InlineData("",2)]
         public void test_get_currency(string assignCurrency,int decimalPlace)
         {
             //Given
@@ -65,10 +65,11 @@ namespace marketplace.unittests
         [Trait("money","equality")]
         public void test_money_with_same_amount_should_equality()
         {
+            //given
             var fiveNT = FakeMoneyBuilder.CreateTWD(5);
             var fivebucks = FakeMoneyBuilder.CreateUSD(5);
-
-
+            //when
+            //then
             Assert.Equal(fiveNT,FakeMoneyBuilder.CreateTWD(5));
             Assert.Equal(fivebucks, FakeMoneyBuilder.CreateUSD(5));
             Assert.NotEqual(fivebucks, fiveNT);

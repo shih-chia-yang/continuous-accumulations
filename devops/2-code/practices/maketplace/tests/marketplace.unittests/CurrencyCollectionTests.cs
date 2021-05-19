@@ -1,5 +1,6 @@
 using System.Linq;
 using marketplace.domain.entities;
+using marketplace.domain.services;
 using Xunit;
 
 namespace marketplace.unittests

@@ -1,3 +1,5 @@
+using marketplace.domain.services;
+
 namespace marketplace.domain.entities
 {
     public interface ICurrencyExpression

@@ -1,9 +1,10 @@
 using System;
 using System.Collections;
 using System.Linq;
+using marketplace.domain.entities;
 using marketplace.domain.exceptions;
 
-namespace marketplace.domain.entities
+namespace marketplace.domain.services
 {
     public interface IExchangeService:IOperationExpression
     {

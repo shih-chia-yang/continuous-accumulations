@@ -1,4 +1,6 @@
-namespace marketplace.domain.entities
+using marketplace.domain.entities;
+
+namespace marketplace.domain.services
 {
     public interface IOperationExpression
     {
