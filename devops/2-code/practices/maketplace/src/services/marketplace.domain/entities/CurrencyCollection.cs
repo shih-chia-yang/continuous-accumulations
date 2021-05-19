@@ -8,9 +8,9 @@ namespace marketplace.domain.entities
     public interface ICurrencyLookup
     {
         IEnumerable<Currency> CurrencyList{ get; }
-        Currency FindCurrency(string currencyCode);
+        Currency Find(string currencyCode);
 
-        void AddCurrency(Currency currency);
+        void Add(Currency currency);
     }
 
 
@@ -24,16 +24,16 @@ namespace marketplace.domain.entities
             _currencies = new List<Currency>();
         }
 
-        public void AddCurrency(Currency currency)
+        public void Add(Currency currency)
         {
-            if(FindCurrency(currency.CurrencyCode)!=null)
+            if(Find(currency.CurrencyCode)!=null)
             {
                 throw new ArgumentException("CurrencyCode doesn't exist", nameof(currency));
             }
             _currencies.Add(currency);
         }
 
-        public Currency FindCurrency(string currencyCode)
+        public Currency Find(string currencyCode)
         {
             return _currencies.Where(x => x.CurrencyCode == currencyCode).FirstOrDefault();
         }

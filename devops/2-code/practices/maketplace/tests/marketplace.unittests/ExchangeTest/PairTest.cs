@@ -19,12 +19,9 @@ namespace marketplace.unittests.ExchangeTest
             Assert.Equal(TWDtoUSD, new Pair(twd, usd));
         }
 
-        [Theory]
+        [Fact]
         [Trait("pair","nullexception")]
-        [InlineData("","")]
-        [InlineData("source","")]
-        [InlineData("","to")]
-        public void test_null_value_should_throw_exception(string source,string to)
+        public void test_null_value_should_throw_exception()
         {
             //Given
             

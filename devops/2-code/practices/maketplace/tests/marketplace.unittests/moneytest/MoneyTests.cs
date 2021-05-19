@@ -50,7 +50,7 @@ namespace marketplace.unittests
         [InlineData("TWD",2,"TWD")]
         [InlineData("USD",2,"USD")]
         [InlineData("",2,"TWD")]
-        public void test_get_currency(string assignCurrency,int decimalPlace,string current)
+        public void test_get_currency(string assignCurrency,int decimalPlace)
         {
             //Given
             var fakeCurrency = Currency.Create(assignCurrency, decimalPlace);

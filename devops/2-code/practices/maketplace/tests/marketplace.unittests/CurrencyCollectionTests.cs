@@ -14,7 +14,7 @@ namespace marketplace.unittests
             var twd = Currency.Create("TWD", 2);
             ICurrencyLookup collection = new CurrencyCollection();
             //When
-            collection.AddCurrency(twd);
+            collection.Add(twd);
             //Then
             Assert.True(collection.CurrencyList.Count() > 0);
         }
@@ -26,9 +26,9 @@ namespace marketplace.unittests
             //Given
             var twd = Currency.Create("TWD", 2);
             ICurrencyLookup collection = new CurrencyCollection();
-            collection.AddCurrency(twd);
+            collection.Add(twd);
             //When
-            var find = collection.FindCurrency(twd.CurrencyCode);
+            var find = collection.Find(twd.CurrencyCode);
             //Then
             Assert.Equal(twd, find);
         }
