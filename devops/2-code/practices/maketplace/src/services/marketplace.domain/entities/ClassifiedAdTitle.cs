@@ -23,6 +23,10 @@ namespace marketplace.domain.entities
 
         private ClassifiedAdTitle(string value)
         {
+            if(string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentNullException("Title cannot be null or empty", nameof(value));
+            }
             if(value.Length>100)
             {
                 throw new ArgumentException("Title cannot be longer that 100 characters", nameof(value));

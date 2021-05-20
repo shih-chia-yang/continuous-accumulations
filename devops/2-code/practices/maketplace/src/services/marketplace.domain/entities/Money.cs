@@ -14,7 +14,7 @@ namespace marketplace.domain.entities
         protected Money(decimal amount,Currency currency=null)
         {
             Currency = currency??Currency.Default;
-            if(!currency.InUse)
+            if(!Currency.InUse)
                 throw new ArgumentException($"Currency {Currency.CurrencyCode} is not Valid");
             if (Decimal.Round(amount,Currency.DecimalPlace)!=amount)
             {

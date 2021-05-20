@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Linq;
 using marketplace.domain.exceptions;
 using marketplace.domain.kernal;
@@ -12,13 +13,13 @@ namespace marketplace.domain.Validation
         }
         public override bool Validate()
         {
-            var valid = Entity.Id != null && Entity.OwnerId != null &&
+            var valid = IdIsNotNull() && OwnerIdIsNotNull() &&
             (Entity.State switch{
                 ClassifiedState.PendingReview=>
-                    Entity.Title!=null && Entity.Text!=null && Entity.Price?.Amount==0,
+                    TitleIsNotNull() && TextIsNotNull() && AmountIsNotZero(),
                 ClassifiedState.Active=>
-                    Entity.Title!=null && Entity.Text!=null 
-                    && Entity.Price?.Amount==0 && Entity.ApprovedBy !=null,
+                    TitleIsNotNull() && TextIsNotNull()
+                    && AmountIsNotZero() && ApprovedByIsNotNull(),
                 _ => true
             });
             if(!valid)
@@ -37,5 +38,16 @@ namespace marketplace.domain.Validation
             }
             return base.Errors.Count() > 0 ? false : true;
         }
+
+        /// <summary>
+        /// 以合約方法逐條撰寫
+        /// </summary>
+        /// <returns></returns>
+        public bool IdIsNotNull()=>Entity.Id ==default?false:true;
+        public bool OwnerIdIsNotNull()=>Entity.OwnerId ==null?false:true;
+        public bool TitleIsNotNull() => Entity.Title==null?false:true;
+        public bool TextIsNotNull() => Entity.Text == null ? false : true;
+        public bool AmountIsNotZero() => Entity.Price?.Amount >0 ? true : false;
+        public bool ApprovedByIsNotNull() => Entity.ApprovedBy == null ? false : true;
     }
 }

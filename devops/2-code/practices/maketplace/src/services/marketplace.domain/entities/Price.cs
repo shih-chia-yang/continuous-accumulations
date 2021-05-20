@@ -3,7 +3,8 @@ namespace marketplace.domain.entities
 {
     public class Price : Money
     {
-        public Price(decimal amount):base(amount)
+        public new static Price Create(decimal amount, Currency currency = null) => new Price(amount, currency);
+        protected Price(decimal amount,Currency currency):base(amount,currency)
         {
             if(amount<0)
             {

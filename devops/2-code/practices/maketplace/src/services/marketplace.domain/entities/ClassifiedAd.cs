@@ -1,5 +1,6 @@
 ﻿using System;
 using marketplace.domain.entities;
+using marketplace.domain.Validation;
 
 namespace marketplace.domain
 {
@@ -41,6 +42,9 @@ namespace marketplace.domain
         public void RequestToPublish()
         {
             this.State = ClassifiedState.PendingReview;
+            var valid = new ClassifiedAdValidation(this);
+            valid.Validate();
+            
         }
     }
 }
