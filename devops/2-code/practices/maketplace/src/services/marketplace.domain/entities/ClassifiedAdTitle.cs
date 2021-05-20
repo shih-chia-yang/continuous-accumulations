@@ -1,14 +1,17 @@
 using System.Text.RegularExpressions;
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 using marketplace.domain.kernal;
 
 namespace marketplace.domain.entities
 {
     public class ClassifiedAdTitle:ValueObject
     {
-        public static ClassifiedAdTitle FromString(string title)=>new  ClassifiedAdTitle(title);
+        public static ClassifiedAdTitle FromString(string title)
+        {
+            Validate(title);
+            return new ClassifiedAdTitle(title);
+        }
 
         public static ClassifiedAdTitle FromHtml(string htmlTitle)
         {
@@ -17,13 +20,16 @@ namespace marketplace.domain.entities
                 .Replace("</i>", "*")
                 .Replace("<b>", "*")
                 .Replace("</b>", "*");
-            return new ClassifiedAdTitle(Regex.Replace(supportedTagsReplaced, "<.*.?>", string.Empty));
+            var value = Regex.Replace(supportedTagsReplaced, "<.*.?>", string.Empty);
+            Validate(value);
+            return new ClassifiedAdTitle(value);
         }
 
-        public string Value => _value;
-        private readonly string _value;
+        public string Value { get; }
 
-        private ClassifiedAdTitle(string value)
+        private ClassifiedAdTitle(string value)=>Value = value;
+
+        private static void Validate(string value)
         {
             if(string.IsNullOrEmpty(value))
             {
@@ -33,14 +39,13 @@ namespace marketplace.domain.entities
             {
                 throw new ArgumentException("Title cannot be longer that 100 characters", nameof(value));
             }
-            _value = value;
         }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
-            yield return _value;
+            yield return Value;
         }
 
-
+        public static implicit operator string (ClassifiedAdTitle title) => title.Value;
     }
 }
