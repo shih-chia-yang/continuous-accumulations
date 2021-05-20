@@ -498,6 +498,175 @@ public class ClassifiedAdSentToReview
 
 2. Raising events
 
+新增abstract entity class
+- 提供集合收集事件
+- 提供清除事件
+- 提供取得事件清單
+
+```csharp
+public abstract class Entity
+    {
+        private readonly List<object> _events;
+
+        protected Entity() => _events = new List<object>();
+
+        protected void Raise(object @event) => _events.Add(@event);
+
+        public IEnumerable<object> GetChanges() => _events.AsEnumerable();
+
+        public void ClearChanges()=>_events.Clear();
+    }
+```
+
+ClassifiedAd繼承entity，在上述表格中發生行為的函式中 將事件加入集合中
+example：
+```csharp
+public void UpdatePrice(Price price)
+{
+    Price = price;
+    Raise(new ClassifiedAdPriceUpdated(Id, price.Amount, price.Currency.CurrencyCode));
+}
+```
+
+當完成事件實例化，可以藉由類似下方程式碼(非正式用)，展示如何藉由domain event來整合系統不同部份。
+當發送事件到event bus後，其他服務有訂閱該事件的話，他們就會接到事件並開始針對事件執行作業，改變domain model的狀態，或執行特定作業，如寄送email，文字訊息，實時提醒等。
+
+```csharp
+public async Task Handle (RequestToPublish command)
+{
+    var entity=await _repository.Load<ClassifiedAd>(command.id);
+    entity.RequestToPublish();
+    await _repository.Save(entity);
+    foreach( var @event in entity.GetChanges)
+    {
+        await _bus.Publish(@event);
+    }
+}
+```
+可以使用`implicit`將value直接指向value object，實例化事件賦值時可以直接使用primitive type
+```csharp
+public static implicit operator Guid(UserId self) => self._value;
+```
+
+## event change state
+
+events代表發生狀態變化的事實，代表如果不與domain event進行互動的話，無法改變系統狀態。
+目前的程式碼中更改系統狀態與觸發domain event是完全分開的，仍需要做一些變動。將`Raise`更名為`Apply`，且不再只是將事件加入集合中，透過`When`將每個事件的內容應用在entity state，且需在每個entity中進行實作，同時也會呼叫`EnsureValidState`
+
+```csharp
+public abstract class Entity
+    {
+        private readonly List<object> _events;
+
+        protected Entity() => _events = new List<object>();
+        public IEnumerable<object> GetChanges() => _events.AsEnumerable();
+        public void ClearChanges()=>_events.Clear();
+
+        protected void Apply(object @event)
+        {
+            When(@event);
+            EnsureValidState();
+            _events.Add(@event);
+        }
+
+        protected abstract void When(object @event);
+
+        protected abstract void EnsureValidState();
+    }
+```
+
+下一步將apply domain event與狀態變化全部移到`When` method
+1. 將所有公開方法修改為將entity state information 傳送給 domain event, 移除狀態變化與驗證。驗證的部份已由entity base class中的`Apply`呼叫。
+2. 實作When方法，並使用c#7.1提供的switch pattern matching的功能識別事件與需要更改的狀態
+
+```csharp
+public void UpdateText(ClassifiedAdText text)=>
+            Apply(new ClassifiedAdTextUpdated(Id, text.Value));
+```
+
+```csharp
+protected override void When(object @event)
+{
+    switch(@event)
+    {
+        case ClassifiedAdCreated e:
+            Id = e.Id;
+            OwnerId = new UserId(e.OwnerId);
+            State = ClassifiedState.Inactive;
+            break;
+        case ClassifiedAdTitleChanged e:
+            Title = ClassifiedAdTitle.FromString(e.Title);
+            break;
+        case ClassifiedAdTextUpdated e:
+            Text = ClassifiedAdText.FromString(e.Text);
+            break;
+        case ClassifiedAdPriceUpdated e:
+            Price = Price.Create(e.Price,Currency.Create(e.CurrencyCode,2));
+            break;
+        case ClassifiedAdSentToReview e:
+            State = ClassifiedState.PendingReview;
+            break;
+    }
+}
+```
+
+- 個人心得：
+    - 疑問:若entity的更改資料部份僅限於內部狀態變更無需通知系統其他entity，是否可使用command即可，而需要與其他物件互動的command則需要domain event配合，如本書範例，是否僅publish命令需要實作domain event，其他更改資料部份，若無牽涉其他模組或自身無需達成acid，則直接使用command
+    
+    - 步驟：將動作的參數傳遞給事件，由底層加入事件，並由事件來觸發command與驗證，該範圍為每個動作皆會呼叫`apply`，理應可以只加入事件，再一併觸發，而不用單獨一個一個觸發。
+    - when的部份，應該可以修改藉由di註冊，由事件型別找出繼承該事件的command，再將物件注入command，執行handle，而不用全部寫在when，可拆分為事件與命令物件分別撰寫
+        - 書中範例的方法較易理解，但當狀態變化很多與大量操作方法時會增加when的複雜度
+        - 拆分command與事件，由di控制與觸發，在複雜情形下可減少各狀態變與操作的相互依賴，但較不易理解全貌。
+
+一般使用ddd的general event與domain event不一定要使用event sourcing。本書較著重`event sourcing`，所以在此部份就出現利用事件來更改物件狀態的方法。
+
+- complex value object : 透過單一職責原則，將驗證獨立方法出來，並將建構子設為internal封裝，實例化僅能透過靜態工廠方法來建立，而在靜態工廠方法的處理流程加入驗證，即可保證物件被正確的建立，並使用implicit覆寫value至型別，簡化賦值事件的作業。
+- 
+```csharp
+public class ClassifiedAdTitle:ValueObject
+{
+    public static ClassifiedAdTitle FromString(string title)
+    {
+        Validate(title);
+        return new ClassifiedAdTitle(title);
+    }
+
+    public static ClassifiedAdTitle FromHtml(string htmlTitle)
+    {
+        var supportedTagsReplaced = htmlTitle
+            .Replace("<i>", "*")
+            .Replace("</i>", "*")
+            .Replace("<b>", "*")
+            .Replace("</b>", "*");
+        var value = Regex.Replace(supportedTagsReplaced, "<.*.?>", string.Empty);
+        Validate(value);
+        return new ClassifiedAdTitle(value);
+    }
+
+    public string Value { get; }
+
+    private ClassifiedAdTitle(string value)=>Value = value;
+
+    private static void Validate(string value)
+    {
+        if(string.IsNullOrEmpty(value))
+        {
+            throw new ArgumentNullException("Title cannot be null or empty", nameof(value));
+        }
+        if(value.Length>100)
+        {
+            throw new ArgumentException("Title cannot be longer that 100 characters", nameof(value));
+        }
+    }
+
+    protected override IEnumerable<object> GetAtomicValues()
+    {
+        yield return Value;
+    }
+
+    public static implicit operator string (ClassifiedAdTitle title) => title.Value;
+}
+```
 
 [//begin]: # "Autogenerated link references for markdown compatibility"
 [linux]: ../../../7-operate/learning/env/linux/linux.md "Linux"
