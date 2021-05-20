@@ -19,6 +19,8 @@ namespace marketplace.domain.entities
                 .Replace("</b>", "*");
             return new ClassifiedAdTitle(Regex.Replace(supportedTagsReplaced, "<.*.?>", string.Empty));
         }
+
+        public string Value => _value;
         private readonly string _value;
 
         private ClassifiedAdTitle(string value)
@@ -38,5 +40,7 @@ namespace marketplace.domain.entities
         {
             yield return _value;
         }
+
+
     }
 }

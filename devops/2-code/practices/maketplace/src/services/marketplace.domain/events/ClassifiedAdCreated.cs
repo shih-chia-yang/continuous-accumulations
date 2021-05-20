@@ -7,5 +7,11 @@ namespace marketplace.domain.events
         public Guid Id { get; set; }
 
         public Guid OwnerId { get; set; }
+
+        public ClassifiedAdCreated(Guid id, Guid ownerId)
+        {
+            Id = id;
+            OwnerId = ownerId;
+        }
     }
 }

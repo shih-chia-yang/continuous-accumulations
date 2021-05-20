@@ -1,5 +1,8 @@
-﻿using System;
+﻿using System.Security.Cryptography;
+using System;
 using marketplace.domain.entities;
+using marketplace.domain.events;
+using marketplace.domain.kernal;
 using marketplace.domain.Validation;
 
 namespace marketplace.domain
@@ -11,7 +14,7 @@ namespace marketplace.domain
         Inactive,
         MarkedAsSold
     }
-    public class ClassifiedAd
+    public class ClassifiedAd:Entity
     {
         public Guid Id { get; private set; }
         public UserId OwnerId { get;}
@@ -31,20 +34,33 @@ namespace marketplace.domain
             Id = id;
             OwnerId=ownerId;
             State = ClassifiedState.Inactive;
+            Raise(new ClassifiedAdCreated(Id,ownerId));
         }
 
-        public void SetTitle(ClassifiedAdTitle title) => Title = title;
+        public void SetTitle(ClassifiedAdTitle title)
+        {
+            Title = title;
+            Raise(new ClassifiedAdTitleChanged(Id, title.Value));
+        }
 
-        public void UpdateText(ClassifiedAdText text) => Text = text;
+        public void UpdateText(ClassifiedAdText text)
+        {
+            Text = text;
+            Raise(new ClassifiedAdTextUpdated(Id, text.Value));
+        }
 
-        public void UpdatePrice(Price price) => Price = price;
+        public void UpdatePrice(Price price)
+        {
+            Price = price;
+            Raise(new ClassifiedAdPriceUpdated(Id, price.Amount, price.Currency.CurrencyCode));
+        } 
 
         public void RequestToPublish()
         {
             this.State = ClassifiedState.PendingReview;
             var valid = new ClassifiedAdValidation(this);
             valid.Validate();
-            
+            Raise(new ClassifiedAdSentToReview(Id));
         }
     }
 }

@@ -6,5 +6,11 @@ namespace marketplace.domain.events
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
+
+        public ClassifiedAdTitleChanged(Guid id,string title)
+        {
+            Id = id;
+            Title = title;
+        }
     }
 }

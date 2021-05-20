@@ -5,6 +5,7 @@ namespace marketplace.domain.entities
 {
     public class UserId:ValueObject
     {
+        // public Guid Value => _value;
         private readonly Guid _value;
 
         public UserId(Guid value)
@@ -20,5 +21,7 @@ namespace marketplace.domain.entities
         {
             yield return _value;
         }
+
+        public static implicit operator Guid(UserId self) => self._value;
     }
 }
