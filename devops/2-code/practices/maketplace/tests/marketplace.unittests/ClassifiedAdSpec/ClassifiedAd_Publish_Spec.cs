@@ -31,7 +31,7 @@ namespace marketplace.unittests.ClassifiedAdSpec
 
         [Fact]
         [Trait("ClassifiedAd","null_of_title")]
-        public void test_when_publish_without_title_should_throw_exception()
+        public void test_throw_when_publish_without_title()
         {
             //Given
             _classifiedAd.UpdateText(ClassifiedAdText.FromString("keeping social distancing"));
