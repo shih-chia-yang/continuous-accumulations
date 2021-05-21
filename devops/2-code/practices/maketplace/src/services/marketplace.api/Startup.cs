@@ -2,7 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using marketplace.api.Applications;
 using marketplace.api.Applications.Command;
+using marketplace.api.Applications.Contracts;
+using marketplace.domain.repositories;
+using marketplace.infrastructure.repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -33,7 +37,8 @@ namespace marketplace.api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "marketplace.api", Version = "v1" });
             });
-            services.AddSingleton(new ClassifiedAdCreatedCommand());
+            services.AddSingleton<IClassifiedAdRepository, ClassifiedAdRepository>();
+            services.AddScoped<ICommandHandler<ClassifiedAds.V1.Create>,ClassifiedAdCreatedCommand>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

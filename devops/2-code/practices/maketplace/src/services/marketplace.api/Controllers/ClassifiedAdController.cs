@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using marketplace.api.Applications;
 using marketplace.api.Applications.Command;
 using marketplace.api.Applications.Contracts;
 using Microsoft.AspNetCore.Http;
@@ -13,9 +14,9 @@ namespace marketplace.api.Controllers
     [ApiController]
     public class ClassifiedAdController : ControllerBase
     {
-        private readonly ClassifiedAdCreatedCommand _created;
+        private readonly ICommandHandler<ClassifiedAds.V1.Create> _created;
 
-        public ClassifiedAdController(ClassifiedAdCreatedCommand created)
+        public ClassifiedAdController(ICommandHandler<ClassifiedAds.V1.Create> created)
         {
             _created = created;
         }
@@ -23,7 +24,7 @@ namespace marketplace.api.Controllers
         [HttpPost]
         public async Task<IActionResult> Add (ClassifiedAds.V1.Create request)
         {
-            _created.Handle(request);
+            await _created.Handle(request);
             return Ok();
         }
     }
