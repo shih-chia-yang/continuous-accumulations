@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
 
-namespace marketplace.api.Applications
+namespace marketplace.domain.kernal.commands
 {
     public interface ICommandHandler<in TRequest>
-    // where TRequest:class
+    where TRequest:class
     {
         Task Handle (TRequest command);
     }

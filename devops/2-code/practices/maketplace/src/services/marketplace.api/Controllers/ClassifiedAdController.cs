@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using marketplace.api.Applications;
-using marketplace.api.Applications.Command;
 using marketplace.api.Applications.Contracts;
+using marketplace.domain.kernal.commands;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
