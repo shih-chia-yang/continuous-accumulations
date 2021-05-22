@@ -2,6 +2,11 @@
 
 [[linux]]
 
+## installation
+
+```bash
+sudo pacman -S freerdp
+```
 
 ## 相關連結
 

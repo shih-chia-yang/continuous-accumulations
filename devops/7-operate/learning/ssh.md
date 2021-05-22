@@ -230,6 +230,13 @@ iptables -A INPUT -p tcp --dport 22 -m state --state NEW -m recent !  \
 
 10. use public/private keys for authentication
 
+
+## trouble shotting
+
+- unprotected private key file too open 
+```bash
+sudo chmod 600 <private key file path>
+```
 ## 相關連結
 
 [Remote Development using SSH](https://code.visualstudio.com/docs/remote/ssh#_getting-started)

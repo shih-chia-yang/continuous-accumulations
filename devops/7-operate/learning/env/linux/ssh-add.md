@@ -1,6 +1,14 @@
 # Ssh Add
 [[linux]]
 
+## usage
+
+```bash
+eval $(ssh-agent)
+
+ssh-add <private key file>
+```
+
 [ssh-add is not persistent between reboots](https://unix.stackexchange.com/questions/140075/ssh-add-is-not-persistent-between-reboots)
 [ssh-after-reboot](https://gist.github.com/nickbytes/746af2cffb26a7ff5cb8c08628fe04ac)
 [ssh-add與ssh-agent基本用法](https://www.itread01.com/p/1382180.html)
