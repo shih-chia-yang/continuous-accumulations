@@ -17,7 +17,7 @@ namespace marketplace.api.Controllers
 
         public ClassifiedAdController(ICommandHandler<ClassifiedAds.V1.Create> created)
         {
-            _created = created;
+            _created = created; 
         }
 
         [HttpPost]

@@ -13,3 +13,7 @@ export PATH="$PATH:/home/<you>/.local/bin"
 ```bash
 source .bashrc
 ```
+
+## 相關連結
+
+[install pip](https://linuxhint.com/install_pip_archlinux/)
