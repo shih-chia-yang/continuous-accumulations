@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using marketplace.api.Applications.Command;
 using marketplace.api.Applications.Contracts;
+using marketplace.api.Applications.Services;
 using marketplace.domain.kernal.commands;
 using marketplace.domain.repositories;
 using marketplace.infrastructure.repositories;
@@ -38,6 +39,7 @@ namespace marketplace.api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "marketplace.api", Version = "v1" });
             });
             services.AddSingleton<IClassifiedAdRepository, ClassifiedAdRepository>();
+            services.AddSingleton<ClassifiedAdAppService>();
             services.AddScoped<ICommandHandler<ClassifiedAds.V1.Create>,ClassifiedAdCreatedCommand>();
         }
 
