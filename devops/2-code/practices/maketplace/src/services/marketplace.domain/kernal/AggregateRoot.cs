@@ -6,7 +6,7 @@ namespace marketplace.domain.kernal
 {
     public abstract class AggregateRoot
     {
-        public Guid RootId { get; protected set; }
+        public Guid Id { get; protected set; }
 
         protected abstract void When(object @event);
 
