@@ -283,8 +283,213 @@ services.AddScoped<ICommandHandler<V1.Create>>(c=>
         new ClassifiedAdCreatedCommand(c.GetService<ClassifiedAdRepository>())
     ));
 ```
+command handler pattern遵循 單一職責原則(Single Responsibility Principle)，每個http的方法都需要分注入依賴命令處理程序。當方法數量很多時，情況就會變得不一樣，透過event storming來看ClassifiedAd的討論結果，就會至少超過10個方法，代表著相當多數量的command handler。
 
+此書作者只是展示command handler pattern，但不使用它，取而代之的是使用application service實作command handling
+z
 ## application service
+
+類似一堆command handler變成application service的行為，一般application service呈現的多參數方法如下所示，但該種方法在pipeline中會造成維護困難，想要將這個service加入到logging、retry process非常不容易，使用pipeline的所有的處理程序在參數上需要兼容性，pipeline的所有程序都要有相同的參數集合，這造成如果某一個處理程序必須增加一個參數，就必須對pipeline中所有程序進行大量更改。
+
+```csharp
+public interface IPaymentApplicationService
+{
+    Guid Authorize(
+    string creditCardNumber,
+    int expiryYear,
+    int  expiryMonth,
+    int cvcCode,
+    int camount);
+    
+    void Capture(Guid authorizationId);
+}
+```
+
+或是application service 實作擁有大量方法的IHandle<T>的介面，但同樣的每個command都需要分別使用DI註冊,如下
+```csharp
+services.AddScope<IHandleCommand<V1.Create>>(c=>
+    new RetryingCommandHandler<V1.Create>(
+        new CreateClassifiedAdHandler<c.GetService<RavenDbEntity>>()));
+services.AddScope<IHandleCommand<V1.Create>>(c=>
+    new RetryingCommandHandler<V1.Rename>(new RenameClassifiedAdHandler(c.GetService(RavenDbEntityStore()))));
+```
+
+作者使用 實作Task Handle(object command)的介面，內部使用switch case將所有command集中處理，也是有提到違反SRP原則，但application service得到很好的內聚力。
+但個人感想是，同樣會遇到大量command handler方法集中一個函式中，經過長久維護依然是要面對大量的程式碼
+    
+1. 將switch case中的每個case拆分為private方法，handle僅是command與事件的篩選器
+2. 因人而異，端看開發者喜歡如何分類，是要將所有方法集中在一個類別或是拆分成command handler後集中在同一個資料夾內
+3. 當檔案中的程式碼內容量大時，認知複雜度隨之增加。
+4. 關於pipeline的方法，應可以使用custom middleware的方法來實現
+
+- 根據event storming的資訊，建立各種command的contract
+
+```csharp
+public static class ClassifiedAds
+    {
+        public static class V1
+        {
+            public class Create
+            {
+                public Guid Id { get; set; }
+                public Guid OwnerId { get; set; }
+            }
+
+            public class SetTitle
+            {
+                public Guid Id { get; set; }
+                public string Title { get; set; }
+            }
+
+            public class UpdateText
+            {
+                public Guid Id { get; set; }
+                public string Text { get; set; }
+            }
+
+            public class UpdatePrice
+            {
+                public Guid Id { get; set; }
+
+                public decimal Price { get; set; }
+                public string Currency { get; set; }
+            }
+
+            public class RequestToPublish
+            {
+                public Guid Id { get; set; }
+            }
+        }
+    }
+```
+- extend edge ，controller新增可以接受command的http request 
+- 實作application service方法並封裝處理程序，edge case 僅需呼叫同一個Handle方法
+- edge 不需要參考domain model，僅需處理有關http request與合約的部份
+
+```csharp
+[Route("api/ad")]
+    [ApiController]
+    public class ClassifiedAdController : ControllerBase
+    {
+        private readonly ICommandHandler<ClassifiedAds.V1.Create> _created;
+
+        private readonly IAppService _service;
+
+        public ClassifiedAdController(
+            ICommandHandler<ClassifiedAds.V1.Create> created,
+            IAppService service)
+        {
+            _created = created;
+            _service = service;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Add (ClassifiedAds.V1.Create request)
+        {
+            await _service.Handle(request);
+            // await _created.Handle(request);
+            return Ok();
+        }
+
+        [Route("name")]
+        [HttpPut]
+        public async Task<IActionResult> SetTitle(V1.SetTitle request)
+        {
+            await _service.Handle(request);
+            return Ok();
+        }
+
+        [Route("text")]
+        [HttpPut]
+        public async Task<IActionResult> UpdateText(V1.UpdateText request)
+        {
+            await _service.Handle(request);
+            return Ok();
+        }
+
+        [Route("price")]
+        [HttpPut]
+        public async Task<IActionResult> UpdatePrice(V1.UpdatePrice request)
+        {
+            await _service.Handle(request);
+            return Ok();
+        }
+
+        [Route("publish")]
+        [HttpPut]
+        public async Task<IActionResult> RequestToPublish(V1.RequestToPublish request)
+        {
+            await _service.Handle(request);
+            return Ok();
+        }
+    }
+```
+
+```csharp
+public class ClassifiedAdAppService : IAppService
+    {
+        private readonly IClassifiedAdRepository _repo;
+        public ClassifiedAdAppService(IClassifiedAdRepository repo)
+        {
+            _repo = repo;
+        }
+        public Task Handle(object command) =>
+        command switch
+        {
+            V1.Create cmd => Created(cmd),
+            V1.SetTitle cmd => SetTileAsync(cmd),
+            V1.UpdateText cmd => UpdateTextAsync(cmd),
+            V1.UpdatePrice cmd => UpdatePriceAsync(cmd),
+            V1.RequestToPublish cmd => RequestToPublishAsync(cmd),
+            _ => Task.CompletedTask
+        };
+
+        private async Task RequestToPublishAsync(V1.RequestToPublish cmd)
+        {
+            var entity = await FindAsync(cmd.Id.ToString());
+            entity.RequestToPublish();
+            await _repo.Save(entity);
+        }
+
+        private async Task UpdatePriceAsync(V1.UpdatePrice cmd)
+        {
+            var entity = await FindAsync(cmd.Id.ToString());
+            entity.UpdatePrice(Price.Create(cmd.Price, Currency.Create(cmd.Currency, 2)));
+            await _repo.Save(entity);
+        }
+
+        private async Task<ClassifiedAd> FindAsync(string id)
+        {
+            var entity = await _repo.Load(id);
+            if(entity==null)
+                throw new InvalidOperationException($"Entity with id {id} cannot be found");
+            return entity;
+        }
+
+        private async Task UpdateTextAsync(V1.UpdateText cmd)
+        {
+            var entity = await FindAsync(cmd.Id.ToString());
+            entity.UpdateText(ClassifiedAdText.FromString(cmd.Text));
+            await _repo.Save(entity);
+        }
+
+
+        private async Task SetTileAsync(V1.SetTitle cmd)
+        {
+            var entity = await FindAsync(cmd.Id.ToString());
+            entity.SetTitle(ClassifiedAdTitle.FromString(cmd.Title));
+            await _repo.Save(entity);
+        }
+
+        private async Task Created(V1.Create cmd)
+        {
+            if(await _repo.Exists(cmd.Id.ToString()))
+                throw new InvalidOperationException($"Entity with id {cmd.Id} already exist");
+            var classifiedAd = new ClassifiedAd(cmd.Id, new UserId(cmd.OwnerId));
+            await _repo.Save(classifiedAd);
+        }
+    }
+```
 
 [//begin]: # "Autogenerated link references for markdown compatibility"
 [implementing-model]: implementing-model.md "implementing-model"
