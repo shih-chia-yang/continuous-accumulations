@@ -66,6 +66,27 @@ XF86MonBrightnessDown
 sudo pacman -S scrot
 ```
 
+## dotnet core
+
+- 至AUR下載
+
+```bash
+git clone https://aur.archlinux.org/dotnet-core-bin.git
+cd dotnet-core-bin
+makepkg -si
+```
+- 安裝完成後設定環境變數
+
+```bash
+vim .bashrc
+```
+
+```
+#add .net core sdk tools
+export PATH="$PATH:/home/<user name>/.dotnet/tools"
+export MSBuildSDKsPath="/usr/share/dotnet/sdk/$(dotnet --version)/Sdks"
+```
+
 
 ## install app list
 - docker
