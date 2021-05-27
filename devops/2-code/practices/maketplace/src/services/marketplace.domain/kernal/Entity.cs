@@ -1,25 +1,25 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace marketplace.domain.kernal
 {
-    public abstract class Entity
+    public abstract class Entity:IInternalEventHandler
     {
-        private readonly List<object> _events;
+        private readonly Action<object> _applier;
 
-        protected Entity() => _events = new List<object>();
-        public IEnumerable<object> GetChanges() => _events.AsEnumerable();
-        public void ClearChanges()=>_events.Clear();
+        public Guid Id { get; protected set; }
+
+        protected Entity(Action<object> applier) => _applier = applier;
+
+        protected abstract void When(object @event);
 
         protected void Apply(object @event)
         {
             When(@event);
-            EnsureValidState();
-            _events.Add(@event);
+            _applier(@event);
         }
 
-        protected abstract void When(object @event);
-
-        protected abstract void EnsureValidState();
+        void IInternalEventHandler.Handle(object @event) => When(@event);
     }
 }

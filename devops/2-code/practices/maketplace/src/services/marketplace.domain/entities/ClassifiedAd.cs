@@ -44,8 +44,22 @@ namespace marketplace.domain
         public void RequestToPublish()=>
             Apply(new ClassifiedAdSentToReview(Id));
 
+        public Picture FindPicture(Guid id) => Pictures.FirstOrDefault(x => x.Id == id);
         public void AddPicture(Uri pictureUrl, PictureSize size) => 
-            Apply(new PictureAdded(Id,new Guid(),pictureUrl.ToString(),size.Height,size.Width));
+            Apply(new PictureAdded(
+                Id,new Guid(),
+                pictureUrl.ToString(),
+                size.Height,size.Width,
+                Pictures.Count==0?1:Pictures.Max(x=>x.Order)
+                ));
+
+        public void ResizePicture(Guid id,PictureSize newSize)
+        {
+            var picture = FindPicture(id);
+            if(picture==null)
+                throw new InvalidOperationException("Cannot resize a picture that picture not found");
+            picture.Resize(newSize);
+        }
         protected override void When(object @event)
         {
             switch(@event)
@@ -68,7 +82,8 @@ namespace marketplace.domain
                     State = ClassifiedState.PendingReview;
                     break;
                 case PictureAdded e:
-                    var newPicture = new Picture(new PictureSize(e.Height, e.Width),new Uri(e.Url),Pictures.Max(x=>x.Order)+1);
+                    var newPicture = new Picture(Apply);
+                    ApplyToEntity(newPicture, e);
                     Pictures.Add(newPicture);
                     break;
             }

@@ -1,3 +1,4 @@
+using System.Linq;
 using System;
 using marketplace.domain;
 using marketplace.domain.entities;
@@ -9,6 +10,7 @@ namespace marketplace.unittests.ClassifiedAdSpec
 {
     public class ClassifiedAd_Publish_Spec
     {
+        public const string Context = "ClassifiedAd";
         private readonly ClassifiedAd _classifiedAd;
         public ClassifiedAd_Publish_Spec()
         {
@@ -16,13 +18,14 @@ namespace marketplace.unittests.ClassifiedAdSpec
         }
 
         [Fact]
-        [Trait("ClassifiedAd","publish")]
+        [Trait(Context,"publish")]
         public void test_publish_a_valid_ad_should_be_success()
         {
             //Given
             _classifiedAd.SetTitle(ClassifiedAdTitle.FromString("covid-19 comming"));
             _classifiedAd.UpdateText(ClassifiedAdText.FromString("keeping social distancing"));
             _classifiedAd.UpdatePrice(Price.Create(100M, Currency.Default));
+            _classifiedAd.AddPicture(new Uri("http://localhost/storage/123.jpg"), new PictureSize(800, 600));
             //When
             _classifiedAd.RequestToPublish();
             //Then
@@ -30,7 +33,7 @@ namespace marketplace.unittests.ClassifiedAdSpec
         }
 
         [Fact]
-        [Trait("ClassifiedAd","null_of_title")]
+        [Trait(Context,"null_of_title")]
         public void test_throw_when_publish_without_title()
         {
             //Given
@@ -43,7 +46,7 @@ namespace marketplace.unittests.ClassifiedAdSpec
         }
 
         [Fact]
-        [Trait("ClassifiedAd","null_of_text")]
+        [Trait(Context,"null_of_text")]
         public void test_publish_without_text_should_throw_exception()
         {
             //Given
@@ -56,7 +59,7 @@ namespace marketplace.unittests.ClassifiedAdSpec
         }
 
         [Fact]
-        [Trait("ClassifiedAd","null_price")]
+        [Trait(Context,"null_price")]
         public void test_publish_without_price_should_throw_exception()
         {
             //Given
@@ -69,7 +72,7 @@ namespace marketplace.unittests.ClassifiedAdSpec
         }
 
         [Fact]
-        [Trait("ClassifiedAd","zero_price")]
+        [Trait(Context,"zero_price")]
         public void test_publish_with_zero_price_should_throw_exception()
         {
             //Given
@@ -80,6 +83,21 @@ namespace marketplace.unittests.ClassifiedAdSpec
             Action publish=()=>_classifiedAd.RequestToPublish();
             //Then
             Assert.Throws<InvalidEntityStateException>(publish);
+        }
+
+        [Fact]
+        [Trait(Context,"add_picture")]
+        public void test_add_picture_to_ClassifiedAd()
+        {
+            //Given
+            _classifiedAd.SetTitle(ClassifiedAdTitle.FromString("covid-19 comming"));
+            _classifiedAd.UpdateText(ClassifiedAdText.FromString("keeping social distancing"));
+            _classifiedAd.UpdatePrice(Price.Create(0, Currency.Default));
+            var originCount = _classifiedAd.Pictures.Count;
+            //When
+            _classifiedAd.AddPicture(new Uri("https://google.com.tw"),new PictureSize(800,600));
+            //Then
+            Assert.Equal(originCount+1,_classifiedAd.Pictures.Count);
         }
     }
 }

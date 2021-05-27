@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Linq;
+using marketplace.domain.entities;
 using marketplace.domain.exceptions;
 using marketplace.domain.kernal;
 
@@ -13,17 +14,26 @@ namespace marketplace.domain.Validation
         }
         public override bool Validate()
         {
-            var valid = IdIsNotNull() && OwnerIdIsNotNull() &&
-            (Entity.State switch{
-                ClassifiedState.PendingReview=>
-                    TitleIsNotNull() && TextIsNotNull() && AmountIsNotZero(),
-                ClassifiedState.Active=>
-                    TitleIsNotNull() && TextIsNotNull()
-                    && AmountIsNotZero() && ApprovedByIsNotNull(),
-                _ => true
-            });
+            var valid = IdIsNotNull() 
+                && OwnerIdIsNotNull() 
+                &&(Entity.State switch{
+                    ClassifiedState.PendingReview=>
+                        TitleIsNotNull() 
+                        && TextIsNotNull() 
+                        && AmountIsNotZero()
+                        && PicturesHasCorrectSize(),
+                    ClassifiedState.Active=>
+                        TitleIsNotNull() 
+                        && TextIsNotNull()
+                        && AmountIsNotZero() 
+                        && ApprovedByIsNotNull()
+                        && PicturesHasCorrectSize(),
+                    _ => true
+                    });
+
             if(!valid)
                 throw new InvalidEntityStateException(Entity,$"Post-checks failed in state {Entity.State}");
+            
             if(Entity.Title==null)
             {
                 base.AddError(nameof(Entity.Title), "title cannot be null");
@@ -49,5 +59,7 @@ namespace marketplace.domain.Validation
         public bool TextIsNotNull() => Entity.Text == null ? false : true;
         public bool AmountIsNotZero() => Entity.Price?.Amount >0 ? true : false;
         public bool ApprovedByIsNotNull() => Entity.ApprovedBy == null ? false : true;
+
+        public bool PicturesHasCorrectSize() => Entity.Pictures.All(x => x.HasCorrectSize() == true);
     }
 }

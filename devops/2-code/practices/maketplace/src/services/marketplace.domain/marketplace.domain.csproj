@@ -3,5 +3,9 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
-
+  <ItemGroup>
+  <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+    <_Parameter1>marketplace.unittests</_Parameter1>
+  </AssemblyAttribute>
+</ItemGroup>
 </Project>

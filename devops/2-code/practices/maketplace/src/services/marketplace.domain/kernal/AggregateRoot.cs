@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace marketplace.domain.kernal
 {
-    public abstract class AggregateRoot
+    public abstract class AggregateRoot:IInternalEventHandler
     {
         public Guid Id { get; protected set; }
 
@@ -29,5 +29,7 @@ namespace marketplace.domain.kernal
 
         protected abstract void EnsureValidState();
 
+        protected void ApplyToEntity(IInternalEventHandler entity, object @event) => entity?.Handle(@event);
+        public void Handle(object @event) => When(@event);
     }
 }

@@ -1,29 +1,39 @@
+using System.Security.Cryptography.X509Certificates;
 using System;
+using marketplace.domain.events;
 using marketplace.domain.kernal;
+
 
 namespace marketplace.domain.entities
 {
     public class Picture : Entity
     {
-        internal PictureSize Size { get; set; }
-        internal Uri Location { get; set; }
-        internal int Order { get; set; }
+        public PictureSize Size { get; private set; }
+        public Uri Location { get; private set; }
+        public int Order { get; private set; }
 
-        public Picture(PictureSize size,Uri location,int order)
+        public Picture(Action<object> applier):base(applier)
         {
-            Size = size;
-            Location = location;
-            Order = order;
-        }
 
-        protected override void EnsureValidState()
-        {
-            throw new System.NotImplementedException();
         }
 
         protected override void When(object @event)
         {
-            throw new System.NotImplementedException();
+            switch(@event)
+            {
+                case PictureAdded e:
+                    Id = new Guid(e.PictureId.ToString());
+                    Location = new Uri(e.Url);
+                    Size = new PictureSize(e.Width, e.Height);
+                    Order = e.Order;
+                    break;
+                case PictureResized e:
+                    Size = new PictureSize(e.Width, e.Height);
+                    break;
+            }
         }
+
+        internal void Resize(PictureSize newSize) => 
+            Apply(new PictureResized(Id, newSize.Height, newSize.Width));
     }
 }
