@@ -14,6 +14,17 @@
 
 4. 雲科大vpn `https://yuntechvpn.twaren.net`
 
+## Failed to load CA certs
+
+使用pulseUI，可正常連線，但仍然會出現CA untrust錯誤提醒，下一步確認後輸入帳號密碼登入，暫時可使用，但ca問題待解決
+
+```bash
+sudo pacman -S webkit2gtk
+sudo pacman -S gtkmm3
+```
+
+
+
 ## 相關連結
 
 [wiki](https://wiki.archlinux.org/title/Pulse_Connect_Secure#Login_succeeds_but_Network_Connect_will_not_launch)
