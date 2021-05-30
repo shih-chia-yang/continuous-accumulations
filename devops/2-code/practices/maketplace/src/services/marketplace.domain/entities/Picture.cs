@@ -8,10 +8,13 @@ namespace marketplace.domain.entities
 {
     public class Picture : Entity
     {
+
+        public Guid ParentId{ get; private set; }
         public PictureSize Size { get; private set; }
         public Uri Location { get; private set; }
         public int Order { get; private set; }
 
+        protected Picture() { }
         public Picture(Action<object> applier):base(applier)
         {
 

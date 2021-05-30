@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using marketplace.api.Applications;
 using marketplace.api.Applications.Command;
 using marketplace.api.Applications.Contracts;
 using marketplace.api.Applications.Services;
@@ -40,7 +41,7 @@ namespace marketplace.api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ClassfiedAd", Version = "v1" });
             });
             services.AddScoped<IClassifiedAdRepository, ClassifiedAdRepository>();
-            services.AddScoped<ClassifiedAdAppService>();
+            services.AddScoped<IAppService,ClassifiedAdAppService>();
             services.AddScoped<ICommandHandler<ClassifiedAds.V1.Create>,ClassifiedAdCreatedCommand>();
         }
 

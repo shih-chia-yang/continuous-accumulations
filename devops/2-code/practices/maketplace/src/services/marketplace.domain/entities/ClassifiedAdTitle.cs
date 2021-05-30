@@ -25,8 +25,10 @@ namespace marketplace.domain.entities
             return new ClassifiedAdTitle(value);
         }
 
-        public string Value { get; }
+        public static ClassifiedAdTitle NoTitle() => new ClassifiedAdTitle();
+        public string Value { get; internal set;}
 
+        protected ClassifiedAdTitle(){}
         private ClassifiedAdTitle(string value)=>Value = value;
 
         private static void Validate(string value)

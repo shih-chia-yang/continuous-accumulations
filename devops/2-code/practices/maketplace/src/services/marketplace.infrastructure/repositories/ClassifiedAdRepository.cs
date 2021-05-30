@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using marketplace.domain;
@@ -16,12 +17,12 @@ namespace marketplace.infrastructure.repositories
         {
             _context = context;
         }
-        public async Task<bool> Exists (string id)
+        public async Task<bool> Exists (Guid id)
         {
             return await Load(id) != null;
         }
 
-        public async Task<ClassifiedAd> Load (string id)
+        public async Task<ClassifiedAd> Load (Guid id)
         {
             return await _context.ClassifiedAds.FindAsync(id);
         }

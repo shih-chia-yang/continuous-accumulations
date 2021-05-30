@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using marketplace.domain.kernel;
 namespace marketplace.domain.entities
 {
-    public class UserId:ValueObject
+    public class UserId : ValueObject
     {
-        // public Guid Value => _value;
-        private readonly Guid _value;
+        public static UserId NoUser() => new UserId();
+        public Guid Value { get; internal set;}
+        protected UserId(){}
 
         public UserId(Guid value)
         {
@@ -14,14 +15,14 @@ namespace marketplace.domain.entities
             {
                 throw new ArgumentException("Owner id must be specified", nameof(value));
             }
-            _value = value;
+            Value = value;
         }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
-            yield return _value;
+            yield return Value;
         }
 
-        public static implicit operator Guid(UserId self) => self._value;
+        public static implicit operator Guid(UserId self) => self.Value;
     }
 }

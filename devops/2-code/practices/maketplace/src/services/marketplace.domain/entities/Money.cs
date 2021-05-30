@@ -2,14 +2,18 @@ using System.Text.RegularExpressions;
 using System;
 using System.Collections.Generic;
 using marketplace.domain.kernel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace marketplace.domain.entities
 {
     public class Money:ValueObject,ICurrencyExpression
     {
         
-        public Currency Currency { get; }
-        public decimal Amount { get;}
+        public Currency Currency { get; internal set; }
+        
+        public decimal Amount { get; internal set; }
+
+        protected Money() { }
 
         protected Money(decimal amount,Currency currency=null)
         {

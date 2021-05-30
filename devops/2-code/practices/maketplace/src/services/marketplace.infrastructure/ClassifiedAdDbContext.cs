@@ -28,6 +28,7 @@ namespace marketplace.infrastructure
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new ClassifiedAdEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new PictureEntityTypeConfiguration());
         }
 
 
@@ -44,7 +45,7 @@ namespace marketplace.infrastructure
         public ClassifiedAdContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<ClassifiedAdContext>();
-            optionsBuilder.UseSqlServer(@"Data Source=127.0.0.1;Initial Catalog=Code.Service.Data;Persist Security Info=True;User ID=SA;password=qwer%TGB;");
+            optionsBuilder.UseSqlServer(@"Data Source=127.0.0.1;Initial Catalog=ClassifiedAd;Persist Security Info=True;User ID=SA;password=qwer%TGB;");
             return new ClassifiedAdContext(optionsBuilder.Options);
         }
     }

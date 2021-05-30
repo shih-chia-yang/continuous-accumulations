@@ -10,7 +10,11 @@ namespace marketplace.api.Registry
         public static IServiceCollection AddCustomDbContext(this IServiceCollection services,IConfiguration configuration )
         {
             services.AddDbContext<ClassifiedAdContext>(
-                    options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+                    options =>
+                    {
+                        options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+                        options.EnableSensitiveDataLogging();
+                    });
             return services;
         }
     }

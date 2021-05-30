@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using marketplace.domain.kernel;
 
@@ -12,7 +13,7 @@ namespace marketplace.domain.repositories
         /// <typeparam name="TEntity">entity type
         /// </typeparam>
         /// <returns></returns>
-        Task<ClassifiedAd> Load(string id);
+        Task<ClassifiedAd> Load(Guid id);
 
 
         /// <summary>
@@ -21,7 +22,7 @@ namespace marketplace.domain.repositories
         /// <param name="id">entity id</param>
         /// <typeparam name="TEntity">entity type</typeparam>
         /// <returns></returns>
-        Task<bool> Exists (string id);
+        Task<bool> Exists (Guid id);
 
         Task Add(ClassifiedAd entity);
 

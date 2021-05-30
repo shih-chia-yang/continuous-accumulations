@@ -26,6 +26,8 @@ namespace marketplace.domain
         public List<Picture> Pictures{ get; private set; }
         public ClassifiedState State { get; private set;}
         public UserId ApprovedBy{ get; private set;}
+
+        protected ClassifiedAd(){}
         public ClassifiedAd(Guid id,UserId ownerId)
         {
             Pictures = new List<Picture>();
@@ -68,6 +70,10 @@ namespace marketplace.domain
                     Id = e.Id;
                     OwnerId = new UserId(e.OwnerId);
                     State = ClassifiedState.Inactive;
+                    Title = ClassifiedAdTitle.NoTitle();
+                    Text = ClassifiedAdText.NoText();
+                    Price = Price.NoPrice();
+                    ApprovedBy = UserId.NoUser();
                     break;
                 case ClassifiedAdTitleChanged e:
                     Title = ClassifiedAdTitle.FromString(e.Title);
