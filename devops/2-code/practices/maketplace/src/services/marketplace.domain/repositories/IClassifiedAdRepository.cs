@@ -1,8 +1,9 @@
 using System.Threading.Tasks;
+using marketplace.domain.kernel;
 
 namespace marketplace.domain.repositories
 {
-    public interface IClassifiedAdRepository
+    public interface IClassifiedAdRepository:IRepository
     {
         /// <summary>
         /// loads an entity by id
@@ -13,13 +14,6 @@ namespace marketplace.domain.repositories
         /// <returns></returns>
         Task<ClassifiedAd> Load(string id);
 
-        /// <summary>
-        /// persists an entity
-        /// </summary>
-        /// <param name="entity">entity</param>
-        /// <typeparam name="TEntity">entity type</typeparam>
-        /// <returns></returns>
-        Task Save (ClassifiedAd entity);
 
         /// <summary>
         /// check if entity with a given id already exist
@@ -28,5 +22,8 @@ namespace marketplace.domain.repositories
         /// <typeparam name="TEntity">entity type</typeparam>
         /// <returns></returns>
         Task<bool> Exists (string id);
+
+        Task Add(ClassifiedAd entity);
+
     }
 }

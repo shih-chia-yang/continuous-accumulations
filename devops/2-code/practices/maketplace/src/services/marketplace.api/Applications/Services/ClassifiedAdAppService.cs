@@ -30,14 +30,14 @@ namespace marketplace.api.Applications.Services
         {
             var entity = await FindAsync(cmd.Id.ToString());
             entity.RequestToPublish();
-            await _repo.Save(entity);
+            await _repo.UnitOfWork.Commit();
         }
 
         private async Task UpdatePriceAsync(V1.UpdatePrice cmd)
         {
             var entity = await FindAsync(cmd.Id.ToString());
             entity.UpdatePrice(Price.Create(cmd.Price, Currency.Create(cmd.Currency, 2)));
-            await _repo.Save(entity);
+            await _repo.UnitOfWork.Commit();
         }
 
         private async Task<ClassifiedAd> FindAsync(string id)
@@ -52,7 +52,7 @@ namespace marketplace.api.Applications.Services
         {
             var entity = await FindAsync(cmd.Id.ToString());
             entity.UpdateText(ClassifiedAdText.FromString(cmd.Text));
-            await _repo.Save(entity);
+            await _repo.UnitOfWork.Commit();
         }
 
 
@@ -60,7 +60,7 @@ namespace marketplace.api.Applications.Services
         {
             var entity = await FindAsync(cmd.Id.ToString());
             entity.SetTitle(ClassifiedAdTitle.FromString(cmd.Title));
-            await _repo.Save(entity);
+            await _repo.UnitOfWork.Commit();
         }
 
         private async Task Created(V1.Create cmd)
@@ -68,7 +68,8 @@ namespace marketplace.api.Applications.Services
             if(await _repo.Exists(cmd.Id.ToString()))
                 throw new InvalidOperationException($"Entity with id {cmd.Id} already exist");
             var classifiedAd = new ClassifiedAd(cmd.Id, new UserId(cmd.OwnerId));
-            await _repo.Save(classifiedAd);
+            await _repo.Add(classifiedAd);
+            await _repo.UnitOfWork.Commit();
         }
     }
 }

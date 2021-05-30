@@ -15,7 +15,7 @@ namespace marketplace.api
         private static string AppPath => Directory.GetCurrentDirectory();
         public static void Main(string[] args)
         {
-            var Configuration = GetConfiguration();
+            // var Configuration = GetConfiguration();
             var host = CreateHostBuilder(args).Build();
             host.Run();
         }
@@ -32,7 +32,7 @@ namespace marketplace.api
             var builder = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json",optional:false,reloadOnChange:true)
-            .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")??"Production"}.json",optional:true)
+            // .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")??"Production"}.json",optional:true)
             .AddEnvironmentVariables()
             .Build();
             return builder;

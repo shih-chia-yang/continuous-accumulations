@@ -18,7 +18,8 @@ namespace marketplace.api.Applications.Command
         public Task Handle (ClassifiedAds.V1.Create command)
         {
             var classifiedAd = new ClassifiedAd(Guid.NewGuid(), new UserId(Guid.NewGuid()));
-            return _repo.Save(classifiedAd);
+            _repo.Add(classifiedAd);
+            return _repo.UnitOfWork.Commit();
         }
     }
 }

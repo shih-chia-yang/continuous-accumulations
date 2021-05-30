@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 using System;
 using marketplace.domain.entities;
 using marketplace.domain.events;
-using marketplace.domain.kernal;
+using marketplace.domain.kernel;
 using marketplace.domain.Validation;
 using System.Collections.Generic;
 using System.Linq;

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using marketplace.api.Applications.Command;
 using marketplace.api.Applications.Contracts;
 using marketplace.api.Applications.Services;
+using marketplace.api.Registry;
 using marketplace.domain.kernal.commands;
 using marketplace.domain.repositories;
 using marketplace.infrastructure.repositories;
@@ -32,14 +33,14 @@ namespace marketplace.api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddCustomDbContext(Configuration);
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "marketplace.api", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ClassfiedAd", Version = "v1" });
             });
-            services.AddSingleton<IClassifiedAdRepository, ClassifiedAdRepository>();
-            services.AddSingleton<ClassifiedAdAppService>();
+            services.AddScoped<IClassifiedAdRepository, ClassifiedAdRepository>();
+            services.AddScoped<ClassifiedAdAppService>();
             services.AddScoped<ICommandHandler<ClassifiedAds.V1.Create>,ClassifiedAdCreatedCommand>();
         }
 
@@ -50,9 +51,9 @@ namespace marketplace.api
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "marketplace.api v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ClassifiedAd v1"));
             }
-
+            // app.EnsureDatabase();
             app.UseHttpsRedirection();
 
             app.UseRouting();

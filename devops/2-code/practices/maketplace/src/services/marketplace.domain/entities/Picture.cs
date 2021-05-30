@@ -1,7 +1,7 @@
 using System.Security.Cryptography.X509Certificates;
 using System;
 using marketplace.domain.events;
-using marketplace.domain.kernal;
+using marketplace.domain.kernel;
 
 
 namespace marketplace.domain.entities

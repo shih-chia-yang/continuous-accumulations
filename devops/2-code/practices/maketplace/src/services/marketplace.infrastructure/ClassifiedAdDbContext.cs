@@ -1,0 +1,51 @@
+﻿using System;
+using System.Threading.Tasks;
+using marketplace.domain;
+using marketplace.domain.kernel;
+using marketplace.infrastructure.EntityTypeConfigurations;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Logging;
+
+namespace marketplace.infrastructure
+{
+    public class ClassifiedAdContext:DbContext,IUnitOfWork
+    {
+        private readonly ILoggerFactory _logger;
+
+        public DbSet<ClassifiedAd> ClassifiedAds{ get; set; }
+
+        public ClassifiedAdContext(DbContextOptions<ClassifiedAdContext> options):base(options)
+        {
+
+        }
+
+        public ClassifiedAdContext(DbContextOptions<ClassifiedAdContext> options,ILoggerFactory logger):this(options)
+        {
+            _logger = logger;
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new ClassifiedAdEntityTypeConfiguration());
+        }
+
+
+        public Task Commit()
+        {
+            return base.SaveChangesAsync();
+        }
+
+
+    }
+
+    public class DataContextDesignFactory:IDesignTimeDbContextFactory<ClassifiedAdContext>
+    {
+        public ClassifiedAdContext CreateDbContext(string[] args)
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<ClassifiedAdContext>();
+            optionsBuilder.UseSqlServer(@"Data Source=127.0.0.1;Initial Catalog=Code.Service.Data;Persist Security Info=True;User ID=SA;password=qwer%TGB;");
+            return new ClassifiedAdContext(optionsBuilder.Options);
+        }
+    }
+}

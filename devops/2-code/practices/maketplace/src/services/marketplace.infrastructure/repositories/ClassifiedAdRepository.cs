@@ -1,24 +1,34 @@
+using System.Linq;
 using System.Threading.Tasks;
 using marketplace.domain;
+using marketplace.domain.entities;
+using marketplace.domain.kernel;
 using marketplace.domain.repositories;
 
 namespace marketplace.infrastructure.repositories
 {
     public class ClassifiedAdRepository : IClassifiedAdRepository
     {
-        public Task<bool> Exists (string id)
+        private readonly ClassifiedAdContext _context;
+
+        public IUnitOfWork UnitOfWork => _context;
+        public ClassifiedAdRepository(ClassifiedAdContext context)
         {
-            throw new System.NotImplementedException();
+            _context = context;
+        }
+        public async Task<bool> Exists (string id)
+        {
+            return await Load(id) != null;
         }
 
-        public Task<ClassifiedAd> Load (string id)
+        public async Task<ClassifiedAd> Load (string id)
         {
-            throw new System.NotImplementedException();
+            return await _context.ClassifiedAds.FindAsync(id);
         }
 
-        public Task Save (ClassifiedAd entity)
+        public async Task Add(ClassifiedAd entity)
         {
-            throw new System.NotImplementedException();
+            await _context.ClassifiedAds.AddAsync(entity);
         }
     }
 }

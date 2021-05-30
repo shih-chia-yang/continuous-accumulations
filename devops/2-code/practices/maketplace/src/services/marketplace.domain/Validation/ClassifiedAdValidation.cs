@@ -2,7 +2,7 @@ using System.Diagnostics;
 using System.Linq;
 using marketplace.domain.entities;
 using marketplace.domain.exceptions;
-using marketplace.domain.kernal;
+using marketplace.domain.kernel;
 
 namespace marketplace.domain.Validation
 {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace marketplace.domain.kernal
+namespace marketplace.domain.kernel
 {
     public abstract class ValueObject
     {

@@ -1,4 +1,4 @@
-namespace marketplace.domain.kernal
+namespace marketplace.domain.kernel
 {
     public interface IInternalEventHandler
     {

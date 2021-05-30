@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using marketplace.domain.entities;
 
-namespace marketplace.domain.kernal
+namespace marketplace.domain.kernel
 {
     public abstract class VaildationContext<T>
     where T:class

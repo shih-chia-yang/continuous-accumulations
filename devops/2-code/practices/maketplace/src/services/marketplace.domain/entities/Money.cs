@@ -1,7 +1,7 @@
 using System.Text.RegularExpressions;
 using System;
 using System.Collections.Generic;
-using marketplace.domain.kernal;
+using marketplace.domain.kernel;
 
 namespace marketplace.domain.entities
 {
