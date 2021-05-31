@@ -165,6 +165,32 @@ public IActionResult Create(TodoItem item)
 <response code="201">item create successfully</response>
 ```
 
+## trouble shooting
+
+**TypeError: NetworkError when attempting to fetch resource.**
+
+or 
+
+```json
+	
+Failed to fetch.
+Possible Reasons:
+
+CORS
+Network Failure
+URL scheme must be "http" or "https" for CORS request.
+```
+
+可能原因
+1. local development environment has a self signed SSL certificate.
+2. Cors
+3. 發現browser extension ublock or adblock，會阻擋localhost相關頁面，原因可能與self signed SSL certificate相關，關掉extension後即正常呈現
+
+[TypeError: Failed to fetch](https://github.com/swagger-api/swagger-ui/issues/3403)
+
+[ERR_BLOCKED_BY_CLIENT](https://www.itread01.com/content/1544812569.html)
+
+[swagger-ui-typeerror-failed-to-fetch](https://stackoverflow.com/questions/45156665/swagger-ui-typeerror-failed-to-fetch-on-valid-response/53485094)
 
 ## 相關連結
 [swashbuckle 與asp.net core使用者入門](https://docs.microsoft.com/zh-tw/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-5.0&tabs=visual-studio)
