@@ -19,6 +19,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace marketplace.api
 {
@@ -35,14 +37,36 @@ namespace marketplace.api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCustomDbContext(Configuration);
-            services.AddControllers();
+            services.AddControllers(control =>
+            {
+                control.AllowEmptyInputInBodyModelBinding = true;
+            })
+            .AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                options.SerializerSettings.DefaultValueHandling = DefaultValueHandling.Include;
+                options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+            });
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ClassfiedAd", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ClassifiedAd", Version = "v1" });
             });
             services.AddScoped<IClassifiedAdRepository, ClassifiedAdRepository>();
             services.AddScoped<IAppService,ClassifiedAdAppService>();
             services.AddScoped<ICommandHandler<ClassifiedAds.V1.Create>,ClassifiedAdCreatedCommand>();
+        
+            services.AddCors(options=>
+            {
+                options.AddPolicy("CorsPolicy", 
+                                builder=>
+                                {
+                                    builder.WithOrigins("https://localhost:5002")
+                                    .SetIsOriginAllowed((host)=>true)
+                                    .AllowAnyHeader()
+                                    .AllowAnyMethod();
+                                });
+                
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,11 +78,16 @@ namespace marketplace.api
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ClassifiedAd v1"));
             }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
+            }
             // app.EnsureDatabase();
             app.UseHttpsRedirection();
-
+            app.UseStaticFiles();
             app.UseRouting();
-
+            app.UseCors("CorsPolicy");
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

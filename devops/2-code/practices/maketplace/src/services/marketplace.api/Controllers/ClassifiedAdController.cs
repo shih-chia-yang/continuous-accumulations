@@ -7,9 +7,14 @@ using marketplace.api.Applications.Contracts;
 using marketplace.domain.kernal.commands;
 using Microsoft.AspNetCore.Mvc;
 using static marketplace.api.Applications.Contracts.ClassifiedAds;
+using Serilog;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 
 namespace marketplace.api.Controllers
 {
+    [EnableCors("CorsPolicy")]
+    [Produces("application/json")]
     [Route("api/ad")]
     [ApiController]
     public class ClassifiedAdController : ControllerBase
@@ -17,6 +22,8 @@ namespace marketplace.api.Controllers
         private readonly ICommandHandler<ClassifiedAds.V1.Create> _created;
 
         private readonly IAppService _service;
+
+        private static ILogger Log = Serilog.Log.ForContext<ClassifiedAdController>();
 
         public ClassifiedAdController(
             ICommandHandler<ClassifiedAds.V1.Create> created,
@@ -34,13 +41,12 @@ namespace marketplace.api.Controllers
             return Ok();
         }
 
-        [Route("name")]
+        [Route("~/api/ad/name")]
         [HttpPut]
-        public async Task<IActionResult> SetTitle(V1.SetTitle request)
-        {
-            await _service.Handle(request);
-            return Ok();
-        }
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public Task<IActionResult> SetTitle(V1.SetTitle request)
+            => HandleRequest(request, _service.Handle);
 
         [Route("text")]
         [HttpPut]
@@ -64,6 +70,20 @@ namespace marketplace.api.Controllers
         {
             await _service.Handle(request);
             return Ok();
+        }
+        private async Task<IActionResult> HandleRequest<T>(T request, Func<T, Task> handler)
+        {
+            try
+            {
+                Log.Debug("Handling HTTP request of type {type}", typeof(T).Name);
+                await handler(request);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Error handling the request");
+                return new BadRequestObjectResult(new {error = e.Message, stackTrace = e.StackTrace});
+            }
         }
     }
 }
