@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using marketplace.domain;
+using marketplace.domain.entities;
 using marketplace.domain.kernel;
 using marketplace.infrastructure.EntityTypeConfigurations;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,8 @@ namespace marketplace.infrastructure
         private readonly ILoggerFactory _logger;
 
         public DbSet<ClassifiedAd> ClassifiedAds{ get; set; }
+
+        public DbSet<Picture> Pictures{ get; set; }
 
         public ClassifiedAdContext(DbContextOptions<ClassifiedAdContext> options):base(options)
         {

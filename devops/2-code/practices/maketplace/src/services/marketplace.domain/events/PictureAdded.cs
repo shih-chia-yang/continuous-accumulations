@@ -9,7 +9,6 @@ namespace marketplace.domain.events
         public string Url { get; set; }
         public int Height { get; set; }
         public int Width { get; set; }
-
         public int Order { get; set; }
 
         public PictureAdded(Guid classifiedAdId,Guid pictureId,string url,int height,int width,int order)

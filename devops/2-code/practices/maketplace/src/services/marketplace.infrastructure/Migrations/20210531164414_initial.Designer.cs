@@ -10,7 +10,7 @@ using marketplace.infrastructure;
 namespace marketplace.infrastructure.Migrations
 {
     [DbContext(typeof(ClassifiedAdContext))]
-    [Migration("20210530152407_initial")]
+    [Migration("20210531164414_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,7 +57,7 @@ namespace marketplace.infrastructure.Migrations
 
                     b.HasIndex("ClassifiedAdId");
 
-                    b.ToTable("Picture");
+                    b.ToTable("Pictures");
                 });
 
             modelBuilder.Entity("marketplace.domain.ClassifiedAd", b =>
@@ -200,7 +200,7 @@ namespace marketplace.infrastructure.Migrations
 
                             b1.HasKey("PictureId");
 
-                            b1.ToTable("Picture");
+                            b1.ToTable("Pictures");
 
                             b1.WithOwner()
                                 .HasForeignKey("PictureId");

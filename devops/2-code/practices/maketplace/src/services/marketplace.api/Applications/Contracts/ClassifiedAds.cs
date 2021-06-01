@@ -12,6 +12,22 @@ namespace marketplace.api.Applications.Contracts
                 public Guid OwnerId { get; set; }
             }
 
+            public class AddPicture
+            {
+                public Guid ClassifiedAdId { get; set; }
+                public string Url { get; set; }
+                public int Height { get; set; }
+                public int Width { get; set; }
+            }
+
+            public class ResizePicture
+            {
+                public Guid ClassifiedAdId { get; set; }
+                public Guid PictureId { get; set; }
+                public int Height { get; set; }
+                public int Width { get; set; }
+            }
+
             public class SetTitle
             {
                 public Guid Id { get; set; }

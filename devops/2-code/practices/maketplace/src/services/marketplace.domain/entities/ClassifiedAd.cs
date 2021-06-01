@@ -23,14 +23,17 @@ namespace marketplace.domain
         public ClassifiedAdTitle Title { get; private set; }
         public ClassifiedAdText Text { get; private set; }
         public Price Price { get; private set; }
-        public List<Picture> Pictures{ get; private set; }
+
+        private readonly List<Picture> _Pictures;
+        public IReadOnlyCollection<Picture> Pictures => _Pictures;
+
         public ClassifiedState State { get; private set;}
         public UserId ApprovedBy{ get; private set;}
 
         protected ClassifiedAd(){}
         public ClassifiedAd(Guid id,UserId ownerId)
         {
-            Pictures = new List<Picture>();
+            _Pictures = new List<Picture>();
             Apply(new ClassifiedAdCreated(id,ownerId));
         }
 
@@ -49,10 +52,10 @@ namespace marketplace.domain
         public Picture FindPicture(Guid id) => Pictures.FirstOrDefault(x => x.Id == id);
         public void AddPicture(Uri pictureUrl, PictureSize size) => 
             Apply(new PictureAdded(
-                Id,new Guid(),
+                Id,Guid.NewGuid(),
                 pictureUrl.ToString(),
                 size.Height,size.Width,
-                Pictures.Count==0?1:Pictures.Max(x=>x.Order)
+                _Pictures.Count==0?1:Pictures.Max(x=>x.Order)
                 ));
 
         public void ResizePicture(Guid id,PictureSize newSize)
@@ -90,7 +93,7 @@ namespace marketplace.domain
                 case PictureAdded e:
                     var newPicture = new Picture(Apply);
                     ApplyToEntity(newPicture, e);
-                    Pictures.Add(newPicture);
+                    _Pictures.Add(newPicture);
                     break;
             }
         }

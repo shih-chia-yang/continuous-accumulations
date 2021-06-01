@@ -15,6 +15,15 @@ namespace marketplace.domain.entities
         public int Order { get; private set; }
 
         protected Picture() { }
+
+        public Picture(Guid parentId,Guid id,PictureSize size,Uri location ,int order)
+        {
+            ParentId = parentId;
+            Id = new Guid(id.ToString());
+            Location = location;
+            Size = size;
+            Order = order;
+        }
         public Picture(Action<object> applier):base(applier)
         {
 
@@ -25,6 +34,7 @@ namespace marketplace.domain.entities
             switch(@event)
             {
                 case PictureAdded e:
+                    ParentId = e.ClassifiedAdId;
                     Id = new Guid(e.PictureId.ToString());
                     Location = new Uri(e.Url);
                     Size = new PictureSize(e.Width, e.Height);

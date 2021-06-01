@@ -10,6 +10,8 @@ using static marketplace.api.Applications.Contracts.ClassifiedAds;
 using Serilog;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
+using marketplace.infrastructure;
+using marketplace.domain.entities;
 
 namespace marketplace.api.Controllers
 {
@@ -21,19 +23,24 @@ namespace marketplace.api.Controllers
     {
         private readonly ICommandHandler<ClassifiedAds.V1.Create> _created;
 
+        private readonly ClassifiedAdContext _context;
         private readonly IAppService _service;
 
         private static ILogger Log = Serilog.Log.ForContext<ClassifiedAdController>();
 
         public ClassifiedAdController(
             ICommandHandler<ClassifiedAds.V1.Create> created,
-            IAppService service)
+            IAppService service,
+            ClassifiedAdContext context)
         {
             _created = created;
             _service = service;
+            _context = context;
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Add (ClassifiedAds.V1.Create request)
         {
             await _service.Handle(request);
@@ -41,7 +48,7 @@ namespace marketplace.api.Controllers
             return Ok();
         }
 
-        [Route("~/api/ad/name")]
+        [Route("name")]
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -50,6 +57,8 @@ namespace marketplace.api.Controllers
 
         [Route("text")]
         [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateText(V1.UpdateText request)
         {
             await _service.Handle(request);
@@ -58,14 +67,37 @@ namespace marketplace.api.Controllers
 
         [Route("price")]
         [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdatePrice(V1.UpdatePrice request)
         {
             await _service.Handle(request);
             return Ok();
         }
 
+        [Route("picture")]
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public Task<IActionResult> AddPicture(V1.AddPicture request)=> HandleRequest(request, _service.Handle);
+        // {
+        //     var book = new Picture(request.ClassifiedAdId, Guid.NewGuid()
+        //         , new PictureSize(request.Width, request.Height), new Uri(request.Url), 1);
+        //     var classifiedAd =  _context.ClassifiedAds.Find(request.ClassifiedAdId);
+        //     if(classifiedAd!=null)
+        //     {
+        //         _context.Entry(classifiedAd).Collection(i => i.Pictures).Load();
+        //     }
+        //     classifiedAd.AddPicture(new Uri(request.Url), new PictureSize(request.Width, request.Height));
+        //     _context.SaveChanges();
+        //     return Ok();
+            
+        // }
+
         [Route("publish")]
         [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> RequestToPublish(V1.RequestToPublish request)
         {
             await _service.Handle(request);

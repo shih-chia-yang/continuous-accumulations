@@ -5,6 +5,7 @@ using marketplace.domain;
 using marketplace.domain.entities;
 using marketplace.domain.kernel;
 using marketplace.domain.repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace marketplace.infrastructure.repositories
 {
@@ -24,12 +25,32 @@ namespace marketplace.infrastructure.repositories
 
         public async Task<ClassifiedAd> Load (Guid id)
         {
-            return await _context.ClassifiedAds.FindAsync(id);
+
+
+            // var classifiedAd = await _context.ClassifiedAds.FindAsync(id);
+
+            var classifiedAd =await _context.ClassifiedAds
+            .Include(x=>x.Pictures)
+            .FirstOrDefaultAsync();
+
+            // if(classifiedAd!=null)
+            // {
+            //     await _context.Entry(classifiedAd).Collection(i=>i.Pictures).LoadAsync();
+            // }
+            return classifiedAd;
+
+
+            // return await _context.ClassifiedAds.FindAsync(id);
         }
 
-        public async Task Add(ClassifiedAd entity)
+        public void Add(ClassifiedAd entity)
         {
-            await _context.ClassifiedAds.AddAsync(entity);
+             _context.ClassifiedAds.Add(entity);
+        }
+
+        public void Update(ClassifiedAd entity)
+        {
+            _context.Entry(entity).State = EntityState.Modified;
         }
     }
 }

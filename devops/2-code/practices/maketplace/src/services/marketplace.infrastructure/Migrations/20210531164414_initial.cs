@@ -28,7 +28,7 @@ namespace marketplace.infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Picture",
+                name: "Pictures",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -41,9 +41,9 @@ namespace marketplace.infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Picture", x => x.Id);
+                    table.PrimaryKey("PK_Pictures", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Picture_ClassifiedAds_ClassifiedAdId",
+                        name: "FK_Pictures_ClassifiedAds_ClassifiedAdId",
                         column: x => x.ClassifiedAdId,
                         principalTable: "ClassifiedAds",
                         principalColumn: "Id",
@@ -51,15 +51,15 @@ namespace marketplace.infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Picture_ClassifiedAdId",
-                table: "Picture",
+                name: "IX_Pictures_ClassifiedAdId",
+                table: "Pictures",
                 column: "ClassifiedAdId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Picture");
+                name: "Pictures");
 
             migrationBuilder.DropTable(
                 name: "ClassifiedAds");

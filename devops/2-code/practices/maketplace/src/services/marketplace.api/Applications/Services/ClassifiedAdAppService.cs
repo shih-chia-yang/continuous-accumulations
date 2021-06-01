@@ -23,8 +23,25 @@ namespace marketplace.api.Applications.Services
             V1.UpdateText cmd => UpdateTextAsync(cmd),
             V1.UpdatePrice cmd => UpdatePriceAsync(cmd),
             V1.RequestToPublish cmd => RequestToPublishAsync(cmd),
+            V1.AddPicture cmd =>AddPictureAsync(cmd),
+            V1.ResizePicture cmd => ResizePicture(cmd),
             _ => Task.CompletedTask
         };
+
+        private async Task ResizePicture(V1.ResizePicture cmd)
+        {
+            var entity = await FindAsync(cmd.ClassifiedAdId);
+            entity.ResizePicture(cmd.PictureId, new PictureSize(cmd.Width, cmd.Height));
+            await _repo.UnitOfWork.Commit();
+        }
+
+        private async Task AddPictureAsync(V1.AddPicture cmd)
+        {
+            var entity = await FindAsync(cmd.ClassifiedAdId);
+            entity.AddPicture(new Uri(cmd.Url), new PictureSize(cmd.Width, cmd.Height));
+            // _repo.Add(entity);
+            await _repo.UnitOfWork.Commit();
+        }
 
         private async Task RequestToPublishAsync(V1.RequestToPublish cmd)
         {
@@ -68,7 +85,7 @@ namespace marketplace.api.Applications.Services
             if(await _repo.Exists(cmd.Id))
                 throw new InvalidOperationException($"Entity with id {cmd.Id} already exist");
             var classifiedAd = new ClassifiedAd(cmd.Id, new UserId(cmd.OwnerId));
-            await _repo.Add(classifiedAd);
+            _repo.Add(classifiedAd);
             await _repo.UnitOfWork.Commit();
         }
     }

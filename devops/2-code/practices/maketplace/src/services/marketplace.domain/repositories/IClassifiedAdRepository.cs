@@ -24,7 +24,9 @@ namespace marketplace.domain.repositories
         /// <returns></returns>
         Task<bool> Exists (Guid id);
 
-        Task Add(ClassifiedAd entity);
+        void Add(ClassifiedAd entity);
+
+        void Update(ClassifiedAd entity);
 
     }
 }

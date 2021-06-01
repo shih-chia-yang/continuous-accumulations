@@ -55,7 +55,7 @@ namespace marketplace.infrastructure.Migrations
 
                     b.HasIndex("ClassifiedAdId");
 
-                    b.ToTable("Picture");
+                    b.ToTable("Pictures");
                 });
 
             modelBuilder.Entity("marketplace.domain.ClassifiedAd", b =>
@@ -198,7 +198,7 @@ namespace marketplace.infrastructure.Migrations
 
                             b1.HasKey("PictureId");
 
-                            b1.ToTable("Picture");
+                            b1.ToTable("Pictures");
 
                             b1.WithOwner()
                                 .HasForeignKey("PictureId");
