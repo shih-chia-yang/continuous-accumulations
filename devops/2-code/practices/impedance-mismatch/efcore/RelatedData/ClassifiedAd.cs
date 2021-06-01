@@ -1,6 +1,7 @@
 using System.Collections;
 using System;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace efcore.RelatedData
 {
@@ -26,7 +27,25 @@ namespace efcore.RelatedData
 
         public Guid ApproveBy { get; set; }
 
-        public List<Picture> Pictures { get; set; }
+        private List<Picture> _picture;
+
+        public IEnumerable<Picture> Pictures => _picture.AsReadOnly();
+
+        protected ClassifiedAd()
+        {
+            _picture = new List<Picture>();
+        }
+
+        public ClassifiedAd(Guid ownerId,string title):this()
+        {
+            ClassifiedAdId = Guid.NewGuid();
+            OwnerId = ownerId;
+            Title = title;
+        }
+        public void AddPicture(Picture pic)
+        {
+            _picture.Add(pic);
+        }
 
     }
 }
