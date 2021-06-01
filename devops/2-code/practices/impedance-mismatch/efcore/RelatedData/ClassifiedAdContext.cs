@@ -1,3 +1,4 @@
+using efcore.RelatedData.EntityTypeConfigurations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
@@ -12,6 +13,12 @@ namespace efcore.RelatedData
         public ClassifiedAdContext(DbContextOptions<ClassifiedAdContext> options):base(options)
         {
             
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new ClassifiedAdEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new PictureEntityTypeConfiguration());
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

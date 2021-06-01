@@ -26,30 +26,10 @@ namespace efcore.RelatedData
             using (var context = new ClassifiedAdContext())
             {
                 var rootId = Guid.NewGuid();
-                var classifiedAd = new ClassifiedAd
-                {
-                    OwnerId = Guid.NewGuid(),
-                    Title = "one to many",
-                    Pictures= new List<Picture>(){
-                        new Picture
-                        {
-                            Width = 800,
-                            Height = 600,
-                            Location = "https://google.com.tw"
-                        },      
-                        new Picture
-                        {
-                            Width = 801,
-                            Height = 601,
-                            Location = "https://yahoo.com.tw"
-                        },new Picture
-                        {
-                            Width = 802,
-                            Height = 602,
-                            Location = "https://facebook.com.tw"
-                        }
-                    }
-                };
+                var classifiedAd = new ClassifiedAd(Guid.NewGuid(), "one to many");
+                classifiedAd.AddPicture(new Picture(800,600,"https://google.com.tw",1));
+                classifiedAd.AddPicture(new Picture(801,601,"https://yahoo.com.tw",2));
+                classifiedAd.AddPicture(new Picture(802,602,"https://facebook.com.tw",3));
                 context.ClassifiedAds.Add(classifiedAd);
                 context.SaveChanges();
             }
@@ -62,10 +42,8 @@ namespace efcore.RelatedData
             using (var context = new ClassifiedAdContext())
             {
                 var classifiedAd = context.ClassifiedAds.Include(b => b.Pictures).First();
-                var picture = new Picture { 
-                    Width=803,Height=603,Location="https://yuntech.edu.tw"};
-
-                classifiedAd.Pictures.Add(picture);
+                var picture = new Picture(803, 603, "https://yuntech.edu.tw",classifiedAd.Pictures.Count()+1);
+                classifiedAd.AddPicture(picture);
                 context.SaveChanges();
             }
             #endregion
