@@ -10,6 +10,10 @@ namespace marketplace.infrastructure.EntityTypeConfigurations
         public void Configure(EntityTypeBuilder<Picture> builder)
         {
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id)
+                .HasColumnName("PictureId")
+                .ValueGeneratedNever()
+                .IsRequired();
             builder.Property(x=>x.ParentId);
             builder.OwnsOne(x => x.Size);
         }

@@ -10,7 +10,7 @@ using marketplace.infrastructure;
 namespace marketplace.infrastructure.Migrations
 {
     [DbContext(typeof(ClassifiedAdContext))]
-    [Migration("20210531164414_initial")]
+    [Migration("20210601124357_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,8 +24,12 @@ namespace marketplace.infrastructure.Migrations
             modelBuilder.Entity("marketplace.domain.ClassifiedAd", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("ClassifiedAdId");
+
+                    b.Property<Guid>("ClassifiedAdId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("ClassifiedAdId1");
 
                     b.Property<int>("State")
                         .HasColumnType("int");
@@ -38,11 +42,8 @@ namespace marketplace.infrastructure.Migrations
             modelBuilder.Entity("marketplace.domain.entities.Picture", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ClassifiedAdId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("PictureId");
 
                     b.Property<string>("Location")
                         .HasColumnType("nvarchar(max)");
@@ -55,7 +56,7 @@ namespace marketplace.infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClassifiedAdId");
+                    b.HasIndex("ParentId");
 
                     b.ToTable("Pictures");
                 });
@@ -185,7 +186,9 @@ namespace marketplace.infrastructure.Migrations
                 {
                     b.HasOne("marketplace.domain.ClassifiedAd", null)
                         .WithMany("Pictures")
-                        .HasForeignKey("ClassifiedAdId");
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.OwnsOne("marketplace.domain.entities.PictureSize", "Size", b1 =>
                         {

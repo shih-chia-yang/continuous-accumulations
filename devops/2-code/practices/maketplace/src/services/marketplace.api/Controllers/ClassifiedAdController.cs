@@ -79,20 +79,15 @@ namespace marketplace.api.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public Task<IActionResult> AddPicture(V1.AddPicture request)=> HandleRequest(request, _service.Handle);
-        // {
-        //     var book = new Picture(request.ClassifiedAdId, Guid.NewGuid()
-        //         , new PictureSize(request.Width, request.Height), new Uri(request.Url), 1);
-        //     var classifiedAd =  _context.ClassifiedAds.Find(request.ClassifiedAdId);
-        //     if(classifiedAd!=null)
-        //     {
-        //         _context.Entry(classifiedAd).Collection(i => i.Pictures).Load();
-        //     }
-        //     classifiedAd.AddPicture(new Uri(request.Url), new PictureSize(request.Width, request.Height));
-        //     _context.SaveChanges();
-        //     return Ok();
-            
-        // }
+        public Task<IActionResult> AddPicture(V1.AddPicture request)
+            => HandleRequest(request, _service.Handle);
+
+        [Route("resize")]
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public Task<IActionResult> ResizePicture(V1.ResizePicture request)
+            => HandleRequest(request, _service.Handle);
 
         [Route("publish")]
         [HttpPut]

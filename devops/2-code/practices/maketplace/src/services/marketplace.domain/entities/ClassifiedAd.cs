@@ -19,21 +19,21 @@ namespace marketplace.domain
     }
     public class ClassifiedAd:AggregateRoot
     {
+        public Guid ClassifiedAdId{ get; private set; }
         public UserId OwnerId { get; private set; }
         public ClassifiedAdTitle Title { get; private set; }
         public ClassifiedAdText Text { get; private set; }
         public Price Price { get; private set; }
 
-        private readonly List<Picture> _Pictures;
-        public IReadOnlyCollection<Picture> Pictures => _Pictures;
+        private List<Picture> _pictures;
+        public IEnumerable<Picture> Pictures => _pictures.AsReadOnly();
 
         public ClassifiedState State { get; private set;}
         public UserId ApprovedBy{ get; private set;}
 
-        protected ClassifiedAd(){}
-        public ClassifiedAd(Guid id,UserId ownerId)
+        protected ClassifiedAd(){_pictures = new List<Picture>();}
+        public ClassifiedAd(Guid id,UserId ownerId):this()
         {
-            _Pictures = new List<Picture>();
             Apply(new ClassifiedAdCreated(id,ownerId));
         }
 
@@ -55,16 +55,17 @@ namespace marketplace.domain
                 Id,Guid.NewGuid(),
                 pictureUrl.ToString(),
                 size.Height,size.Width,
-                _Pictures.Count==0?1:Pictures.Max(x=>x.Order)
+                _pictures.Count==0?1:Pictures.Max(x=>x.Order)
                 ));
 
-        public void ResizePicture(Guid id,PictureSize newSize)
-        {
-            var picture = FindPicture(id);
-            if(picture==null)
-                throw new InvalidOperationException("Cannot resize a picture that picture not found");
-            picture.Resize(newSize);
-        }
+        public void ResizePicture(Guid id, PictureSize newSize) =>
+            Apply(new PictureResized(id, newSize.Width, newSize.Height));
+        // {
+        //     var picture = FindPicture(id);
+        //     if(picture==null)
+        //         throw new InvalidOperationException("Cannot resize a picture that picture not found");
+        //     picture.Resize(newSize);
+        // }
         protected override void When(object @event)
         {
             switch(@event)
@@ -77,6 +78,7 @@ namespace marketplace.domain
                     Text = ClassifiedAdText.NoText();
                     Price = Price.NoPrice();
                     ApprovedBy = UserId.NoUser();
+                    ClassifiedAdId = e.Id;
                     break;
                 case ClassifiedAdTitleChanged e:
                     Title = ClassifiedAdTitle.FromString(e.Title);
@@ -93,7 +95,11 @@ namespace marketplace.domain
                 case PictureAdded e:
                     var newPicture = new Picture(Apply);
                     ApplyToEntity(newPicture, e);
-                    _Pictures.Add(newPicture);
+                    _pictures.Add(newPicture);
+                    break;
+                case PictureResized e:
+                    var picture = FindPicture(e.PictureId);
+                    ApplyToEntity(picture, @event);
                     break;
             }
         }

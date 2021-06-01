@@ -9,7 +9,10 @@ namespace marketplace.infrastructure.EntityTypeConfigurations
         public void Configure(EntityTypeBuilder<ClassifiedAd> builder)
         {
             builder.HasKey(x => x.Id);
-            // builder.Property(x => x.Id);
+            builder.Property(x => x.Id)
+                .HasColumnName("ClassifiedAdId")
+                .ValueGeneratedNever()
+                .IsRequired();
             builder.OwnsOne(x => x.OwnerId)
                 .Property(x=>x.Value).HasMaxLength(50);
             builder.OwnsOne(x => x.Price
@@ -28,14 +31,17 @@ namespace marketplace.infrastructure.EntityTypeConfigurations
                 .Property(x=>x.Value).HasMaxLength(50);
             builder.OwnsOne(x => x.ApprovedBy);
 
-            // builder.HasMany(c => c.Pictures)
-            // .WithOne();
+            builder.HasMany(c => c.Pictures)
+            .WithOne()
+            .HasForeignKey("ParentId")
+            .OnDelete(DeleteBehavior.Cascade);;
 
-            // var navigation = builder.Metadata.FindNavigation(nameof(ClassifiedAd.Pictures));
+            var navigation = builder.Metadata.FindNavigation(nameof(ClassifiedAd.Pictures));
 
-            // // DDD Patterns comment:
-            // //Set as field (New since EF 1.1) to access the OrderItem collection property through its field
-            // navigation.SetPropertyAccessMode(PropertyAccessMode.Property);
+            // DDD Patterns comment:
+            //Set as field (New since EF 1.1) to access the OrderItem collection property through its field
+            navigation.SetField("_pictures");
+            navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
         }
     }
 }

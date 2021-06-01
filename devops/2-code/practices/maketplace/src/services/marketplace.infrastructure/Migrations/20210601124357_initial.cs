@@ -11,7 +11,8 @@ namespace marketplace.infrastructure.Migrations
                 name: "ClassifiedAds",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ClassifiedAdId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ClassifiedAdId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     OwnerId_Value = table.Column<Guid>(type: "uniqueidentifier", maxLength: 50, nullable: true),
                     Title_Value = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Text_Value = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
@@ -24,36 +25,35 @@ namespace marketplace.infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClassifiedAds", x => x.Id);
+                    table.PrimaryKey("PK_ClassifiedAds", x => x.ClassifiedAdId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Pictures",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PictureId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ParentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Size_Width = table.Column<int>(type: "int", nullable: true),
                     Size_Height = table.Column<int>(type: "int", nullable: true),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Order = table.Column<int>(type: "int", nullable: false),
-                    ClassifiedAdId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    Order = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Pictures", x => x.Id);
+                    table.PrimaryKey("PK_Pictures", x => x.PictureId);
                     table.ForeignKey(
-                        name: "FK_Pictures_ClassifiedAds_ClassifiedAdId",
-                        column: x => x.ClassifiedAdId,
+                        name: "FK_Pictures_ClassifiedAds_ParentId",
+                        column: x => x.ParentId,
                         principalTable: "ClassifiedAds",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "ClassifiedAdId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pictures_ClassifiedAdId",
+                name: "IX_Pictures_ParentId",
                 table: "Pictures",
-                column: "ClassifiedAdId");
+                column: "ParentId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

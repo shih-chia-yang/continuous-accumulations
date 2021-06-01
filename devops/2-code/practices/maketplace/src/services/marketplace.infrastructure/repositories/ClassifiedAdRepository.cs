@@ -27,11 +27,12 @@ namespace marketplace.infrastructure.repositories
         {
 
 
-            // var classifiedAd = await _context.ClassifiedAds.FindAsync(id);
+            var classifiedAd = await _context.ClassifiedAds.Where(x=>x.Id==id)
+                .Include(x=>x.Pictures).FirstOrDefaultAsync();
 
-            var classifiedAd =await _context.ClassifiedAds
-            .Include(x=>x.Pictures)
-            .FirstOrDefaultAsync();
+            // var classifiedAd =await _context.ClassifiedAds
+            // .Include(x=>x.Pictures)
+            // .FirstOrDefaultAsync()
 
             // if(classifiedAd!=null)
             // {

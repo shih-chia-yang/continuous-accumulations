@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System;
 using marketplace.domain.events;
@@ -8,7 +9,6 @@ namespace marketplace.domain.entities
 {
     public class Picture : Entity
     {
-
         public Guid ParentId{ get; private set; }
         public PictureSize Size { get; private set; }
         public Uri Location { get; private set; }

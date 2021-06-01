@@ -93,11 +93,11 @@ namespace marketplace.unittests.ClassifiedAdSpec
             _classifiedAd.SetTitle(ClassifiedAdTitle.FromString("covid-19 comming"));
             _classifiedAd.UpdateText(ClassifiedAdText.FromString("keeping social distancing"));
             _classifiedAd.UpdatePrice(Price.Create(0, Currency.Default));
-            var originCount = _classifiedAd.Pictures.Count;
+            var originCount = _classifiedAd.Pictures.Count();
             //When
             _classifiedAd.AddPicture(new Uri("https://google.com.tw"),new PictureSize(800,600));
             //Then
-            Assert.Equal(originCount+1,_classifiedAd.Pictures.Count);
+            Assert.Equal(originCount+1,_classifiedAd.Pictures.Count());
         }
     }
 }
