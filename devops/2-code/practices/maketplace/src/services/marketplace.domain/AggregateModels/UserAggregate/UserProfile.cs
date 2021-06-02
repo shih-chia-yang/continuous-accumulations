@@ -11,6 +11,7 @@ namespace marketplace.domain.AggregateModels.UserAggregate
 
         public string PhotoUrl { get; private set; }
 
+        protected UserProfile() { }
         public UserProfile(UserId id, FullName fullName, DisplayName displayName) =>
             Apply(new UserRegistered(id, fullName, displayName));
 
@@ -44,7 +45,7 @@ namespace marketplace.domain.AggregateModels.UserAggregate
         }
         protected override void EnsureValidState()
         {
-            throw new System.NotImplementedException();
+            
         }
 
     }
