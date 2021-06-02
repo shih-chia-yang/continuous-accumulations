@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using marketplace.domain.AggregateModels;
 using marketplace.domain.AggregateModels.UserAggregate;
@@ -7,11 +8,11 @@ namespace marketplace.domain.repositories
 {
     public interface IUserRepository:IRepository
     {
-        Task<UserProfile> Load(UserId id);
+        Task<UserProfile> LoadAsync(UserId id);
 
-        Task Add(UserProfile entity);
+        Task AddAsync(UserProfile entity);
 
-        Task<bool> Exists(UserProfile id);
+        Task<bool> ExistsAsync(Guid id);
 
     }
 }

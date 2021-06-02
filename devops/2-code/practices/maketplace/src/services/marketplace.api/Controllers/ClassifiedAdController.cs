@@ -51,14 +51,14 @@ namespace marketplace.api.Controllers
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public Task<IActionResult> SetTitle(V1.SetTitle request)
+        public Task<IActionResult> SetTitle(ClassifiedAds.V1.SetTitle request)
             => HandleRequest(request, _service.Handle);
 
         [Route("text")]
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateText(V1.UpdateText request)
+        public async Task<IActionResult> UpdateText(ClassifiedAds.V1.UpdateText request)
         {
             await _service.Handle(request);
             return Ok();
@@ -68,7 +68,7 @@ namespace marketplace.api.Controllers
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdatePrice(V1.UpdatePrice request)
+        public async Task<IActionResult> UpdatePrice(ClassifiedAds.V1.UpdatePrice request)
         {
             await _service.Handle(request);
             return Ok();
@@ -78,21 +78,21 @@ namespace marketplace.api.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public Task<IActionResult> AddPicture(V1.AddPicture request)
+        public Task<IActionResult> AddPicture(ClassifiedAds.V1.AddPicture request)
             => HandleRequest(request, _service.Handle);
 
         [Route("resize")]
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public Task<IActionResult> ResizePicture(V1.ResizePicture request)
+        public Task<IActionResult> ResizePicture(ClassifiedAds.V1.ResizePicture request)
             => HandleRequest(request, _service.Handle);
 
         [Route("publish")]
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> RequestToPublish(V1.RequestToPublish request)
+        public async Task<IActionResult> RequestToPublish(ClassifiedAds.V1.RequestToPublish request)
         {
             await _service.Handle(request);
             return Ok();
