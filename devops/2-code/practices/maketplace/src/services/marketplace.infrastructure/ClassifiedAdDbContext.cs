@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using marketplace.domain;
 using marketplace.domain.AggregateModels.ClassifiedAdAggregate;
+using marketplace.domain.AggregateModels.UserAggregate;
 using marketplace.domain.kernel;
 using marketplace.infrastructure.EntityTypeConfigurations;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +17,9 @@ namespace marketplace.infrastructure
 
         public DbSet<ClassifiedAd> ClassifiedAds{ get; set; }
 
-        public DbSet<Picture> Pictures{ get; set; }
+        public DbSet<UserProfile> UserProfiles { get; set; }
+
+        // public DbSet<Picture> Pictures{ get; set; }
 
         public ClassifiedAdContext(DbContextOptions<ClassifiedAdContext> options):base(options)
         {

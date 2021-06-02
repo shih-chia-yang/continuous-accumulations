@@ -29,7 +29,7 @@ namespace marketplace.api.Applications.Command
         }
         public async Task Handle(RegisterUserCommand command)
         {
-            if (await _repo.ExistsAsync(command.UserId))
+            if (await _repo.ExistsAsync(new UserId(command.UserId)))
             {
                 throw new InvalidOperationException($"Entity with id {command.UserId} already exists");
             }

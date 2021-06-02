@@ -12,7 +12,7 @@ namespace marketplace.domain.repositories
 
         Task AddAsync(UserProfile entity);
 
-        Task<bool> ExistsAsync(Guid id);
+        Task<bool> ExistsAsync(UserId id);
 
     }
 }
