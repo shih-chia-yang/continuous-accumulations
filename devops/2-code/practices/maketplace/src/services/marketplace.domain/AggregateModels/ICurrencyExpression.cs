@@ -1,6 +1,6 @@
 using marketplace.domain.services;
 
-namespace marketplace.domain.entities
+namespace marketplace.domain.AggregateModels
 {
     public interface ICurrencyExpression
     {

@@ -1,10 +1,10 @@
 using System.Linq;
 using System;
-using marketplace.domain;
-using marketplace.domain.entities;
 using marketplace.domain.exceptions;
 using marketplace.domain.Validation;
 using Xunit;
+using marketplace.domain.AggregateModels.ClassifiedAdAggregate;
+using marketplace.domain.AggregateModels;
 
 namespace marketplace.unittests.ClassifiedAdSpec
 {

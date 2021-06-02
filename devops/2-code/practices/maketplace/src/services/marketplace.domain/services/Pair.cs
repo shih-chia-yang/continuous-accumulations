@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using marketplace.domain.entities;
+using marketplace.domain.AggregateModels;
 using marketplace.domain.kernel;
 namespace marketplace.domain.services
 {

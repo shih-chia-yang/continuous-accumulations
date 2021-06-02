@@ -1,4 +1,4 @@
-namespace marketplace.domain.entities
+namespace marketplace.domain.AggregateModels.ClassifiedAdAggregate
 {
     public static class PictureRules
     {

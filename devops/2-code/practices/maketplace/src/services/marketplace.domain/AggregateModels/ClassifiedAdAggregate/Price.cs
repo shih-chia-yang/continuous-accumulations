@@ -1,5 +1,5 @@
 using System;
-namespace marketplace.domain.entities
+namespace marketplace.domain.AggregateModels.ClassifiedAdAggregate
 {
     public class Price : Money
     {

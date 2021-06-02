@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using marketplace.domain.kernel;
 
-namespace marketplace.domain.entities
+namespace marketplace.domain.AggregateModels
 {
     public class Currency : ValueObject
     {

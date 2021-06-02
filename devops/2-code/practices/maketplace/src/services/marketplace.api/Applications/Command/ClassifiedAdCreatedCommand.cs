@@ -1,9 +1,9 @@
 using System;
 using System.Threading.Tasks;
 using marketplace.api.Applications.Contracts;
-using marketplace.domain;
-using marketplace.domain.entities;
-using marketplace.domain.kernal.commands;
+using marketplace.domain.AggregateModels;
+using marketplace.domain.AggregateModels.ClassifiedAdAggregate;
+using marketplace.domain.kernel.commands;
 using marketplace.domain.repositories;
 
 namespace marketplace.api.Applications.Command

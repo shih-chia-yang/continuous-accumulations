@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using marketplace.domain.kernel;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace marketplace.domain.entities
+namespace marketplace.domain.AggregateModels
 {
     public class Money:ValueObject,ICurrencyExpression
     {

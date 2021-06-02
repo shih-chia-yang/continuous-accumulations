@@ -1,14 +1,13 @@
 ﻿using System.Net.Mime;
 using System.Security.Cryptography;
 using System;
-using marketplace.domain.entities;
 using marketplace.domain.events;
 using marketplace.domain.kernel;
 using marketplace.domain.Validation;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace marketplace.domain
+namespace marketplace.domain.AggregateModels.ClassifiedAdAggregate
 {
     public enum ClassifiedState
     {

@@ -1,4 +1,4 @@
-using marketplace.domain;
+using marketplace.domain.AggregateModels.ClassifiedAdAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,12 +9,16 @@ namespace marketplace.infrastructure.EntityTypeConfigurations
         public void Configure(EntityTypeBuilder<ClassifiedAd> builder)
         {
             builder.HasKey(x => x.Id);
+            
             builder.Property(x => x.Id)
                 .HasColumnName("ClassifiedAdId")
                 .ValueGeneratedNever()
                 .IsRequired();
+            
             builder.OwnsOne(x => x.OwnerId)
-                .Property(x=>x.Value).HasMaxLength(50);
+                .Property(x=>x.Value)
+                .HasMaxLength(50);
+            
             builder.OwnsOne(x => x.Price
                 , price => { 
                     price.Property(x=>x.Amount).HasColumnType("decimal(18, 2");
@@ -25,10 +29,13 @@ namespace marketplace.infrastructure.EntityTypeConfigurations
                         currency.Property(x => x.DecimalPlace).HasColumnType("decimal(2, 0)");
                     });
                 });
+            
             builder.OwnsOne(x => x.Text)
                 .Property(x=>x.Value).HasMaxLength(150);
+            
             builder.OwnsOne(x => x.Title)
                 .Property(x=>x.Value).HasMaxLength(50);
+            
             builder.OwnsOne(x => x.ApprovedBy);
 
             builder.HasMany(c => c.Pictures)

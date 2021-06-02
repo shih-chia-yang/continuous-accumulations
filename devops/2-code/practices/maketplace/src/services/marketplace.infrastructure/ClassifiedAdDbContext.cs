@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using marketplace.domain;
-using marketplace.domain.entities;
+using marketplace.domain.AggregateModels.ClassifiedAdAggregate;
 using marketplace.domain.kernel;
 using marketplace.infrastructure.EntityTypeConfigurations;
 using Microsoft.EntityFrameworkCore;

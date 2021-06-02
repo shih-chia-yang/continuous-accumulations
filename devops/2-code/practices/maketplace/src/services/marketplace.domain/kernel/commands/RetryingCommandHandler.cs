@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace marketplace.domain.kernal.commands
+namespace marketplace.domain.kernel.commands
 {
     // public class RetryingCommandHandler<T> : ICommandHandler<T>
     // {

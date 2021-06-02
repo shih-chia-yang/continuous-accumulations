@@ -5,7 +5,7 @@ using marketplace.domain.events;
 using marketplace.domain.kernel;
 
 
-namespace marketplace.domain.entities
+namespace marketplace.domain.AggregateModels.ClassifiedAdAggregate
 {
     public class Picture : Entity
     {

@@ -1,5 +1,5 @@
 using System.Linq;
-using marketplace.domain.entities;
+using marketplace.domain.AggregateModels;
 using marketplace.domain.services;
 using Xunit;
 

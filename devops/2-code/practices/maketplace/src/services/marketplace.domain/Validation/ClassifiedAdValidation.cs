@@ -1,6 +1,6 @@
 using System.Diagnostics;
 using System.Linq;
-using marketplace.domain.entities;
+using marketplace.domain.AggregateModels.ClassifiedAdAggregate;
 using marketplace.domain.exceptions;
 using marketplace.domain.kernel;
 

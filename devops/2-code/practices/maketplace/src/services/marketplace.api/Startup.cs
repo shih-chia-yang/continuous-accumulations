@@ -7,7 +7,7 @@ using marketplace.api.Applications.Command;
 using marketplace.api.Applications.Contracts;
 using marketplace.api.Applications.Services;
 using marketplace.api.Registry;
-using marketplace.domain.kernal.commands;
+using marketplace.domain.kernel.commands;
 using marketplace.domain.repositories;
 using marketplace.infrastructure.repositories;
 using Microsoft.AspNetCore.Builder;

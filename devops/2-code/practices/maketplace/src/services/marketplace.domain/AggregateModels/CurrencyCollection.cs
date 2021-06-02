@@ -2,9 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using marketplace.domain.entities;
 
-namespace marketplace.domain.entities
+namespace marketplace.domain.AggregateModels
 {
     public interface ICurrencyLookup
     {

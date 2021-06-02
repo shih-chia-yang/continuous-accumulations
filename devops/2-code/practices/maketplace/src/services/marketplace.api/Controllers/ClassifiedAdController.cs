@@ -4,14 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using marketplace.api.Applications;
 using marketplace.api.Applications.Contracts;
-using marketplace.domain.kernal.commands;
+using marketplace.domain.kernel.commands;
 using Microsoft.AspNetCore.Mvc;
 using static marketplace.api.Applications.Contracts.ClassifiedAds;
 using Serilog;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using marketplace.infrastructure;
-using marketplace.domain.entities;
 
 namespace marketplace.api.Controllers
 {

@@ -1,4 +1,4 @@
-using marketplace.domain.entities;
+using marketplace.domain.AggregateModels;
 
 namespace marketplace.domain.services
 {

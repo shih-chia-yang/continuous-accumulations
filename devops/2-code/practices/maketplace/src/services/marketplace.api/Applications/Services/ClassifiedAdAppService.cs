@@ -1,8 +1,8 @@
 using System;
 using System.Runtime.Intrinsics;
 using System.Threading.Tasks;
-using marketplace.domain;
-using marketplace.domain.entities;
+using marketplace.domain.AggregateModels;
+using marketplace.domain.AggregateModels.ClassifiedAdAggregate;
 using marketplace.domain.repositories;
 using static marketplace.api.Applications.Contracts.ClassifiedAds;
 

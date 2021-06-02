@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using marketplace.domain.kernel;
 
-namespace marketplace.domain.entities
+namespace marketplace.domain.AggregateModels.ClassifiedAdAggregate
 {
     public class PictureSize:ValueObject
     {

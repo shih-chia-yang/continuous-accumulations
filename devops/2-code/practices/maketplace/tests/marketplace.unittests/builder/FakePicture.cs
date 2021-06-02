@@ -1,5 +1,5 @@
 using System;
-using marketplace.domain.entities;
+using marketplace.domain.AggregateModels.ClassifiedAdAggregate;
 
 namespace marketplace.unittests.builder
 {

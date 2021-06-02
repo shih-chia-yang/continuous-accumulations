@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using marketplace.domain.AggregateModels.ClassifiedAdAggregate;
 using marketplace.domain.kernel;
 
 namespace marketplace.domain.repositories

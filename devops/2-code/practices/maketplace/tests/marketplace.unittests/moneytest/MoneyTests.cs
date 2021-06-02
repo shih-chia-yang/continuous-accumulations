@@ -1,5 +1,5 @@
 using System;
-using marketplace.domain.entities;
+using marketplace.domain.AggregateModels;
 using marketplace.domain.exceptions;
 using marketplace.unittests.builder;
 using Xunit;

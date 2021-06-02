@@ -1,5 +1,4 @@
-using System.Security.Cryptography.X509Certificates;
-using marketplace.domain.entities;
+using marketplace.domain.AggregateModels.ClassifiedAdAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

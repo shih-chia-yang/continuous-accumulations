@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using marketplace.domain;
-using marketplace.domain.entities;
+using marketplace.domain.AggregateModels.ClassifiedAdAggregate;
 using marketplace.domain.kernel;
 using marketplace.domain.repositories;
 using Microsoft.EntityFrameworkCore;
