@@ -11,105 +11,71 @@ using Serilog;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using marketplace.infrastructure;
+using marketplace.api.Registry;
 
 namespace marketplace.api.Controllers
 {
-    [EnableCors("CorsPolicy")]
+    [EnableCors(StartupExtensionMethods.CorsPolicy)]
     [Produces("application/json")]
     [Route("api/ad")]
     [ApiController]
     public class ClassifiedAdController : ControllerBase
     {
-        private readonly ICommandHandler<ClassifiedAds.V1.Create> _created;
-
-        private readonly ClassifiedAdContext _context;
         private readonly IAppService _service;
 
         private static ILogger Log = Serilog.Log.ForContext<ClassifiedAdController>();
 
-        public ClassifiedAdController(
-            ICommandHandler<ClassifiedAds.V1.Create> created,
-            IAppService service,
-            ClassifiedAdContext context)
+        public ClassifiedAdController(IAppService service)
         {
-            _created = created;
             _service = service;
-            _context = context;
         }
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Add (ClassifiedAds.V1.Create request)
-        {
-            await _service.Handle(request);
-            // await _created.Handle(request);
-            return Ok();
-        }
+        public Task<IActionResult> Add (ClassifiedAds.V1.Create request)
+            => RequestHandler.HandleRequest(request, _service.Handle,Log);
 
         [Route("name")]
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public Task<IActionResult> SetTitle(ClassifiedAds.V1.SetTitle request)
-            => HandleRequest(request, _service.Handle);
+            => RequestHandler.HandleRequest(request, _service.Handle,Log);
 
         [Route("text")]
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateText(ClassifiedAds.V1.UpdateText request)
-        {
-            await _service.Handle(request);
-            return Ok();
-        }
+        public Task<IActionResult> UpdateText(ClassifiedAds.V1.UpdateText request)
+            => RequestHandler.HandleRequest(request, _service.Handle,Log);
 
         [Route("price")]
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdatePrice(ClassifiedAds.V1.UpdatePrice request)
-        {
-            await _service.Handle(request);
-            return Ok();
-        }
+        public Task<IActionResult> UpdatePrice(ClassifiedAds.V1.UpdatePrice request)
+            => RequestHandler.HandleRequest(request, _service.Handle,Log);
 
         [Route("picture")]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public Task<IActionResult> AddPicture(ClassifiedAds.V1.AddPicture request)
-            => HandleRequest(request, _service.Handle);
+            => RequestHandler.HandleRequest(request, _service.Handle,Log);
 
         [Route("resize")]
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public Task<IActionResult> ResizePicture(ClassifiedAds.V1.ResizePicture request)
-            => HandleRequest(request, _service.Handle);
+            => RequestHandler.HandleRequest(request, _service.Handle,Log);
 
         [Route("publish")]
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> RequestToPublish(ClassifiedAds.V1.RequestToPublish request)
-        {
-            await _service.Handle(request);
-            return Ok();
-        }
-        private async Task<IActionResult> HandleRequest<T>(T request, Func<T, Task> handler)
-        {
-            try
-            {
-                Log.Debug("Handling HTTP request of type {type}", typeof(T).Name);
-                await handler(request);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, "Error handling the request");
-                return new BadRequestObjectResult(new {error = e.Message, stackTrace = e.StackTrace});
-            }
-        }
+        public  Task<IActionResult> RequestToPublish(ClassifiedAds.V1.RequestToPublish request)
+            => RequestHandler.HandleRequest(request, _service.Handle,Log);
     }
 }
