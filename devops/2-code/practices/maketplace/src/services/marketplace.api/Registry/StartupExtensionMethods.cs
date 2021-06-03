@@ -1,7 +1,10 @@
+using System;
+using System.Net.Http;
 using marketplace.api.Applications;
 using marketplace.api.Applications.Command;
 using marketplace.api.Applications.Contracts;
 using marketplace.api.Applications.Services;
+using marketplace.api.External;
 using marketplace.domain.kernel.commands;
 using marketplace.domain.repositories;
 using marketplace.infrastructure;
@@ -61,16 +64,36 @@ namespace marketplace.api.Registry
             return services;
         }
 
-        public static IServiceCollection RegisterServices(this IServiceCollection services,IConfiguration configuration)
+        public static IServiceCollection RegisterServices(this IServiceCollection services)
         {
             services.AddScoped<IClassifiedAdRepository, ClassifiedAdRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IAppService,ClassifiedAdAppService>();
             services.AddScoped<ICommandHandler<ClassifiedAds.V1.Create>,ClassifiedAdCreatedCommand>();
+            services.AddSingleton<PurgomalumClient>();
+            services.AddHttpClient<PurgomalumClient>()
+            .SetHandlerLifetime(TimeSpan.FromMinutes(2))
+            .ConfigurePrimaryHttpMessageHandler((c) =>
+                new HttpClientHandler()
+                {
+                    ClientCertificateOptions = ClientCertificateOption.Manual,
+                    ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; },
+                });
 
-            services.AddScoped<ICommandHandler<RegisterUserCommand>, RegisterUserCommandHandler>();
+            services.AddScoped<ICommandHandler<RegisterUserCommand>,RegisterUserCommandHandler>(command=>
+                new RegisterUserCommandHandler(
+                    command.GetService<IUserRepository>(),
+                      text =>  command.GetService<PurgomalumClient>().CheckForProfanity(text).GetAwaiter().GetResult()
+                ));
+
             services.AddScoped<ICommandHandler<UpdateUserFullNameCommand>, UpdateUserFullNameCommandHandler>();
-            services.AddScoped<ICommandHandler<UpdateUserDisplayNameCommand>, UpdateUserDisplayNameCommandHandler>();
+            services.AddScoped<ICommandHandler<UpdateUserDisplayNameCommand>, UpdateUserDisplayNameCommandHandler>(
+                command=>
+                new UpdateUserDisplayNameCommandHandler(
+                    command.GetService<IUserRepository>(),
+                      text =>  command.GetService<PurgomalumClient>().CheckForProfanity(text).GetAwaiter().GetResult()
+                )
+            );
             services.AddScoped<ICommandHandler<UpdateUserProfilePhotoCommand>, UpdateUserProfilePhotoCommandHandler>();
             return services;
         }

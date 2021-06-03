@@ -30,7 +30,7 @@ namespace marketplace.api
             services
                 .AddCustomDbContext(Configuration)
                 .AddCustomMvc()
-                .RegisterServices(Configuration)
+                .RegisterServices()
                 .SetCorsPolicy()
                 .SwaggerGenerator();
         }
