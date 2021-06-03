@@ -87,6 +87,8 @@ modelBuilder.Entity<Model>(c =>
 
 or use backing field
 
+[backing-field](https://docs.microsoft.com/en-us/ef/core/modeling/backing-field?tabs=data-annotations)
+
 ```csharp
 var elementMetadata = Entity<Model>().Metadata.FindNavigation(nameof(Model.childs));
     elementMetadata.SetField("_childs");
