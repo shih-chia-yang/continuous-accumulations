@@ -8,11 +8,11 @@ namespace marketplace.domain.repositories
 {
     public interface IUserRepository:IRepository
     {
-        Task<UserProfile> LoadAsync(UserId id);
+        Task<UserProfile> LoadAsync(Guid id);
 
         Task AddAsync(UserProfile entity);
 
-        Task<bool> ExistsAsync(UserId id);
+        Task<bool> ExistsAsync(Guid id);
 
     }
 }
