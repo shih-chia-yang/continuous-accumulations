@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using marketplace.infrastructure;
 
 namespace marketplace.infrastructure.Migrations
 {
     [DbContext(typeof(ClassifiedAdContext))]
-    partial class ClassifiedAdContextModelSnapshot : ModelSnapshot
+    [Migration("20210603010622_addedUserProfile")]
+    partial class addedUserProfile
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,8 +68,7 @@ namespace marketplace.infrastructure.Migrations
                         .HasColumnName("UserProfileId");
 
                     b.Property<string>("PhotoUrl")
-                        .HasMaxLength(400)
-                        .HasColumnType("nvarchar(400)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

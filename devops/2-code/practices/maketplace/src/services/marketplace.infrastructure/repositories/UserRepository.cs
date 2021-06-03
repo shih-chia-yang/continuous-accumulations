@@ -21,12 +21,12 @@ namespace marketplace.infrastructure.repositories
             await _context.UserProfiles.AddAsync(entity);
         }
 
-        public async Task<bool> ExistsAsync(UserId id)
+        public async Task<bool> ExistsAsync(Guid id)
         {
             return await LoadAsync(id) != null;
         }
 
-        public async Task<UserProfile> LoadAsync(UserId id)
+        public async Task<UserProfile> LoadAsync(Guid id)
         {
             return await _context.UserProfiles.FindAsync(id);
         }

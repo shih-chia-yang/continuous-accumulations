@@ -8,6 +8,7 @@ namespace marketplace.domain.AggregateModels.UserAggregate
     {
         public string Value { get; internal set; }
 
+        protected FullName(){}
         internal FullName(string fullName)
         {
             Value = fullName;

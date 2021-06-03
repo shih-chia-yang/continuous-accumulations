@@ -6,6 +6,7 @@ using marketplace.domain.kernel;
 namespace marketplace.domain.AggregateModels.UserAggregate
 {
     public delegate bool CheckTextForProfanity(string text);
+    
     public class DisplayName : ValueObject
     {
         public string Value { get; internal set; }

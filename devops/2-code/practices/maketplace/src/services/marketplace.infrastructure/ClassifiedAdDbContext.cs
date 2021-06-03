@@ -35,6 +35,7 @@ namespace marketplace.infrastructure
         {
             modelBuilder.ApplyConfiguration(new ClassifiedAdEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new PictureEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new UserProfileEntityTypeConfiguration());
         }
 
 
