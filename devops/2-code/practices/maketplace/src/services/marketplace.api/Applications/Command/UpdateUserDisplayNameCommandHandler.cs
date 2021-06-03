@@ -10,7 +10,7 @@ namespace marketplace.api.Applications.Command
     public class UpdateUserDisplayNameCommand
     {
         public Guid UserId { get; set; }
-        public string DislayName { get; set; }
+        public string DisplayName { get; set; }
     }
 
     public class UpdateUserDisplayNameCommandHandler : ICommandHandler<UpdateUserDisplayNameCommand>
@@ -32,7 +32,7 @@ namespace marketplace.api.Applications.Command
                 throw new InvalidOperationException(
                     $"Entity with id {command.UserId} cannot be found"
                 );
-            user.UpdateDisplayName(DisplayName.FromString(command.DislayName,_checkText));
+            user.UpdateDisplayName(DisplayName.FromString(command.DisplayName,_checkText));
             await _repo.UnitOfWork.Commit();
         }
     }
