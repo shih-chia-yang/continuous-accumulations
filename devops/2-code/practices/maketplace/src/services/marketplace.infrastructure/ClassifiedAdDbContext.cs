@@ -52,7 +52,7 @@ namespace marketplace.infrastructure
         public ClassifiedAdContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<ClassifiedAdContext>();
-            optionsBuilder.UseSqlServer(@"Data Source=127.0.0.1;Initial Catalog=ClassifiedAd;Persist Security Info=True;User ID=SA;password=qwer%TGB;");
+            optionsBuilder.UseSqlServer(@"Data Source=127.0.0.1;Initial Catalog=ClassifiedAd;Persist Security Info=True;User ID=SA;password=Heip5375;");
             return new ClassifiedAdContext(optionsBuilder.Options);
         }
     }

@@ -29,7 +29,7 @@ namespace marketplace.unittests.ClassifiedAdSpec
             //When
             _classifiedAd.RequestToPublish();
             //Then
-            Assert.Equal(ClassifiedState.PendingReview, _classifiedAd.State);
+            Assert.Equal(ClassifiedAdState.PendingReview, _classifiedAd.State);
         }
 
         [Fact]
