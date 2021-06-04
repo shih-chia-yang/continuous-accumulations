@@ -9,12 +9,12 @@ using System.Linq;
 
 namespace marketplace.domain.AggregateModels.ClassifiedAdAggregate
 {
-    public enum ClassifiedState
+    public enum ClassifiedAdState
     {
-        PendingReview,
-        Active,
-        Inactive,
-        MarkedAsSold
+        PendingReview=1,
+        Active=2,
+        Inactive=3,
+        MarkedAsSold=4
     }
     public class ClassifiedAd:AggregateRoot
     {
@@ -27,7 +27,7 @@ namespace marketplace.domain.AggregateModels.ClassifiedAdAggregate
         private List<Picture> _pictures;
         public IEnumerable<Picture> Pictures => _pictures.AsReadOnly();
 
-        public ClassifiedState State { get; private set;}
+        public ClassifiedAdState State { get; private set;}
         public UserId ApprovedBy{ get; private set;}
 
         protected ClassifiedAd(){_pictures = new List<Picture>();}
@@ -72,7 +72,7 @@ namespace marketplace.domain.AggregateModels.ClassifiedAdAggregate
                 case ClassifiedAdCreated e:
                     Id = e.Id;
                     OwnerId = new UserId(e.OwnerId);
-                    State = ClassifiedState.Inactive;
+                    State = ClassifiedAdState.Inactive;
                     Title = ClassifiedAdTitle.NoTitle();
                     Text = ClassifiedAdText.NoText();
                     Price = Price.NoPrice();
@@ -89,7 +89,7 @@ namespace marketplace.domain.AggregateModels.ClassifiedAdAggregate
                     Price = Price.Create(e.Price,Currency.Create(e.CurrencyCode,2));
                     break;
                 case ClassifiedAdSentToReview e:
-                    State = ClassifiedState.PendingReview;
+                    State = ClassifiedAdState.PendingReview;
                     break;
                 case PictureAdded e:
                     var newPicture = new Picture(Apply);

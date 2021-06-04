@@ -3,6 +3,7 @@ using System.Net.Http;
 using marketplace.api.Applications;
 using marketplace.api.Applications.Command;
 using marketplace.api.Applications.Contracts;
+using marketplace.api.Applications.Queries;
 using marketplace.api.Applications.Services;
 using marketplace.api.External;
 using marketplace.domain.kernel.commands;
@@ -64,10 +65,11 @@ namespace marketplace.api.Registry
             return services;
         }
 
-        public static IServiceCollection RegisterServices(this IServiceCollection services)
+        public static IServiceCollection RegisterServices(this IServiceCollection services,IConfiguration configuration)
         {
             services.AddScoped<IClassifiedAdRepository, ClassifiedAdRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddTransient<IClassifiedAdQueries, ClassifiedAdQueries>();
             services.AddScoped<IAppService,ClassifiedAdAppService>();
             services.AddScoped<ICommandHandler<ClassifiedAds.V1.Create>,ClassifiedAdCreatedCommand>();
             services.AddSingleton<PurgomalumClient>();

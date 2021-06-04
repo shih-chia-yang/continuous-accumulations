@@ -17,12 +17,12 @@ namespace marketplace.domain.Validation
             var valid = IdIsNotNull() 
                 && OwnerIdIsNotNull() 
                 &&(Entity.State switch{
-                    ClassifiedState.PendingReview=>
+                    ClassifiedAdState.PendingReview=>
                         TitleIsNotNull() 
                         && TextIsNotNull() 
                         && AmountIsNotZero()
                         && PicturesHasCorrectSize(),
-                    ClassifiedState.Active=>
+                    ClassifiedAdState.Active=>
                         TitleIsNotNull() 
                         && TextIsNotNull()
                         && AmountIsNotZero() 

@@ -30,10 +30,10 @@ namespace marketplace.api.Controllers
             ICommandHandler<UpdateUserProfilePhotoCommand> updateProfilePhoto
         )
         {
-            _regisertUser = registerUser;
-            _updateFullName = updateFullName;
-            _updateDisplayName = updateDisplayName;
-            _updateProfilePhoto = updateProfilePhoto;
+            _regisertUser = registerUser ?? throw new ArgumentNullException(nameof(registerUser));
+            _updateFullName = updateFullName ?? throw new ArgumentNullException(nameof(updateFullName));
+            _updateDisplayName = updateDisplayName ?? throw new ArgumentNullException(nameof(updateDisplayName));
+            _updateProfilePhoto = updateProfilePhoto ?? throw new ArgumentNullException(nameof(updateProfilePhoto));
         }
 
         [HttpPost]
