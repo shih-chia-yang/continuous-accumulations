@@ -15,10 +15,14 @@ namespace marketplace.infrastructure.EntityTypeConfigurations
                 .IsRequired();
 
             builder.OwnsOne(x => x.FullName,f=>{
-                f.Property(x => x.Value).HasMaxLength(100);
+                f.Property(x => x.Value)
+                .HasColumnName("FullName")
+                .HasMaxLength(100);
             });
             builder.OwnsOne(x => x.DisplayName,d=>{
-                d.Property(x => x.Value).HasMaxLength(150);
+                d.Property(x => x.Value)
+                .HasColumnName("DisplayName")
+                .HasMaxLength(150);
             });
 
             builder.Property(x => x.PhotoUrl)

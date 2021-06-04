@@ -11,30 +11,43 @@ namespace marketplace.infrastructure.EntityTypeConfigurations
             builder.HasKey(x => x.Id);
             
             builder.Property(x => x.Id)
-                .HasColumnName("ClassifiedAdId")
                 .ValueGeneratedNever()
                 .IsRequired();
             
             builder.OwnsOne(x => x.OwnerId)
                 .Property(x=>x.Value)
+                .HasColumnName("OwnerId")
                 .HasMaxLength(50);
             
             builder.OwnsOne(x => x.Price
                 , price => { 
-                    price.Property(x=>x.Amount).HasColumnType("decimal(18, 2");
+                    price.Property(x=>x.Amount)
+                    .HasColumnName("Amount")
+                    .HasColumnType("decimal(18, 2");
+
                     price.OwnsOne(c => c.Currency,currency=>
                     {
-                        currency.Property(x => x.CurrencyCode).HasMaxLength(10);
-                        currency.Property(x => x.InUse).HasColumnType("bit");
-                        currency.Property(x => x.DecimalPlace).HasColumnType("decimal(2, 0)");
+                        currency.Property(x => x.CurrencyCode)
+                        .HasColumnName("CurrencyCode")
+                        .HasMaxLength(10);
+                        currency.Property(x => x.InUse)
+                        .HasColumnName("InUse")
+                        .HasColumnType("bit");
+                        currency.Property(x => x.DecimalPlace)
+                        .HasColumnName("DecimalPlace")
+                        .HasColumnType("decimal(2, 0)");
                     });
                 });
             
             builder.OwnsOne(x => x.Text)
-                .Property(x=>x.Value).HasMaxLength(150);
+                .Property(x=>x.Value)
+                .HasColumnName("Text")
+                .HasMaxLength(150);
             
             builder.OwnsOne(x => x.Title)
-                .Property(x=>x.Value).HasMaxLength(50);
+                .Property(x=>x.Value)
+                .HasColumnName("Title")
+                .HasMaxLength(50);
             
             builder.OwnsOne(x => x.ApprovedBy);
 

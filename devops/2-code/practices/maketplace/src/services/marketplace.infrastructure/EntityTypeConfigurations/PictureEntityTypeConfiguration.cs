@@ -14,7 +14,10 @@ namespace marketplace.infrastructure.EntityTypeConfigurations
                 .ValueGeneratedNever()
                 .IsRequired();
             builder.Property(x=>x.ParentId);
-            builder.OwnsOne(x => x.Size);
+            builder.OwnsOne(x => x.Size,size=>{
+                size.Property(x => x.Width).HasColumnName("Width");
+                size.Property(x => x.Height).HasColumnName("Height");
+            });
         }
     }
 }
