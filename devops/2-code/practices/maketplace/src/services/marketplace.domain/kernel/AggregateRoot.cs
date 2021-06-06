@@ -7,6 +7,7 @@ namespace marketplace.domain.kernel
     public abstract class AggregateRoot:IInternalEventHandler
     {
         public Guid Id { get; protected set; }
+        public int Version { get; private set; } = -1;
 
         protected abstract void When(object @event);
 
@@ -23,6 +24,15 @@ namespace marketplace.domain.kernel
             When(@event);
             EnsureValidState();
             _changes.Add(@event);
+        }
+
+        public void Load(IEnumerable<object> history)
+        {
+            foreach(var e in history)
+            {
+                When(e);
+                Version++;
+            }
         }
 
         public void ClearChanges() => _changes.Clear();

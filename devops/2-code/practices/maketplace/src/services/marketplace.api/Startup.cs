@@ -17,11 +17,12 @@ namespace marketplace.api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IWebHostEnvironment environment,IConfiguration configuration)
         {
             Configuration = configuration;
+            Environment = environment;
         }
-
+        private IWebHostEnvironment Environment { get; }
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -29,6 +30,7 @@ namespace marketplace.api
         {
             services
                 .AddCustomDbContext(Configuration)
+                .AddEventStore(Environment,Configuration)
                 .AddCustomMvc()
                 .RegisterServices(Configuration)
                 .SetCorsPolicy()

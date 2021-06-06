@@ -3,6 +3,7 @@ using System.Runtime.Intrinsics;
 using System.Threading.Tasks;
 using marketplace.domain.AggregateModels;
 using marketplace.domain.AggregateModels.ClassifiedAdAggregate;
+using marketplace.domain.kernel;
 using marketplace.domain.repositories;
 using static marketplace.api.Applications.Contracts.ClassifiedAds;
 

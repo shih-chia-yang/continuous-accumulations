@@ -1,18 +1,23 @@
 using System;
 using System.Net.Http;
+using EventStore.ClientAPI;
 using marketplace.api.Applications;
 using marketplace.api.Applications.Command;
 using marketplace.api.Applications.Contracts;
 using marketplace.api.Applications.Queries;
 using marketplace.api.Applications.Services;
 using marketplace.api.External;
+using marketplace.api.Infrastructure;
+using marketplace.domain.kernel;
 using marketplace.domain.kernel.commands;
 using marketplace.domain.repositories;
 using marketplace.infrastructure;
 using marketplace.infrastructure.repositories;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -30,6 +35,19 @@ namespace marketplace.api.Registry
                         options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
                         options.EnableSensitiveDataLogging();
                     });
+            return services;
+        }
+
+        public static IServiceCollection AddEventStore(this IServiceCollection services,IWebHostEnvironment env,IConfiguration configuration)
+        {
+            var eventStoreConnectStr = configuration["eventStore:connectionString"];
+            var connection = EventStoreConnection.Create(
+                eventStoreConnectStr,
+                ConnectionSettings.Create().KeepReconnecting(),
+                env.ApplicationName);
+            services.AddSingleton(connection);
+            services.AddSingleton<IAggregateStore>(x=>new AggregateStore(connection));
+
             return services;
         }
 
@@ -67,10 +85,12 @@ namespace marketplace.api.Registry
 
         public static IServiceCollection RegisterServices(this IServiceCollection services,IConfiguration configuration)
         {
+            services.AddSingleton<IHostedService, HostedService>();
             services.AddScoped<IClassifiedAdRepository, ClassifiedAdRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddTransient<IClassifiedAdQueries, ClassifiedAdQueries>();
-            services.AddScoped<IAppService,ClassifiedAdAppService>();
+            // services.AddScoped<IAppService,ClassifiedAdAppService>();
+            services.AddScoped<IAppService, ClassifiedAdEsAppService>();
             services.AddScoped<ICommandHandler<ClassifiedAds.V1.Create>,ClassifiedAdCreatedCommand>();
             services.AddSingleton<PurgomalumClient>();
             services.AddHttpClient<PurgomalumClient>()
