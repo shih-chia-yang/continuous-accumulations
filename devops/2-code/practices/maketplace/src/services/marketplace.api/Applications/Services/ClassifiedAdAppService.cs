@@ -24,10 +24,18 @@ namespace marketplace.api.Applications.Services
             V1.UpdateText cmd => UpdateTextAsync(cmd),
             V1.UpdatePrice cmd => UpdatePriceAsync(cmd),
             V1.RequestToPublish cmd => RequestToPublishAsync(cmd),
+            V1.Publish cmd => PublishAsync(cmd),
             V1.AddPicture cmd =>AddPictureAsync(cmd),
             V1.ResizePicture cmd => ResizePicture(cmd),
             _ => Task.CompletedTask
         };
+
+        private async Task PublishAsync(V1.Publish cmd)
+        {
+            var entity = await FindAsync(cmd.Id);
+            entity.Publish(new UserId(cmd.ApprovedBy));
+            await _repo.UnitOfWork.Commit();
+        }
 
         private async Task ResizePicture(V1.ResizePicture cmd)
         {

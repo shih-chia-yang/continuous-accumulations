@@ -1,6 +1,6 @@
 using System;
 using System.Reflection;
-namespace marketplace.domain.events
+namespace marketplace.domain.events.ClassifiedAdEvents
 {
     public class ClassifiedAdCreated
     {

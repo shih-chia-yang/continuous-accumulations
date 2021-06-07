@@ -1,9 +1,6 @@
-using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
 using System;
-using marketplace.domain.events;
 using marketplace.domain.kernel;
-
+using marketplace.domain.events.ClassifiedAdEvents;
 
 namespace marketplace.domain.AggregateModels.ClassifiedAdAggregate
 {

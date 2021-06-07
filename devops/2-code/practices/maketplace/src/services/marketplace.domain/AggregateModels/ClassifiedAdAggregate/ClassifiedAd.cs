@@ -1,11 +1,9 @@
-﻿using System.Net.Mime;
-using System.Security.Cryptography;
-using System;
-using marketplace.domain.events;
+﻿using System;
 using marketplace.domain.kernel;
 using marketplace.domain.Validation;
 using System.Collections.Generic;
 using System.Linq;
+using marketplace.domain.events.ClassifiedAdEvents;
 
 namespace marketplace.domain.AggregateModels.ClassifiedAdAggregate
 {
@@ -47,6 +45,9 @@ namespace marketplace.domain.AggregateModels.ClassifiedAdAggregate
 
         public void RequestToPublish()=>
             Apply(new ClassifiedAdSentToReview(Id));
+
+        public void Publish(UserId userId)
+            => Apply(new ClassifiedAdPublished(Id = Id, ApprovedBy = userId));
 
         public Picture FindPicture(Guid id) => Pictures.FirstOrDefault(x => x.Id == id);
         public void AddPicture(Uri pictureUrl, PictureSize size) => 
@@ -90,6 +91,10 @@ namespace marketplace.domain.AggregateModels.ClassifiedAdAggregate
                     break;
                 case ClassifiedAdSentToReview e:
                     State = ClassifiedAdState.PendingReview;
+                    break;
+                case ClassifiedAdPublished e:
+                    ApprovedBy = new UserId(e.ApprovedBy);
+                    State = ClassifiedAdState.Active;
                     break;
                 case PictureAdded e:
                     var newPicture = new Picture(Apply);

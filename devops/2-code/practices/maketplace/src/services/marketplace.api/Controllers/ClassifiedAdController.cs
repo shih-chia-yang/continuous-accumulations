@@ -115,11 +115,18 @@ namespace marketplace.api.Controllers
         public Task<IActionResult> ResizePicture(ClassifiedAds.V1.ResizePicture request)
             => RequestHandler.HandleRequest(request, _service.Handle,Log);
 
-        [Route("publish")]
+        [Route("requestpublish")]
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public  Task<IActionResult> RequestToPublish(ClassifiedAds.V1.RequestToPublish request)
             => RequestHandler.HandleRequest(request, _service.Handle,Log);
+
+        [Route("publish")]
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public Task<IActionResult> Publish(ClassifiedAds.V1.Publish request)
+            => RequestHandler.HandleRequest(request, _service.Handle, Log);
     }
 }
