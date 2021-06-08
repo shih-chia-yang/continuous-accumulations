@@ -21,5 +21,22 @@ namespace marketplace.api.Controllers
                 return new BadRequestObjectResult(new {error=ex.Message,stackTrace=ex.StackTrace });
             }
         }
+
+        public static IActionResult HandleQuery<TViewModel>(Func<TViewModel> query,ILogger log)
+        {
+            try
+            {
+                return new OkObjectResult(query());
+            }
+            catch(Exception e)
+            {
+                log.Error(e, "Error handling the query");
+                return new BadRequestObjectResult(
+                    new {error=e.Message,stackTrace=e.StackTrace}
+                );
+            }
+        }
+
+
     }
 }

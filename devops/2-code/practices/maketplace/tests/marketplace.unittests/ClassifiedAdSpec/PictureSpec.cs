@@ -1,9 +1,8 @@
-using System.Reflection.Metadata;
 using System;
-using marketplace.domain.events;
 using Xunit;
 using marketplace.unittests.builder;
 using marketplace.domain.AggregateModels.ClassifiedAdAggregate;
+using marketplace.domain.events.ClassifiedAdEvents;
 
 namespace marketplace.unittests.ClassifiedAdSpec
 {

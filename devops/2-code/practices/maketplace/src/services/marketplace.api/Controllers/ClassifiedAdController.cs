@@ -5,13 +5,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using marketplace.api.Applications;
 using marketplace.api.Applications.Contracts;
-using marketplace.domain.kernel.commands;
+
 using Microsoft.AspNetCore.Mvc;
-using static marketplace.api.Applications.Contracts.ClassifiedAds;
 using Serilog;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
-using marketplace.infrastructure;
 using marketplace.api.Registry;
 using marketplace.api.Applications.Queries;
 using marketplace.api.ViewModels;
@@ -28,15 +26,19 @@ namespace marketplace.api.Controllers
 
         private readonly IClassifiedAdQueries _queries;
 
+        private readonly IEnumerable<ClassifiedAdDetailsViewModel> _items;
+
         private static ILogger Log = Serilog.Log.ForContext<ClassifiedAdController>();
 
         public ClassifiedAdController(
             IAppService service,
-            IClassifiedAdQueries queries
+            IClassifiedAdQueries queries,
+            IEnumerable<ClassifiedAdDetailsViewModel> items
         )
         {
             _service = service ?? throw new ArgumentNullException(nameof(service));
             _queries = queries ?? throw new ArgumentNullException(nameof(queries));
+            _items = items ?? throw new ArgumentNullException(nameof(items));
         }
 
         [Route("list")]
@@ -64,14 +66,21 @@ namespace marketplace.api.Controllers
             {
             var request = new GetOwnersClassifiedAd(ownerId,page,pageSize);
             return await _queries.Query(request);
-            } 
+            }
 
         [Route("{ClassifiedAdId}")]
         [HttpGet]
-        [ProducesResponseType(typeof(ClassifiedAdDetailsViewModel),StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ClassifiedAdDetailsViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ClassifiedAdDetailsViewModel> GetAsync([FromRoute]GetPublicClassifiedAd request)
+        public async Task<ClassifiedAdDetailsViewModel> GetAsync([FromRoute] GetPublicClassifiedAd request)
         => await _queries.Query(request);
+
+        [HttpGet]
+        [ProducesResponseType(typeof(ClassifiedAdDetailsViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult Get([FromQuery] GetPublicClassifiedAd request)
+        // => await _queries.Query(request);
+            => RequestHandler.HandleQuery(()=>_items.Query(request),Log);
 
 
         [HttpPost]

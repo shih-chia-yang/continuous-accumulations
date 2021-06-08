@@ -9,15 +9,25 @@ namespace marketplace.api.Infrastructure
     {
         private readonly IEventStoreConnection _connection;
 
-        public HostedService(IEventStoreConnection connection)
+        private readonly EsSubscription _subscription;
+
+        public HostedService(IEventStoreConnection connection,
+        EsSubscription subscription)
         {
             _connection = connection;
+            _subscription = subscription;
         }
-        public Task StartAsync(CancellationToken cancellationToken)
-            => _connection.ConnectAsync();
+        public async Task StartAsync(CancellationToken cancellationToken)
+        {
+            //連線後，再開啟訂閱功能
+            await _connection.ConnectAsync();
+            _subscription.Start();
+        }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
+            //關閉訂閱功能，再關閉連線
+            _subscription.Stop();
             _connection.Close();
             return Task.CompletedTask;
         }

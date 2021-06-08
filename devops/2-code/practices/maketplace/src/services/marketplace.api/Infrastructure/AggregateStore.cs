@@ -10,7 +10,6 @@ namespace marketplace.api.Infrastructure
 {
     public class AggregateStore : IAggregateStore
     {
-
         private readonly IEventStoreConnection _connection;
         public AggregateStore(IEventStoreConnection connection)
         {
@@ -33,15 +32,9 @@ namespace marketplace.api.Infrastructure
             var page = await _connection.ReadStreamEventsForwardAsync(stream, 0, 1024, false);
 
             aggregate.Load(
-                page.Events.Select(resolvedEvent=>
-                {
-                    var meta = JsonConvert.DeserializeObject<EventMetadata>(
-                        Encoding.UTF8.GetString(resolvedEvent.Event.Metadata));
-                    var dataType = Type.GetType(meta.CLRType);
-                    var json = Encoding.UTF8.GetString(resolvedEvent.Event.Data);
-                    var data = JsonConvert.DeserializeObject(json, dataType);
-                    return data;
-                })
+                page.Events.Select(
+                    resolvedEvent=>resolvedEvent.Deserialize()
+                    ).ToArray()
             );
             return aggregate;
         }
@@ -73,11 +66,6 @@ namespace marketplace.api.Infrastructure
             => $"{typeof(T).Name}-{aggregate.Id.ToString()}";
 
         private static byte[] Serialize(object data)
-            => Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(data));
-
-        private class EventMetadata
-        {
-            public string CLRType { get; set; }
-        }
+            => Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(data)); 
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using EventStore.ClientAPI;
 using marketplace.api.Applications;
@@ -8,6 +9,7 @@ using marketplace.api.Applications.Queries;
 using marketplace.api.Applications.Services;
 using marketplace.api.External;
 using marketplace.api.Infrastructure;
+using marketplace.api.ViewModels;
 using marketplace.domain.kernel;
 using marketplace.domain.kernel.commands;
 using marketplace.domain.repositories;
@@ -47,7 +49,10 @@ namespace marketplace.api.Registry
                 env.ApplicationName);
             services.AddSingleton(connection);
             services.AddSingleton<IAggregateStore>(x=>new AggregateStore(connection));
-
+            var items = new List<ClassifiedAdDetailsViewModel>();
+            services.AddSingleton<IEnumerable<ClassifiedAdDetailsViewModel>>(items);
+            var subscription = new EsSubscription(connection, items);
+            services.AddSingleton<IHostedService>(new HostedService(connection,subscription));
             return services;
         }
 
@@ -85,7 +90,7 @@ namespace marketplace.api.Registry
 
         public static IServiceCollection RegisterServices(this IServiceCollection services,IConfiguration configuration)
         {
-            services.AddSingleton<IHostedService, HostedService>();
+            
             services.AddScoped<IClassifiedAdRepository, ClassifiedAdRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddTransient<IClassifiedAdQueries, ClassifiedAdQueries>();
