@@ -295,7 +295,7 @@ public void test_gives_invalid_string_should_be_throw_exception()
 } 
 ```
 
-
+[testing-exceptions](https://chadgolden.com/blog/unit-testing-exceptions-in-c-sharp)
 
 ## event
 
