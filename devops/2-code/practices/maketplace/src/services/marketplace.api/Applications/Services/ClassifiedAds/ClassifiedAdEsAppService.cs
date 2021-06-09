@@ -7,9 +7,9 @@ using marketplace.domain.kernel;
 using static marketplace.api.Applications.Contracts.ClassifiedAds;
 using marketplace.domain.AggregateModels;
 
-namespace marketplace.api.Applications.Services
+namespace marketplace.api.Applications.Services.ClassifiedAds
 {
-    public class ClassifiedAdEsAppService : IAppService
+    public class ClassifiedAdEsAppService : IClassifiedAdAppService
     {
         private readonly IAggregateStore _store;
         public ClassifiedAdEsAppService(IAggregateStore store)
@@ -20,13 +20,20 @@ namespace marketplace.api.Applications.Services
             => command switch
             {
                 V1.Create cmd =>HandleCreate(cmd),
-                V1.SetTitle cmd =>HandleUpdate(cmd.Id,c=>c.SetTitle(ClassifiedAdTitle.FromString(cmd.Title))),
-                V1.UpdateText cmd=>HandleUpdate(cmd.Id,c=>c.UpdateText(ClassifiedAdText.FromString(cmd.Text))),
+                V1.SetTitle cmd =>HandleUpdate(cmd.Id,
+                    c=>c.SetTitle(
+                        ClassifiedAdTitle.FromString(cmd.Title)
+                        )),
+                V1.UpdateText cmd=>HandleUpdate(cmd.Id,
+                    c=>c.UpdateText(
+                        ClassifiedAdText.FromString(cmd.Text)
+                        )),
                 V1.UpdatePrice cmd =>HandleUpdate(cmd.Id,
                     c=>c.UpdatePrice(
                         Price.Create(cmd.Price,Currency.Create(cmd.Currency,2))
                         )),
-                V1.RequestToPublish cmd=>HandleUpdate(cmd.Id,c=>c.RequestToPublish()),
+                V1.RequestToPublish cmd=>HandleUpdate(cmd.Id,
+                    c=>c.RequestToPublish()),
                 _ =>Task.CompletedTask
             };
         private async Task HandleCreate(V1.Create command)

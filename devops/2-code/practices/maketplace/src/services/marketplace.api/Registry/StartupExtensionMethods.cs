@@ -7,8 +7,10 @@ using marketplace.api.Applications.Command;
 using marketplace.api.Applications.Contracts;
 using marketplace.api.Applications.Queries;
 using marketplace.api.Applications.Services;
+using marketplace.api.Applications.Services.ClassifiedAds;
 using marketplace.api.External;
 using marketplace.api.Infrastructure;
+using marketplace.api.Infrastructure.Projections;
 using marketplace.api.ViewModels;
 using marketplace.domain.kernel;
 using marketplace.domain.kernel.commands;
@@ -48,10 +50,16 @@ namespace marketplace.api.Registry
                 ConnectionSettings.Create().KeepReconnecting(),
                 env.ApplicationName);
             services.AddSingleton(connection);
+            
             services.AddSingleton<IAggregateStore>(x=>new AggregateStore(connection));
-            var items = new List<ClassifiedAdDetailsViewModel>();
-            services.AddSingleton<IEnumerable<ClassifiedAdDetailsViewModel>>(items);
-            var subscription = new EsSubscription(connection, items);
+            var classifiedAditems = new List<ClassifiedAdDetailsViewModel>();
+            services.AddSingleton<IEnumerable<ClassifiedAdDetailsViewModel>>(classifiedAditems);
+            var userItems = new List<UserDetailsViewModel>();
+            services.AddSingleton<IEnumerable<UserDetailsViewModel>>(userItems);
+            var subscription = new ProjectionManger(connection,
+                new ClassifiedAdProjection(classifiedAditems),
+                new UserDetailsProjection(userItems));
+
             services.AddSingleton<IHostedService>(new HostedService(connection,subscription));
             return services;
         }
@@ -95,7 +103,8 @@ namespace marketplace.api.Registry
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddTransient<IClassifiedAdQueries, ClassifiedAdQueries>();
             // services.AddScoped<IAppService,ClassifiedAdAppService>();
-            services.AddScoped<IAppService, ClassifiedAdEsAppService>();
+            // services.AddScoped<IUserProfileAppService, UserProfileEsAppService>();
+            services.AddScoped<IClassifiedAdAppService, ClassifiedAdEsAppService>();
             services.AddScoped<ICommandHandler<ClassifiedAds.V1.Create>,ClassifiedAdCreatedCommand>();
             services.AddSingleton<PurgomalumClient>();
             services.AddHttpClient<PurgomalumClient>()
@@ -110,6 +119,7 @@ namespace marketplace.api.Registry
             services.AddScoped<ICommandHandler<RegisterUserCommand>,RegisterUserCommandHandler>(command=>
                 new RegisterUserCommandHandler(
                     command.GetService<IUserRepository>(),
+                    command.GetService<IAggregateStore>(),
                       text =>  command.GetService<PurgomalumClient>().CheckForProfanity(text).GetAwaiter().GetResult()
                 ));
 
@@ -118,6 +128,7 @@ namespace marketplace.api.Registry
                 command=>
                 new UpdateUserDisplayNameCommandHandler(
                     command.GetService<IUserRepository>(),
+                    command.GetService<IAggregateStore>(),
                       text =>  command.GetService<PurgomalumClient>().CheckForProfanity(text).GetAwaiter().GetResult()
                 )
             );

@@ -9,10 +9,10 @@ namespace marketplace.api.Infrastructure
     {
         private readonly IEventStoreConnection _connection;
 
-        private readonly EsSubscription _subscription;
+        private readonly ISubscription _subscription;
 
         public HostedService(IEventStoreConnection connection,
-        EsSubscription subscription)
+        ISubscription subscription)
         {
             _connection = connection;
             _subscription = subscription;

@@ -7,9 +7,9 @@ using marketplace.domain.kernel;
 using marketplace.domain.repositories;
 using static marketplace.api.Applications.Contracts.ClassifiedAds;
 
-namespace marketplace.api.Applications.Services
+namespace marketplace.api.Applications.Services.ClassifiedAds
 {
-    public class ClassifiedAdAppService : IAppService
+    public class ClassifiedAdAppService : IClassifiedAdAppService
     {
         private readonly IClassifiedAdRepository _repo;
         public ClassifiedAdAppService(IClassifiedAdRepository repo)

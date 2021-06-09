@@ -1,16 +1,14 @@
 using System.Linq;
 using System.Threading.Tasks;
 using EventStore.ClientAPI;
+using marketplace.api.Infrastructure.Projections;
 using Serilog;
 using Serilog.Events;
 
 namespace marketplace.api.Infrastructure
 {
-    public interface IProjection
-    {
-        Task Project(object @event);
-    }
-    public class ProjectionManger
+    
+    public class ProjectionManger:ISubscription
     {
         public readonly IEventStoreConnection _connection;
         public readonly IProjection[] _projections;

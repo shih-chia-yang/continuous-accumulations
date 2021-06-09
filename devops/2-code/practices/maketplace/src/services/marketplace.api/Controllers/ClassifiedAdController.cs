@@ -3,9 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using marketplace.api.Applications;
 using marketplace.api.Applications.Contracts;
-
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using Microsoft.AspNetCore.Cors;
@@ -13,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using marketplace.api.Registry;
 using marketplace.api.Applications.Queries;
 using marketplace.api.ViewModels;
+using marketplace.api.Applications.Services.ClassifiedAds;
 
 namespace marketplace.api.Controllers
 {
@@ -22,7 +21,7 @@ namespace marketplace.api.Controllers
     [ApiController]
     public class ClassifiedAdController : ControllerBase
     {
-        private readonly IAppService _service;
+        private readonly IClassifiedAdAppService _service;
 
         private readonly IClassifiedAdQueries _queries;
 
@@ -31,7 +30,7 @@ namespace marketplace.api.Controllers
         private static ILogger Log = Serilog.Log.ForContext<ClassifiedAdController>();
 
         public ClassifiedAdController(
-            IAppService service,
+            IClassifiedAdAppService service,
             IClassifiedAdQueries queries,
             IEnumerable<ClassifiedAdDetailsViewModel> items
         )

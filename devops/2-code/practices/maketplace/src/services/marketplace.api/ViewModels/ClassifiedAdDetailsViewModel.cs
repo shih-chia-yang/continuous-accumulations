@@ -12,6 +12,8 @@ namespace marketplace.api.ViewModels
         
         public string Description { get; set; }
 
+        public Guid SellerId { get; set;}
+
         public string  SellerDisplayName { get; set; }
 
         public string[] PhotoUrls { get; set; }

@@ -12,7 +12,13 @@ using ILogger = Serilog.ILogger;
 
 namespace marketplace.api.Infrastructure
 {
-    public class EsSubscription
+    public interface ISubscription
+    {
+        void Start();
+        void Stop();
+    }
+
+    public class EsSubscription:ISubscription
     {
         private static ILogger Log =Serilog.Log.ForContext<EsSubscription>();
         private readonly IEventStoreConnection _connection;

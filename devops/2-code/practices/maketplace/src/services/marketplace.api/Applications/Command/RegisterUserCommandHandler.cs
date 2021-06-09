@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using marketplace.domain.AggregateModels;
 using marketplace.domain.AggregateModels.UserAggregate;
+using marketplace.domain.kernel;
 using marketplace.domain.kernel.commands;
 using marketplace.domain.repositories;
 
@@ -19,17 +20,21 @@ namespace marketplace.api.Applications.Command
     {
         private readonly IUserRepository _repo;
 
+        private readonly IAggregateStore _store;
+
         private readonly CheckTextForProfanity _checkText;
         public RegisterUserCommandHandler(
             IUserRepository repo,
+            IAggregateStore stone,
             CheckTextForProfanity checkText)
         {
             _repo = repo;
+            _store = stone;
             _checkText = checkText;
         }
         public async Task Handle(RegisterUserCommand command)
         {
-            if (await _repo.ExistsAsync(new UserId(command.UserId)))
+            if (await _store.Exists<UserProfile,Guid>(new UserId(command.UserId)))
             {
                 throw new InvalidOperationException($"Entity with id {command.UserId} already exists");
             }
@@ -37,8 +42,9 @@ namespace marketplace.api.Applications.Command
                 new UserId(command.UserId),
                 FullName.FromString(command.FullName),
                 DisplayName.FromString(command.DisplayName, _checkText));
-            await _repo.AddAsync(user);
-            await _repo.UnitOfWork.Commit();
+            await _store.Save<UserProfile, Guid>(user);
+            // await _repo.AddAsync(user);
+            // await _repo.UnitOfWork.Commit();
         }
     }
 }
