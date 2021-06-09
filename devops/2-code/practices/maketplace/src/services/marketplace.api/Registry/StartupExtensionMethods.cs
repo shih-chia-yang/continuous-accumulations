@@ -102,10 +102,7 @@ namespace marketplace.api.Registry
             services.AddScoped<IClassifiedAdRepository, ClassifiedAdRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddTransient<IClassifiedAdQueries, ClassifiedAdQueries>();
-            // services.AddScoped<IAppService,ClassifiedAdAppService>();
-            // services.AddScoped<IUserProfileAppService, UserProfileEsAppService>();
             services.AddScoped<IClassifiedAdAppService, ClassifiedAdEsAppService>();
-            services.AddScoped<ICommandHandler<ClassifiedAds.V1.Create>,ClassifiedAdCreatedCommand>();
             services.AddSingleton<PurgomalumClient>();
             services.AddHttpClient<PurgomalumClient>()
             .SetHandlerLifetime(TimeSpan.FromMinutes(2))
