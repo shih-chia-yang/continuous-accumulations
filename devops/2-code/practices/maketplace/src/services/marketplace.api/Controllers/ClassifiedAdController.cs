@@ -56,15 +56,15 @@ namespace marketplace.api.Controllers
             [FromQuery]GetPendingReviewClassifiedAds request)
                 => await _queries.Query(request);
 
-        [Route("MyAds/{OwnerId}")]
+        [Route("MyAds/{ownerId}")]
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<ClassifiedAdListItemViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IEnumerable<ClassifiedAdListItemViewModel>> 
-            GetAsync([FromRoute ]string ownerId,[FromQuery]int page,[FromQuery]int pageSize)
+            GetAsync(string ownerId,[FromQuery]int page,[FromQuery]int pageSize)
             {
-            var request = new GetOwnersClassifiedAd(ownerId,page,pageSize);
-            return await _queries.Query(request);
+                var request = new GetOwnersClassifiedAd(ownerId,page,pageSize);
+                return await _queries.Query(request);
             }
 
         [Route("{ClassifiedAdId}")]
@@ -78,7 +78,6 @@ namespace marketplace.api.Controllers
         [ProducesResponseType(typeof(ClassifiedAdDetailsViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Get([FromQuery] GetPublicClassifiedAd request)
-        // => await _queries.Query(request);
             => RequestHandler.HandleQuery(()=>_items.Query(request),Log);
 
 

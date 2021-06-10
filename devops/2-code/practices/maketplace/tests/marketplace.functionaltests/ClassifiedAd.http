@@ -6,8 +6,10 @@ Content-Type: application/json
 
 {
   "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  "ownerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+  "ownerId": "ba23c309-4f62-4fca-8348-3ff186c62a72"
 }
+
+###
 
 PUT {{BASE_URL}}/api/ad/name HTTP/1.1
 Content-Type: application/json
@@ -17,6 +19,8 @@ Content-Type: application/json
   "title": "test-title"
 }
 
+###
+
 PUT {{BASE_URL}}/api/ad/text HTTP/1.1
 Content-Type: application/json
 
@@ -24,6 +28,8 @@ Content-Type: application/json
   "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
   "text": "test-text"
 }
+
+###
 
 PUT {{BASE_URL}}/api/ad/price HTTP/1.1
 Content-Type: application/json
@@ -34,9 +40,21 @@ Content-Type: application/json
   "currency": "TWD"
 }
 
-PUT {{BASE_URL}}/api/ad/publish HTTP/1.1
+###
+
+PUT {{BASE_URL}}/api/ad/requestpublish HTTP/1.1
 Content-Type: application/json
 
 {
   "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+}
+
+###
+
+PUT {{BASE_URL}}/api/ad/publish HTTP/1.1
+Content-Type: application/json
+
+{
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "approvedBy": "e7d2d02c-417b-42a2-8f3f-434f9ed5c4dd"
 }

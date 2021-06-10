@@ -26,6 +26,12 @@ namespace marketplace.api.Infrastructure.Projections
                 case UserDisplayNameUpdated e:
                     UpdateItem(e.UserId, x => x.DisplayName = e.DisplayName);
                     break;
+                case ProfilePhotoUploaded e:
+                    UpdateItem(
+                        e.UserId,
+                        x => x.PhotoUrl = e.PhotoUrl
+                    );
+                    break;
             }
             return Task.CompletedTask;
         }

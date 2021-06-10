@@ -1,0 +1,42 @@
+@BASE_URL=https://localhost:5001
+
+
+
+Get {{BASE_URL}}/api/ad/list HTTP/1.1
+Content-Type: application/json
+
+{
+  "page": 1,
+  "pagesize": 10
+}
+
+###
+
+Get {{BASE_URL}}/api/ad/list/pending HTTP/1.1
+Content-Type: application/json
+
+{
+  "page": 1,
+  "pagesize": 10
+}
+
+###
+@OwnerId="ba23c309-4f62-4fca-8348-3ff186c62a72"
+Get {{BASE_URL}}/api/ad/MyAds/ba23c309-4f62-4fca-8348-3ff186c62a72 HTTP/1.1
+Content-Type: application/json
+
+{
+  "page": 1,
+  "pagesize": 10
+}
+
+###
+@ClassifiedAdId="3fa85f64-5717-4562-b3fc-2c963f66afa6"
+Get {{BASE_URL}}/api/ad/{{ClassifiedAdId}} HTTP/1.1
+Content-Type: application/json
+
+###
+
+Get {{BASE_URL}}/api/ad?ClassifiedAdId={{ClassifiedAdId}} HTTP/1.1
+Content-Type: application/json
+

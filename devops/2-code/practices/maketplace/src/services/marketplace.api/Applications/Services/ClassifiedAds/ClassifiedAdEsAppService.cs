@@ -20,20 +20,30 @@ namespace marketplace.api.Applications.Services.ClassifiedAds
             => command switch
             {
                 V1.Create cmd =>HandleCreate(cmd),
-                V1.SetTitle cmd =>HandleUpdate(cmd.Id,
+                V1.SetTitle cmd =>HandleUpdate(
+                    cmd.Id,
                     c=>c.SetTitle(
                         ClassifiedAdTitle.FromString(cmd.Title)
                         )),
-                V1.UpdateText cmd=>HandleUpdate(cmd.Id,
+                V1.UpdateText cmd=>HandleUpdate(
+                    cmd.Id,
                     c=>c.UpdateText(
                         ClassifiedAdText.FromString(cmd.Text)
                         )),
-                V1.UpdatePrice cmd =>HandleUpdate(cmd.Id,
+                V1.UpdatePrice cmd =>HandleUpdate(
+                    cmd.Id,
                     c=>c.UpdatePrice(
                         Price.Create(cmd.Price,Currency.Create(cmd.Currency,2))
                         )),
-                V1.RequestToPublish cmd=>HandleUpdate(cmd.Id,
-                    c=>c.RequestToPublish()),
+                V1.RequestToPublish cmd=>HandleUpdate(
+                        cmd.Id,
+                        c=>c.RequestToPublish()
+                        ),
+                V1.Publish cmd =>HandleUpdate(
+                        cmd.Id,
+                        c=>c.Publish(
+                            new UserId(cmd.ApprovedBy)
+                            )),
                 _ =>Task.CompletedTask
             };
         private async Task HandleCreate(V1.Create command)

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using marketplace.api.ViewModels;
 using marketplace.domain.events.ClassifiedAdEvents;
 using marketplace.domain.events.UserProfileEvents;
+using static marketplace.api.Infrastructure.Projections.ClassifiedAdUpcastedEvents;
 
 namespace marketplace.api.Infrastructure.Projections
 {
@@ -56,6 +57,9 @@ namespace marketplace.api.Infrastructure.Projections
                         x => x.SellerId == e.UserId, 
                         x => x.SellerDisplayName = e.DisplayName
                         );
+                    break;
+                case V1.ClassifiedAdPublished e:
+                    UpdateItem(e.Id, ad => ad.SellersPhotoUrl = e.SellerPhotoUrl);
                     break;
             }
             return Task.CompletedTask;

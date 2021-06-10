@@ -59,8 +59,11 @@ namespace marketplace.api.Registry
             services.AddSingleton<IEnumerable<UserDetailsViewModel>>(userItems);
             var subscription = new ProjectionManger(connection,
                 new ClassifiedAdProjection(classifiedAditems,
-                userid=>userItems.FirstOrDefault(x=>x.UserId==userid)?.DisplayName),
-                new UserDetailsProjection(userItems));
+                    userid=>userItems.FirstOrDefault(x=>x.UserId==userid)?.DisplayName),
+                new UserDetailsProjection(userItems),
+                new ClassifiedAdUpcasters(connection,userId=>userItems.FirstOrDefault(
+                    x=>x.UserId==userId)?.PhotoUrl)
+                    );
 
             services.AddSingleton<IHostedService>(new HostedService(connection,subscription));
             return services;

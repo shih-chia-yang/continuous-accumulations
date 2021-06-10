@@ -47,7 +47,7 @@ namespace marketplace.domain.AggregateModels.ClassifiedAdAggregate
             Apply(new ClassifiedAdSentToReview(Id));
 
         public void Publish(UserId userId)
-            => Apply(new ClassifiedAdPublished(Id = Id, ApprovedBy = userId));
+            => Apply(new ClassifiedAdPublished(Id,OwnerId,userId));
 
         public Picture FindPicture(Guid id) => Pictures.FirstOrDefault(x => x.Id == id);
         public void AddPicture(Uri pictureUrl, PictureSize size) => 
@@ -60,12 +60,7 @@ namespace marketplace.domain.AggregateModels.ClassifiedAdAggregate
 
         public void ResizePicture(Guid id, PictureSize newSize) =>
             Apply(new PictureResized(id, newSize.Width, newSize.Height));
-        // {
-        //     var picture = FindPicture(id);
-        //     if(picture==null)
-        //         throw new InvalidOperationException("Cannot resize a picture that picture not found");
-        //     picture.Resize(newSize);
-        // }
+
         protected override void When(object @event)
         {
             switch(@event)
