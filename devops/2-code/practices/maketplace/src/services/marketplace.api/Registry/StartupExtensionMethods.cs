@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using EventStore.ClientAPI;
 using marketplace.api.Applications;
@@ -57,7 +58,8 @@ namespace marketplace.api.Registry
             var userItems = new List<UserDetailsViewModel>();
             services.AddSingleton<IEnumerable<UserDetailsViewModel>>(userItems);
             var subscription = new ProjectionManger(connection,
-                new ClassifiedAdProjection(classifiedAditems),
+                new ClassifiedAdProjection(classifiedAditems,
+                userid=>userItems.FirstOrDefault(x=>x.UserId==userid)?.DisplayName),
                 new UserDetailsProjection(userItems));
 
             services.AddSingleton<IHostedService>(new HostedService(connection,subscription));

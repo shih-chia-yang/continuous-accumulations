@@ -11,11 +11,20 @@ namespace marketplace.api.Infrastructure.Projections
     public class ClassifiedAdProjection : IProjection
     {
         private readonly IList<ClassifiedAdDetailsViewModel> _items;
-
+        private readonly Func<Guid, string> _getUserDisplayName;
         public ClassifiedAdProjection(List<ClassifiedAdDetailsViewModel> items)
         {
             _items = items;
         }
+
+        public ClassifiedAdProjection(
+            List<ClassifiedAdDetailsViewModel> items,
+            Func<Guid,string> getUserDisplayName)
+            {
+            _items = items;
+            _getUserDisplayName = getUserDisplayName;
+        }
+
         public Task Project(object @event)
         {
             switch(@event)
@@ -24,7 +33,8 @@ namespace marketplace.api.Infrastructure.Projections
                     _items.Add(new ClassifiedAdDetailsViewModel
                     {
                         ClassifiedAdId = e.Id,
-                        SellerId=e.OwnerId
+                        SellerId=e.OwnerId,
+                        SellerDisplayName=_getUserDisplayName(e.OwnerId)
                     });
                     break;
                 case ClassifiedAdTitleChanged e:
