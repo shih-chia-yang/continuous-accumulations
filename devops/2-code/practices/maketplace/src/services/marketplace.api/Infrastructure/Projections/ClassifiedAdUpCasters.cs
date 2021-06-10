@@ -25,7 +25,7 @@ namespace marketplace.api.Infrastructure.Projections
             {
                 case ClassifiedAdPublished e:
                     var photoUrl = _getUserPhoto(e.OwnerId);
-                    var newEvent = new ClassifiedAdUpcastedEvents.V1.ClassifiedAdPublished
+                    var newEvent = new PhotoUrlUpdatedIntegrationEvent
                     {
                         Id = e.Id,
                         OwnerId=e.OwnerId, 
