@@ -46,6 +46,151 @@ read model可能是來自不同的資料庫，使得所有的查詢會最終一�
 
 ## Cross-aggregate projections
 
+當處理多個資料來源的數據，最明顯的方式是在edge 組合數據。最多人使用的技術是BFF(backend for frontend)，當前端需要獲取的些複合數據時，向後端單個API endpoint發送請求，API本身會調用不同數據來源的數據並合併返回。
+                                            Read Model
+                                          |---> PublicClassifiedAds
+web app ----> Backend for frontend API ----
+                                          |---> UserProfiles
+
+
+1. 簡單: 對資料庫使用join，因為知道需要查詢的2個數據的鍵值
+2. 進階: 針對2個不同微服務API的 remote calls，然後在記憶體中處理
+    - 服務失效
+    - 網路故障
+    - 每次使用都必須重新連接
+
+有幾種方法可以在read model獲取比在projection中接收到的事件獲取更多數據
+
+- querying from a projection
+- event up casting
+
+
+## querying from a projection
+
+
+
+ClassifiedAdCreated
+    ClassifiedAdId  ---->Handle----> ClassifiedAdDetails Projection------->insert ClassifiedAdDetails Read model
+    OwnerId                                    ^                                 ClassifiedAdId
+                                               |                                 OwnerId
+                                               |                                 OwnerDisplayName
+                                               V
+                                        UserDetails Read model
+                                            UserId
+                                            DisplayName
+
+
+1. 建構子新增一個delegate function
+2. 在ClassifiedAdCreated中SellerDisplayName=delegate function
+3. 在DI建立ClassifiedAdDetailsViewModel，利用委派函數將DisplayName傳入建構子
+
+在projections中使用查詢時需要注意很多方面，主要是為了確保可靠性。此類工作的主要目標是確保projections永遠不會失敗。當您需要查詢的數據與您正在更新的讀取模型位於同一個儲存機制中時，查詢的處理速度和可靠性應該處於可接受的水平。您可能仍希望對整個projections應用重試策略，以減輕瞬時網絡故障和類似情況的問題。
+
+## upcasting events
+
+將更多數據放入讀取模型的最複雜方法是使用事件向上轉換。
+需要建立一個單獨的事件存儲訂閱，用於接收slim event，從其他地方獲取額外數據，生成一個包含更多數據的新事件，並將其發佈到特殊流。這個流永遠不可能是聚合流，因為新事件只需要構建讀取模型。我們可以為流選擇一個特殊的名稱，例如 ClassifiedAd-Upcast。由於讀取模型投影會偵聽 $all 流，因此它也會接收和處理這些事件。
+此方法僅在不同讀取模型需要額外數據時有用，因此我們可以使用一個enrich event更新所有這些數據，因此我們只需要查詢一次額外數據。
+
+
+新增一個更新數據專用的事件
+```csharp
+public static class ClassifiedAdUpcastedEvents
+{
+    public static class V1
+    {
+        public class ClassifiedAdPublished
+        {
+            public Guid Id { get; set; }
+
+            public Guid OwnerId { get; set; }
+
+            public string SellerPhotoUrl { get; set; }
+
+            public Guid ApprovedBy { get; set; }
+        }
+    }
+
+}
+```
+
+將AppendEvent方法修改為擴充方法
+```csharp
+public static class EventStoreExtensions
+    {
+        public static Task AppendEvents(this IEventStoreConnection connection,
+        string streamName,long version,
+        params object[] events)
+        {
+            if(events==null || !events.Any()) 
+                return Task.CompletedTask;
+            var preparedEvents = events
+            .Select( @event=>new EventData(
+                eventId:Guid.NewGuid(),
+                type:@event.GetType().Name,
+                isJson:true,
+                data: Serialize(@event),
+                metadata:Serialize(new EventMetadata{
+                    CLRType=@event.GetType().AssemblyQualifiedName
+                })
+            )).ToArray();
+            return connection.AppendToStreamAsync(streamName, version, preparedEvents);
+        }
+
+        private static byte[] Serialize(object data)
+            => Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(data));
+    }
+```
+
+實作專門整合數據專用的訂閱事件處理，訂閱domain event ClassifiedAdPublished，接收到資訊後，取的userItems最新photourl數據，再儲存為新事件
+發送至EventStore
+
+```csharp
+public class ClassifiedAdUpcasters : IProjection
+{
+    private readonly IEventStoreConnection _connection;
+    private readonly Func<Guid, string> _getUserPhoto;
+    private const string StreamName="UpcastedClassifiedAdEvent";
+
+    public ClassifiedAdUpcasters(
+        IEventStoreConnection connection,
+        Func<Guid,string> getUserPhoto)
+    {
+        _connection = connection;
+        _getUserPhoto = getUserPhoto;
+    }
+    public async Task Project(object @event)
+    {
+        switch(@event)
+        {
+            case ClassifiedAdPublished e:
+                var photoUrl = _getUserPhoto(e.OwnerId);
+                var newEvent = new ClassifiedAdUpcastedEvents.V1.ClassifiedAdPublished
+                {
+                    Id = e.Id,
+                    OwnerId=e.OwnerId, 
+                    SellerPhotoUrl=photoUrl,
+                    ApprovedBy=e.ApprovedBy};
+        await _connection.AppendEvents(StreamName, ExpectedVersion.Any, newEvent);
+                break;
+        }
+    }
+}
+```
+
+ClassifiedAdProjection，新增訂閱數據更新事件，進行photourl資訊更新
+```csharp
+//在switch新增此事件
+case V1.ClassifiedAdPublished e:
+    UpdateItem(e.Id, ad => ad.SellersPhotoUrl = e.SellerPhotoUrl);
+    break;
+```
+
+該實作方法同樣於eShopContainer範例中的IntegrationEvents，訂閱來自其他服務發送的事件，進行處理後再轉發事件通知訂閱方執行或數據更新
+
+
+## persistent storage
+
 
 
 [//begin]: # "Autogenerated link references for markdown compatibility"
