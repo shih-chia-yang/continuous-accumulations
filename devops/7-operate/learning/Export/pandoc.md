@@ -20,7 +20,7 @@ fc-list :lang=zh-tw
 
 - 輸出pdf, 格式調整
 ```bash
-pandoc ~/project/continuous-accumulations/devops/2-code/learning/tool/SqlServer/mssql-cli.md --toc -o mssql-cli.pdf --pdf-engine=xelatex -V CJKmainfont="Source Han Serif TW" -V geometry:margin=0.5in  --variable urlcolor='[HTML]{9068be}' --variable fontsize=12pt
+* [ ] pandoc ~/project/continuous-accumulations/devops/2-code/learning/tool/SqlServer/mssql-cli.md --toc -o mssql-cli.pdf --pdf-engine=xelatex -V CJKmainfont="Source Han Serif TW" -V geometry:margin=0.5in  --variable urlcolor='[HTML]{9068be}' --variable fontsize=12pt
 ```
 
 1. -V CJKmainfont : 設定中文字型
