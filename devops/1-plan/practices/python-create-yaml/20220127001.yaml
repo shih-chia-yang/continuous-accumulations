@@ -1,0 +1,10 @@
+- &id001 !!python/object:ViewModels.WorkItem
+  actor: stone
+  approved: ''
+  branch: issue/ci/work_item
+  content: 讀取會議記錄後自動產生工作事項
+  end_data: '20220126'
+  start_data: '20220125'
+  status: todo
+  title: 自動產生工作事項
+- *id001
