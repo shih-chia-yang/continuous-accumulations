@@ -12,7 +12,7 @@ JSON Web Token，一種在server與client用來安的地共享資訊的開放標
 普遍使用方式是使用JWTs做為持有憑證，該方法在request of a client產生JWT並且簽名，使json object無法被其他人替換，client會將JWT連同request傳送給Rest API，而rest api會使用憑證驗證JWT的payload與header，當API驗證JWT無誤後，會取得並透過claims中的資訊允許或禁止這個client request
 
 json format
-{keu:val}
+{key:val}
 
 jwt format:
 Header    : JWT Specific information
