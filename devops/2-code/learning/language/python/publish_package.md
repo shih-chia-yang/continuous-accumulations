@@ -126,9 +126,12 @@ make some changes in setup.py file
 
 1.  compile setup.py file
 2.  upload new version package to pipy.org or test.pipy.org
-3. check your package in pypi.org or test.pypi.org
-4.  install your package on your pc and test it
+    1. check your package in pypi.org or test.pypi.org
+3.  install your package on your pc and test it
 
+
+第二正規化：保持欄位與主鍵完全相依，移依不與主鍵、候選鍵的欄位，即欄位與該表性質不同應拆分資料表，如校正流程編號、儀器編號、儀器序號、儀器型號、名稱、使用單位、校正報告、量測值、判定結果、週期、追溯源
+儀器序號、儀器型號、名稱、使用單位
 ## 相關連結
 
 [publish-your-command-line-python-package-to-the-world](https://dev.to/mkfeuhrer/publish-your-command-line-python-package-to-the-world-in-5-minutes-ilm)
